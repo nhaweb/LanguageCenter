@@ -1,6 +1,19 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
+import { Plus_Jakarta_Sans, Work_Sans } from 'next/font/google'
 import './globals.css'
+
+const headingFont = Plus_Jakarta_Sans({
+  subsets: ['latin', 'vietnamese'],
+  variable: '--font-heading',
+  display: 'swap',
+})
+
+const bodyFont = Work_Sans({
+  subsets: ['latin', 'vietnamese'],
+  variable: '--font-body',
+  display: 'swap',
+})
 
 export const metadata: Metadata = {
   title: 'Bright English — Học vui, tiến bộ thật',
@@ -39,8 +52,8 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="vi">
-      <body className="antialiased">
+    <html lang="vi" className={`${headingFont.variable} ${bodyFont.variable}`}>
+      <body className={`${bodyFont.className} antialiased`}>
         {children}
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>

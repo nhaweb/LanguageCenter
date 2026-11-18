@@ -99,7 +99,7 @@ export function RegistrationModal({ onClose }: RegistrationModalProps) {
                   type="tel"
                   inputMode="tel"
                   autoComplete="tel"
-                  pattern="[0-9+()\\s.-]{8,20}"
+                  pattern={'[0-9+ .\\(\\)\\-]{8,20}'}
                   title="Nhập số điện thoại hợp lệ từ 8 đến 20 ký tự."
                   placeholder="090 123 4567"
                   className="rounded-xl border border-slate-200 px-4 py-3 text-sm font-normal outline-none transition placeholder:text-slate-400 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
