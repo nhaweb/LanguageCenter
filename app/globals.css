@@ -46,6 +46,7 @@
 }
 
 :root {
+  --header-offset: 68px;
   color-scheme: light;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
@@ -192,20 +193,23 @@
 }
 
 button,
-[role='tab'] {
+[role='tab'],
+[role='button'] {
   min-height: 44px;
   cursor: pointer;
 }
 
 a,
-summary,
-[role='button'] {
+summary {
   cursor: pointer;
 }
 
 button:focus-visible,
 a:focus-visible,
-summary:focus-visible {
+summary:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
   outline: 2px solid #4f46e5;
   outline-offset: 2px;
 }
@@ -217,10 +221,36 @@ h4 {
   font-family: var(--font-heading), sans-serif;
 }
 
-html { scroll-behavior: smooth; }
+html {
+  scroll-padding-top: var(--header-offset);
+  scroll-behavior: smooth;
+  overflow-x: clip;
+}
+
+body {
+  overflow-x: clip;
+}
+
+.text-balance {
+  text-wrap: balance;
+}
 
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+  html {
+    scroll-behavior: auto !important;
+  }
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .list-enter, [class*="list-enter"], .scroll-reveal, [class*="animate-"] {
+    animation: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }
 
 @layer base {
