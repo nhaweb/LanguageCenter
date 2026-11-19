@@ -80,17 +80,23 @@ export function RegistrationModal({ onClose, initialCourse = '', initialNote = '
 
   return (
     <div
-      className="fixed inset-0 z-[70] flex items-center justify-center overflow-y-auto bg-slate-950/60 p-4 backdrop-blur-sm"
+      className="fixed inset-0 z-[70] overflow-y-auto bg-slate-950/60 backdrop-blur-sm"
       onClick={(event) => {
         if (event.target === event.currentTarget) onClose()
       }}
       role="presentation"
     >
+      <div
+        className="flex min-h-full items-center justify-center p-4"
+        onClick={(event) => {
+          if (event.target === event.currentTarget) onClose()
+        }}
+      >
       <section
         role="dialog"
         aria-modal="true"
         aria-labelledby="registration-title"
-        className="relative my-auto w-full max-w-lg animate-[modal-scale-in_300ms_ease-out] rounded-[28px] border border-white/70 bg-white p-6 shadow-2xl shadow-slate-950/20 sm:p-8"
+        className="relative my-auto w-full min-w-0 max-w-lg animate-[modal-scale-in_300ms_ease-out] rounded-[28px] border border-white/70 bg-white p-6 shadow-2xl shadow-slate-950/20 sm:p-8"
       >
         <button
           type="button"
@@ -131,13 +137,13 @@ export function RegistrationModal({ onClose, initialCourse = '', initialNote = '
           </div>
         ) : (
           <>
-            <div className="flex items-center gap-3">
+            <div className="flex min-w-0 items-start gap-3 pr-12">
               <span className="grid size-11 place-items-center rounded-xl bg-indigo-100 text-indigo-700 shadow-sm shrink-0">
                 <Sparkles size={20} />
               </span>
               <div>
                 <p className="text-xs sm:text-sm font-extrabold uppercase tracking-wider text-indigo-700">Bright English</p>
-                <h2 id="registration-title" className="text-2xl sm:text-3xl font-black tracking-tight text-[#0A192F]">
+                <h2 id="registration-title" className="text-balance text-2xl font-black tracking-tight text-[#0A192F] sm:text-3xl">
                   Đăng ký tư vấn miễn phí
                 </h2>
               </div>
@@ -153,7 +159,7 @@ export function RegistrationModal({ onClose, initialCourse = '', initialNote = '
               </div>
             )}
 
-            <form className="mt-4 grid gap-3.5" onSubmit={handleSubmit} noValidate>
+            <form className="mt-4 grid min-w-0 grid-cols-1 gap-3.5" onSubmit={handleSubmit} noValidate>
               <div className="grid gap-1">
                 <label className="text-sm font-bold text-slate-800" htmlFor="reg-fullname">
                   Họ và tên học viên / phụ huynh <span className="text-rose-500">*</span>
@@ -169,15 +175,15 @@ export function RegistrationModal({ onClose, initialCourse = '', initialNote = '
                   }}
                   autoComplete="name"
                   placeholder="Ví dụ: Nguyễn Minh Anh"
-                  className={`h-12 rounded-xl border px-4 text-sm sm:text-base outline-none transition placeholder:text-slate-400 focus:ring-2 ${
+                  className={`h-12 w-full min-w-0 rounded-xl border px-4 text-sm outline-none transition placeholder:text-slate-400 focus:ring-2 sm:text-base ${
                     errors.fullName ? 'border-rose-400 bg-rose-50/30 focus:ring-rose-200' : 'border-slate-200 focus:border-indigo-500 focus:ring-indigo-100'
                   }`}
                 />
                 {errors.fullName && <p className="text-xs sm:text-sm font-medium text-rose-600">{errors.fullName}</p>}
               </div>
 
-              <div className="grid gap-1 sm:grid-cols-2 sm:gap-3">
-                <div className="grid gap-1">
+              <div className="grid min-w-0 grid-cols-1 gap-3.5 sm:grid-cols-2 sm:gap-3">
+                <div className="grid min-w-0 gap-1">
                   <label className="text-sm font-bold text-slate-800" htmlFor="reg-phone">
                     Số điện thoại liên hệ <span className="text-rose-500">*</span>
                   </label>
@@ -193,14 +199,14 @@ export function RegistrationModal({ onClose, initialCourse = '', initialNote = '
                     }}
                     autoComplete="tel"
                     placeholder="Ví dụ: 090 123 4567"
-                    className={`h-12 rounded-xl border px-4 text-sm sm:text-base outline-none transition placeholder:text-slate-400 focus:ring-2 ${
+                    className={`h-12 w-full min-w-0 rounded-xl border px-4 text-sm outline-none transition placeholder:text-slate-400 focus:ring-2 sm:text-base ${
                       errors.phone ? 'border-rose-400 bg-rose-50/30 focus:ring-rose-200' : 'border-slate-200 focus:border-indigo-500 focus:ring-indigo-100'
                     }`}
                   />
                   {errors.phone && <p className="text-xs sm:text-sm font-medium text-rose-600">{errors.phone}</p>}
                 </div>
 
-                <div className="grid gap-1">
+                <div className="grid min-w-0 gap-1">
                   <label className="text-sm font-bold text-slate-800" htmlFor="reg-email">
                     Email nhận tài liệu
                   </label>
@@ -214,7 +220,7 @@ export function RegistrationModal({ onClose, initialCourse = '', initialNote = '
                     }}
                     autoComplete="email"
                     placeholder="name@gmail.com"
-                    className={`h-12 rounded-xl border px-4 text-sm sm:text-base outline-none transition placeholder:text-slate-400 focus:ring-2 ${
+                    className={`h-12 w-full min-w-0 rounded-xl border px-4 text-sm outline-none transition placeholder:text-slate-400 focus:ring-2 sm:text-base ${
                       errors.email ? 'border-rose-400 bg-rose-50/30 focus:ring-rose-200' : 'border-slate-200 focus:border-indigo-500 focus:ring-indigo-100'
                     }`}
                   />
@@ -234,7 +240,7 @@ export function RegistrationModal({ onClose, initialCourse = '', initialNote = '
                     setCourse(e.target.value)
                     if (errors.course) setErrors(prev => ({ ...prev, course: '' }))
                   }}
-                  className={`h-12 rounded-xl border bg-white px-4 text-sm sm:text-base text-slate-800 outline-none transition focus:ring-2 ${
+                  className={`h-12 w-full min-w-0 rounded-xl border bg-white px-4 text-sm text-slate-800 outline-none transition focus:ring-2 sm:text-base ${
                     errors.course ? 'border-rose-400 bg-rose-50/30 focus:ring-rose-200' : 'border-slate-200 focus:border-indigo-500 focus:ring-indigo-100'
                   }`}
                 >
@@ -262,7 +268,7 @@ export function RegistrationModal({ onClose, initialCourse = '', initialNote = '
                     setBranch(e.target.value)
                     if (errors.branch) setErrors(prev => ({ ...prev, branch: '' }))
                   }}
-                  className="h-12 rounded-xl border border-slate-200 bg-white px-4 text-sm sm:text-base text-slate-800 outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+                  className="h-12 w-full min-w-0 rounded-xl border border-slate-200 bg-white px-4 text-sm text-slate-800 outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 sm:text-base"
                 >
                   <option value="12 Nguyễn Văn Bảo, Gò Vấp, TP.HCM">Cơ sở 1: 12 Nguyễn Văn Bảo, Gò Vấp, TP.HCM</option>
                   <option value="28 Trần Thái Tông, Cầu Giấy, Hà Nội">Cơ sở 2: 28 Trần Thái Tông, Cầu Giấy, Hà Nội</option>
@@ -279,7 +285,7 @@ export function RegistrationModal({ onClose, initialCourse = '', initialNote = '
                   value={note}
                   onChange={(e) => setNote(e.target.value)}
                   placeholder="Ví dụ: Muốn luyện phát âm chuẩn, chuẩn bị thi IELTS hoặc tìm lớp học thử..."
-                  className="rounded-xl border border-slate-200 px-4 py-2.5 text-sm sm:text-base outline-none transition placeholder:text-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+                  className="w-full min-w-0 rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none transition placeholder:text-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 sm:text-base"
                 />
               </div>
 
@@ -301,6 +307,7 @@ export function RegistrationModal({ onClose, initialCourse = '', initialNote = '
           </>
         )}
       </section>
+      </div>
     </div>
   )
 }
