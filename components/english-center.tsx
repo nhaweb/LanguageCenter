@@ -622,52 +622,55 @@ export function EnglishCenter() {
         {/* HERO SECTION */}
         <section
           id="home"
-          className="relative scroll-mt-24 overflow-hidden bg-[radial-gradient(ellipse_at_78%_5%,rgba(99,102,241,.14),transparent_35%),linear-gradient(135deg,#f8fafc_10%,#eef2ff_54%,#f8fafc_100%)]"
+          className="relative scroll-mt-24 overflow-hidden bg-[radial-gradient(ellipse_at_78%_5%,rgba(99,102,241,.16),transparent_38%),linear-gradient(135deg,#f8fafc_8%,#eef2ff_52%,#f8fafc_100%)]"
         >
-          <div className="mx-auto grid max-w-7xl items-center gap-8 px-5 pb-14 pt-10 sm:px-6 md:pb-20 md:pt-14 lg:grid-cols-[1.04fr_.96fr] lg:px-8 lg:pt-16">
+          <div className="pointer-events-none absolute -left-16 top-10 size-72 rounded-full bg-indigo-300/30 blur-3xl mesh-orb" />
+          <div className="pointer-events-none absolute right-[-4rem] top-24 size-80 rounded-full bg-cyan-300/25 blur-3xl mesh-orb [animation-delay:-5s]" />
+          <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 pb-14 pt-10 sm:px-6 md:pb-20 md:pt-14 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,.95fr)] lg:gap-12 lg:px-8 lg:pt-16">
             <div className="relative z-10 min-w-0">
-              <div className="mb-4 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-slate-200/90 shadow-xs text-xs sm:text-sm font-bold text-slate-800">
-                <span className="flex size-2 rounded-full bg-emerald-500 animate-ping" />
-                <span className="text-indigo-700 font-extrabold uppercase tracking-wider text-xs sm:text-sm">Tuyển Sinh 2026 - 2027</span>
-                <span className="text-slate-300">|</span>
-                <span className="text-slate-700 flex items-center gap-1 font-semibold text-xs sm:text-sm">
+              <div className="hero-rise mb-4 inline-flex max-w-full flex-wrap items-center gap-x-2 gap-y-1 rounded-full border border-slate-200/90 bg-white px-3.5 py-1.5 text-xs font-bold text-slate-800 shadow-xs sm:text-sm">
+                <span className="size-2 shrink-0 rounded-full bg-emerald-500" />
+                <span className="text-xs font-extrabold uppercase tracking-wider text-indigo-700 sm:text-sm">Tuyển Sinh 2026 - 2027</span>
+                <span className="text-slate-300" aria-hidden="true">|</span>
+                <span className="flex items-center gap-1 text-xs font-semibold text-slate-700 sm:text-sm">
                   <Sparkles aria-hidden="true" size={14} className="text-amber-500" />
                   Chuẩn Quốc Tế Cambridge &amp; IELTS
                 </span>
               </div>
               
               {/* H1 with generous readable sizing */}
-              <h1 className="max-w-2xl text-3xl sm:text-5xl lg:text-[58px] font-extrabold text-[#0A192F] tracking-tight leading-[1.16]">
+              <h1 className="hero-rise max-w-2xl text-balance text-3xl font-extrabold leading-[1.12] tracking-tight text-[#0A192F] sm:text-5xl lg:text-[58px]" style={{ animationDelay: '80ms' }}>
                 Bứt phá tiếng Anh,<br />
                 chinh phục{' '}
                 <span className="whitespace-nowrap bg-gradient-to-r from-indigo-600 via-violet-600 to-cyan-600 bg-clip-text text-transparent">
                   tương lai
-                </span><br className="sm:hidden" /> toàn cầu.
+                </span>{' '}
+                toàn cầu.
               </h1>
               
-              <p className="mt-4 max-w-xl text-base sm:text-lg lg:text-xl text-slate-700 leading-relaxed font-normal">
+              <p className="hero-rise mt-4 max-w-xl text-base font-normal leading-relaxed text-slate-700 sm:text-lg lg:text-xl" style={{ animationDelay: '160ms' }}>
                 Mỗi buổi học là một hành trình vui khám phá. Cùng 100% giáo viên quốc tế và phương pháp học qua trải nghiệm, con tự tin làm chủ tiếng Anh mỗi ngày.
               </p>
 
-              <div className="mt-7 flex flex-col sm:flex-row sm:flex-wrap gap-3.5">
+              <div className="hero-rise mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center" style={{ animationDelay: '240ms' }}>
                 <button
                   type="button"
                   onClick={() => openRegister()}
-                  className="inline-flex items-center justify-center gap-2.5 px-7 h-13 rounded-xl text-base font-bold text-white bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 shadow-lg shadow-indigo-600/25 transition-all duration-200 hover:-translate-y-0.5 cursor-pointer"
+                  className="inline-flex h-12 min-h-12 cursor-pointer items-center justify-center gap-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 px-7 text-base font-bold text-white shadow-lg shadow-indigo-600/25 transition-all duration-200 hover:-translate-y-0.5 hover:from-indigo-700 hover:to-violet-700"
                 >
                   Đăng ký học thử <ArrowRight aria-hidden="true" size={17} />
                 </button>
                 <button
                   type="button"
                   onClick={() => setModal('quiz')}
-                  className="inline-flex items-center justify-center gap-2 px-6 h-13 rounded-xl text-base font-bold text-slate-800 bg-white border border-slate-300 hover:border-indigo-500 hover:text-indigo-600 shadow-xs hover:shadow transition-all duration-200 cursor-pointer"
+                  className="inline-flex h-12 min-h-12 cursor-pointer items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-6 text-base font-bold text-slate-800 shadow-xs transition-all duration-200 hover:-translate-y-0.5 hover:border-indigo-500 hover:text-indigo-600 hover:shadow"
                 >
                   <Zap aria-hidden="true" size={17} className="text-amber-500" />
                   Test miễn phí · 3 phút
                 </button>
                 <a
                   href="#courses"
-                  className="inline-flex items-center justify-center gap-2 px-6 h-13 rounded-xl text-base font-bold text-slate-700 bg-white border border-slate-200 hover:bg-slate-50 transition-all cursor-pointer"
+                  className="inline-flex h-12 min-h-12 cursor-pointer items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-6 text-base font-bold text-slate-700 transition-all duration-200 hover:-translate-y-0.5 hover:bg-slate-50"
                 >
                   <Play aria-hidden="true" className="fill-slate-700 text-slate-700" size={14} />
                   Khám phá khóa học
@@ -675,7 +678,7 @@ export function EnglishCenter() {
               </div>
 
               {/* Social proof avatar stack */}
-              <div className="mt-8 flex items-center gap-3.5">
+              <div className="hero-rise mt-8 flex items-center gap-3.5" style={{ animationDelay: '320ms' }}>
                 <div className="flex -space-x-3">
                   {[
                     { id: 'photo-1534528741775-53994a69daeb', alt: 'Học viên Minh Anh - IELTS 8.0' },
@@ -705,39 +708,36 @@ export function EnglishCenter() {
               </div>
             </div>
 
-            {/* Hero Collage with always-visible Stat Counters */}
-            <div className="relative mx-auto w-full max-w-[550px] overflow-hidden sm:overflow-visible pb-6 pt-2">
-              <div className="absolute right-0 top-3 size-36 rounded-full bg-cyan-300/30 blur-3xl" />
-              <div className="absolute left-0 bottom-10 size-44 rounded-full bg-violet-300/35 blur-3xl" />
-              
-              <div className="relative grid h-[340px] sm:h-[440px] md:h-[490px] grid-cols-[1.05fr_.95fr] grid-rows-[1.1fr_.9fr] gap-2.5 sm:gap-3">
-                {/* LCP Image (Eager loading) */}
-                <div className="relative row-span-2 overflow-hidden rounded-[30px] shadow-xl shadow-indigo-950/10">
+            {/* Hero collage. Stats sit in the grid on small screens and overlay the frame from sm up. */}
+            <div className="relative mx-auto w-full max-w-[540px] pt-2 lg:max-w-none">
+              <div className="pointer-events-none absolute -left-6 bottom-16 size-40 rounded-full bg-violet-300/40 blur-3xl mesh-orb [animation-delay:-2s]" />
+              <div className="relative grid h-[360px] grid-cols-[1.08fr_.92fr] grid-rows-[1.12fr_.88fr] gap-3 sm:h-[440px] md:h-[500px]">
+                <div className="relative row-span-2 overflow-hidden rounded-[28px] shadow-xl shadow-indigo-950/15">
                   <img
-                    className="h-full w-full object-cover"
-                    src={image('photo-1503454537195-1dcabb73ffb9', 850)}
+                    className="media-pan h-full w-full object-cover"
+                    src={image('photo-1503454537195-1dcabb73ffb9', 900)}
                     alt="Học viên vui vẻ khám phá tiếng Anh"
                     loading="eager"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent" />
-                  <div className="absolute bottom-5 left-5 text-white">
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/75 via-slate-950/10 to-transparent" />
+                  <div className="absolute bottom-5 left-5 right-5 text-white">
                     <p className="text-sm font-bold uppercase tracking-wider text-cyan-200">Learn with joy</p>
-                    <p className="mt-1 text-xl sm:text-2xl font-extrabold">Học vui mỗi ngày</p>
+                    <p className="mt-1 text-xl font-extrabold sm:text-2xl">Học vui mỗi ngày</p>
                   </div>
                 </div>
 
-                <div className="relative overflow-hidden rounded-[30px] shadow-xl shadow-indigo-950/10">
+                <div className="relative overflow-hidden rounded-[28px] shadow-xl shadow-indigo-950/10">
                   <img
-                    className="h-full w-full object-cover"
+                    className="media-pan h-full w-full object-cover [animation-delay:-6s]"
                     src={image('photo-1523240795612-9a054b0db644', 700)}
                     alt="Nhóm học viên hào hứng trao đổi bài tập"
                     loading="lazy"
                   />
                 </div>
 
-                <div className="relative overflow-hidden rounded-[30px] shadow-xl shadow-indigo-950/10">
+                <div className="relative overflow-hidden rounded-[28px] shadow-xl shadow-indigo-950/10">
                   <img
-                    className="h-full w-full object-cover"
+                    className="media-pan h-full w-full object-cover [animation-delay:-11s]"
                     src={image('photo-1509062522246-3755977927d7', 700)}
                     alt="Phòng học tương tác thông minh tại Bright"
                     loading="lazy"
@@ -745,21 +745,20 @@ export function EnglishCenter() {
                 </div>
               </div>
 
-              {/* Stat 1: 98% đạt mục tiêu */}
-              <div className="absolute -left-6 top-10 hidden sm:flex items-center gap-3">
-                <Stat to={98} suffix="%" label="Đạt mục tiêu học tập" />
-              </div>
-
-              {/* Stat 2: 15.000+ học viên tỏa sáng */}
-              <div className="absolute -right-3 bottom-10 hidden sm:flex items-center gap-3 sm:-right-6">
-                <Stat to={15000} suffix="+" label="Học viên tỏa sáng" />
+              <div className="mt-3 grid grid-cols-2 gap-3 sm:pointer-events-none sm:absolute sm:inset-0 sm:mt-0 sm:block">
+                <div className="sm:pointer-events-auto sm:absolute sm:left-3 sm:top-6 sm:w-44">
+                  <Stat to={98} suffix="%" label="Đạt mục tiêu học tập" />
+                </div>
+                <div className="sm:pointer-events-auto sm:absolute sm:bottom-6 sm:right-3 sm:w-44">
+                  <Stat to={15000} suffix="+" label="Học viên tỏa sáng" />
+                </div>
               </div>
             </div>
           </div>
         </section>
 
         {/* OFFERS SECTION */}
-        <section id="offers" className="scroll-reveal scroll-mt-24 px-5 py-14 sm:px-6 lg:px-8 lg:py-20">
+        <section id="offers" className="scroll-reveal scroll-mt-24 px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
           <div className="mx-auto grid max-w-7xl items-center gap-8 rounded-[28px] border border-amber-300 bg-white p-6 shadow-[0_18px_50px_rgba(217,119,6,0.12)] sm:p-10 lg:grid-cols-[0.92fr_1.08fr]">
             <div>
               <p className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100/80 border border-amber-200/90 text-amber-950 text-xs sm:text-sm font-extrabold uppercase tracking-wider mb-2 shadow-2xs">
@@ -797,15 +796,17 @@ export function EnglishCenter() {
               ].map((course, idx) => (
                 <article
                   key={course.title}
-                  className="list-enter flex flex-col gap-4 rounded-2xl border border-amber-200 bg-amber-50/70 p-4.5 sm:flex-row sm:items-center"
+                  className="list-enter group flex flex-col gap-4 rounded-2xl border border-amber-200 bg-amber-50/70 p-4 sm:flex-row sm:items-center"
                   style={{ animationDelay: `${idx * 80}ms` }}
                 >
-                  <img
-                    src={image(course.image, 320)}
-                    alt={`${course.title} - lớp học tiếng Anh`}
-                    className="h-24 w-full rounded-xl object-cover sm:w-32 shadow-sm"
-                    loading="lazy"
-                  />
+                  <div className="h-24 w-full shrink-0 overflow-hidden rounded-xl shadow-sm sm:w-32">
+                    <img
+                      src={image(course.image, 320)}
+                      alt={`${course.title} - lớp học tiếng Anh`}
+                      className="media-zoom h-full w-full object-cover"
+                      loading="lazy"
+                    />
+                  </div>
                   <div className="min-w-0 flex-1">
                     <span className="inline-block rounded-md bg-amber-200 px-2.5 py-0.5 text-xs sm:text-sm font-extrabold uppercase tracking-wider text-amber-950">
                       {course.badge}
@@ -833,7 +834,7 @@ export function EnglishCenter() {
         </section>
 
         {/* WHO IT IS FOR SECTION */}
-        <section id="who" className="scroll-reveal scroll-mt-24 mx-auto max-w-7xl px-5 py-14 sm:px-6 lg:px-8">
+        <section id="who" className="scroll-reveal scroll-mt-24 mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
           <div className="max-w-2xl">
             <p className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-50 border border-indigo-200/80 text-indigo-800 text-xs sm:text-sm font-extrabold uppercase tracking-wider mb-2 shadow-2xs">
               Chương trình đào tạo
@@ -852,7 +853,7 @@ export function EnglishCenter() {
                 key={prog.id}
                 href="#courses"
                 onClick={() => setActiveCategory(prog.filter)}
-                className={`list-enter group flex flex-col justify-between rounded-2xl border p-4.5 text-left transition-all duration-200 hover:-translate-y-1 hover:shadow-lg ${
+                className={`list-enter group flex h-full flex-col justify-between rounded-2xl border p-4 text-left transition-all duration-200 hover:-translate-y-1 hover:shadow-lg ${
                   activeCategory === prog.filter
                     ? 'border-indigo-600 bg-indigo-50/80 ring-2 ring-indigo-500/20'
                     : 'border-slate-200 bg-white hover:border-indigo-300'
@@ -864,7 +865,7 @@ export function EnglishCenter() {
                     <img
                       src={image(prog.image, 350)}
                       alt={`Khóa học tiếng Anh cho ${prog.title}`}
-                      className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                      className="media-zoom h-full w-full object-cover"
                       loading="lazy"
                     />
                     <span className="absolute top-2 left-2 rounded-md bg-white/95 px-2.5 py-0.5 text-xs sm:text-sm font-bold text-indigo-900 shadow-sm">
@@ -884,7 +885,7 @@ export function EnglishCenter() {
         </section>
 
         {/* COURSES CATALOG SECTION */}
-        <section id="courses" className="scroll-reveal scroll-mt-24 mx-auto max-w-7xl px-5 py-16 sm:px-6 lg:px-8 lg:py-20">
+        <section id="courses" className="scroll-reveal scroll-mt-24 mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
           <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
             <div>
               <p className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-100/80 border border-blue-200/90 text-blue-800 text-xs sm:text-sm font-extrabold uppercase tracking-wider mb-2 shadow-2xs">
@@ -946,7 +947,7 @@ export function EnglishCenter() {
                       <img
                         src={image(course.image, 700)}
                         alt={`Khóa học ${course.title} - ${course.level}`}
-                        className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        className="media-zoom h-full w-full object-cover"
                         loading="lazy"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent" />
@@ -984,21 +985,18 @@ export function EnglishCenter() {
                     </div>
                   </div>
 
-                  <div className="border-t border-slate-100 p-5 pt-4">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <span className="block text-xs sm:text-sm font-medium text-slate-500">Học phí</span>
-                        <span className="text-xl sm:text-2xl font-black text-[#0A192F]">{course.price}</span>
-                      </div>
-                      <button
-                        type="button"
-                        onClick={() => openRegister(course.title, `Quan tâm khóa học ${course.title}`)}
-                        className="inline-flex h-11 px-4.5 items-center justify-center rounded-xl bg-indigo-50 text-sm sm:text-base font-bold text-indigo-700 hover:bg-indigo-600 hover:text-white transition-colors cursor-pointer"
-                        aria-label={`Đăng ký tư vấn khóa học ${course.title}`}
-                      >
-                        Đăng ký học thử <ArrowUpRight size={15} className="ml-1" />
-                      </button>
-                    </div>
+                  <div className="mt-auto border-t border-slate-100 px-5 pb-5 pt-4">
+                    <span className="block text-xs font-medium text-slate-500 sm:text-sm">Học phí</span>
+                    <span className="mt-1 block whitespace-nowrap text-xl font-black leading-none text-[#0A192F] sm:text-2xl">{course.price}</span>
+                    <button
+                      type="button"
+                      onClick={() => openRegister(course.title, `Quan tâm khóa học ${course.title}`)}
+                      className="mt-3 inline-flex h-11 w-full cursor-pointer items-center justify-center gap-1 whitespace-nowrap rounded-xl bg-indigo-50 px-4 text-sm font-bold text-indigo-700 transition-colors hover:bg-indigo-600 hover:text-white"
+                      aria-label={`Đăng ký tư vấn khóa học ${course.title}`}
+                    >
+                      Đăng ký học thử
+                      <ArrowUpRight aria-hidden="true" size={15} />
+                    </button>
                   </div>
                 </article>
               )
@@ -1018,7 +1016,7 @@ export function EnglishCenter() {
         </section>
 
         {/* QUICK LEVEL CHECK BANNER */}
-        <section className="px-5 pb-16 sm:px-6 lg:px-8 lg:pb-24">
+        <section className="px-4 pb-16 sm:px-6 lg:px-8 lg:pb-24">
           <div className="relative mx-auto max-w-7xl overflow-hidden rounded-[32px] bg-gradient-to-r from-[#181D4C] via-indigo-700 to-[#5B50E7] px-6 py-10 text-white shadow-2xl shadow-indigo-900/20 sm:px-12 sm:py-14">
             <div className="relative grid items-center gap-8 md:grid-cols-[1fr_auto]">
               <div>
@@ -1056,7 +1054,7 @@ export function EnglishCenter() {
         </section>
 
         {/* TEACHERS SECTION */}
-        <section id="teachers" className="scroll-reveal scroll-mt-24 mx-auto max-w-7xl px-5 py-16 sm:px-6 lg:px-8">
+        <section id="teachers" className="scroll-reveal scroll-mt-24 mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
           <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
             <div>
               <p className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-100/80 border border-blue-200/90 text-blue-800 text-xs sm:text-sm font-extrabold uppercase tracking-wider mb-2 shadow-2xs">
@@ -1090,7 +1088,7 @@ export function EnglishCenter() {
                     <img
                       src={image(teacher.image, 600)}
                       alt={`Chân dung ${teacher.name} - ${teacher.role}`}
-                      className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                      className="media-zoom h-full w-full object-cover"
                       loading="lazy"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent" />
@@ -1124,7 +1122,7 @@ export function EnglishCenter() {
         </section>
 
         {/* SCHEDULE SECTION */}
-        <section id="schedule" className="scroll-reveal scroll-mt-24 bg-white px-5 py-16 sm:px-6 lg:px-8 lg:py-20 border-y border-slate-200/70">
+        <section id="schedule" className="scroll-reveal scroll-mt-24 bg-white px-4 py-16 sm:px-6 lg:px-8 lg:py-20 border-y border-slate-200/70">
           <div className="mx-auto max-w-7xl">
             <div className="max-w-2xl">
               <p className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-100/80 border border-blue-200/90 text-blue-800 text-xs sm:text-sm font-extrabold uppercase tracking-wider mb-2 shadow-2xs">
@@ -1164,15 +1162,27 @@ export function EnglishCenter() {
                   desc: 'IELTS Breakthrough, IELTS Mastery 7.0+, Tiếng Anh giao tiếp công sở cho người đi làm.',
                   icon: Target,
                 },
-              ].map((s) => (
-                <div key={s.shift} className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
-                  <span className="inline-block rounded-md bg-indigo-100 px-2.5 py-0.5 text-xs sm:text-sm font-bold uppercase tracking-wide text-indigo-900">
-                    {s.badge}
-                  </span>
-                  <h3 className="mt-2.5 text-lg sm:text-xl font-bold text-[#0A192F]">{s.shift}</h3>
-                  <p className="mt-1.5 text-sm sm:text-base leading-relaxed text-slate-600">{s.desc}</p>
+              ].map((s, index) => {
+                const Icon = s.icon
+                return (
+                <div
+                  key={s.shift}
+                  className="list-enter flex h-full flex-col rounded-2xl border border-slate-200 bg-slate-50 p-5"
+                  style={{ animationDelay: `${index * 60}ms` }}
+                >
+                  <div className="flex flex-col items-start gap-3">
+                    <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-white text-indigo-700 shadow-sm">
+                      <Icon aria-hidden="true" size={20} />
+                    </span>
+                    <span className="rounded-md bg-indigo-100 px-2.5 py-1 text-xs font-bold uppercase leading-tight tracking-wide text-indigo-900">
+                      {s.badge}
+                    </span>
+                  </div>
+                  <h3 className="mt-4 text-lg font-bold text-[#0A192F] sm:text-xl">{s.shift}</h3>
+                  <p className="mt-1.5 flex-1 text-sm leading-relaxed text-slate-600 sm:text-base">{s.desc}</p>
                 </div>
-              ))}
+                )
+              })}
             </div>
 
             <div className="mt-6 flex flex-wrap items-center justify-between gap-4 rounded-2xl bg-amber-50 p-4 border border-amber-200 text-sm sm:text-base text-amber-950">
@@ -1194,7 +1204,7 @@ export function EnglishCenter() {
         </section>
 
         {/* WHY BRIGHT SECTION */}
-        <section id="why" className="scroll-reveal scroll-mt-24 bg-[#F1F5F9] px-5 py-16 sm:px-6 lg:px-8 lg:py-24">
+        <section id="why" className="scroll-reveal scroll-mt-24 bg-[#F1F5F9] px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
           <div className="mx-auto max-w-7xl">
             <div className="mx-auto max-w-2xl text-center">
               <p className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-100/80 border border-blue-200/90 text-blue-800 text-xs sm:text-sm font-extrabold uppercase tracking-wider mb-2 shadow-2xs">
@@ -1243,7 +1253,7 @@ export function EnglishCenter() {
               {/* Scrim-protected campus card for high text contrast */}
               <div className="group relative min-h-[260px] overflow-hidden rounded-[26px] md:col-span-2 shadow-md">
                 <img
-                  className="absolute inset-0 size-full object-cover transition-transform duration-300 group-hover:scale-105"
+                  className="media-zoom absolute inset-0 size-full object-cover"
                   src={image('photo-1498243691581-b145c3f54a5a', 800)}
                   alt="Thư viện hiện đại tại Bright English"
                   loading="lazy"
@@ -1275,7 +1285,7 @@ export function EnglishCenter() {
         </section>
 
         {/* STORIES SECTION */}
-        <section id="stories" className="scroll-reveal scroll-mt-24 mx-auto max-w-7xl px-5 py-16 sm:px-6 lg:px-8 lg:py-24">
+        <section id="stories" className="scroll-reveal scroll-mt-24 mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
           <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
             <div>
               <p className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-100/80 border border-blue-200/90 text-blue-800 text-xs sm:text-sm font-extrabold uppercase tracking-wider mb-2 shadow-2xs">
@@ -1317,10 +1327,11 @@ export function EnglishCenter() {
                 image: 'photo-1531123897727-8f129e1688ce',
                 quote: 'Bright không chỉ rèn luyện tiếng Anh mà còn giúp mình xây dựng tư duy phản biện và sự tự tin để viết bài luận săn học bổng thành công.',
               },
-            ].map((student) => (
+            ].map((student, index) => (
               <article
                 key={student.name}
-                className="flex flex-col justify-between rounded-[26px] border border-slate-200 bg-white p-6 shadow-sm transition hover:shadow-md"
+                className="list-enter flex h-full flex-col justify-between rounded-[26px] border border-slate-200 bg-white p-6 shadow-sm transition duration-200 hover:-translate-y-1 hover:shadow-lg"
+                style={{ animationDelay: `${index * 60}ms` }}
               >
                 <div>
                   <div className="flex items-center justify-between">
@@ -1345,7 +1356,7 @@ export function EnglishCenter() {
                     <h3 className="text-sm sm:text-base font-extrabold text-[#0A192F]">{student.name}</h3>
                     <p className="truncate text-xs sm:text-sm text-slate-500 mt-0.5">{student.school}</p>
                   </div>
-                  <span className="shrink-0 rounded-full bg-indigo-50 px-2.5 py-1 text-xs sm:text-sm font-bold text-indigo-700">
+                  <span className="shrink-0 rounded-full bg-indigo-50 px-2.5 py-1 text-center text-xs font-bold leading-tight text-indigo-700 sm:text-sm">
                     {student.score}
                   </span>
                 </div>
@@ -1355,7 +1366,7 @@ export function EnglishCenter() {
         </section>
 
         {/* FAQ ACCORDION SECTION */}
-        <section id="faq" className="scroll-reveal scroll-mt-24 bg-[#F8FAFC] px-5 py-16 sm:px-6 lg:px-8 lg:py-20 border-t border-slate-200/70">
+        <section id="faq" className="scroll-reveal scroll-mt-24 bg-[#F8FAFC] px-4 py-16 sm:px-6 lg:px-8 lg:py-20 border-t border-slate-200/70">
           <div className="mx-auto max-w-4xl">
             <div className="text-center">
               <p className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-100/80 border border-blue-200/90 text-blue-800 text-xs sm:text-sm font-extrabold uppercase tracking-wider mb-2 shadow-2xs">
@@ -1392,11 +1403,13 @@ export function EnglishCenter() {
                         className={`text-slate-500 shrink-0 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
                       />
                     </button>
-                    {isOpen && (
-                      <div className="border-t border-slate-100 bg-slate-50/50 p-5 text-sm sm:text-base leading-relaxed text-slate-600">
-                        {faq.a}
+                    <div className={`grid transition-[grid-template-rows] duration-300 ease-out ${isOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}>
+                      <div className="overflow-hidden">
+                        <div className="border-t border-slate-100 bg-slate-50/50 p-5 text-sm leading-relaxed text-slate-600 sm:text-base">
+                          {faq.a}
+                        </div>
                       </div>
-                    )}
+                    </div>
                   </div>
                 )
               })}
@@ -1405,7 +1418,7 @@ export function EnglishCenter() {
         </section>
 
         {/* CAMPUS FACILITIES SECTION (With high-contrast scrim) */}
-        <section id="campus" className="scroll-reveal scroll-mt-24 bg-[#F1F5F9] px-5 py-16 sm:px-6 lg:px-8 lg:py-20">
+        <section id="campus" className="scroll-reveal scroll-mt-24 bg-[#F1F5F9] px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
           <div className="mx-auto max-w-7xl">
             <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
               <div>
@@ -1430,7 +1443,7 @@ export function EnglishCenter() {
                   }`}
                 >
                   <img
-                    className="size-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    className={`${i === 0 ? 'media-pan' : 'media-zoom'} size-full object-cover`}
                     src={image(item.id, 900)}
                     alt={item.alt}
                     loading="lazy"
@@ -1448,7 +1461,7 @@ export function EnglishCenter() {
         </section>
 
         {/* HOW TO START SECTION */}
-        <section id="start" className="scroll-reveal scroll-mt-24 px-5 pb-16 lg:px-8 lg:pb-24">
+        <section id="start" className="scroll-reveal scroll-mt-24 px-4 pb-16 sm:px-6 lg:px-8 lg:pb-24">
           <div className="mx-auto max-w-7xl rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm sm:p-10">
             <p className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-100/80 border border-blue-200/90 text-blue-800 text-xs sm:text-sm font-extrabold uppercase tracking-wider mb-2 shadow-2xs">
               Lộ trình đăng ký
@@ -1457,8 +1470,8 @@ export function EnglishCenter() {
               Ba Bước Đơn Giản Để Bắt Đầu Cùng Bright
             </h2>
 
-            <ol className="mt-8 grid gap-5 lg:grid-cols-3">
-              <li className="flex flex-col justify-between rounded-2xl border border-slate-200 bg-slate-50 p-6">
+            <ol className="mt-8 grid items-stretch gap-5 lg:grid-cols-3">
+              <li className="list-enter flex h-full flex-col justify-between rounded-2xl border border-slate-200 bg-slate-50 p-6">
                 <div>
                   <span className="inline-block rounded-md bg-indigo-100 px-2.5 py-0.5 text-xs sm:text-sm font-extrabold uppercase tracking-wider text-indigo-900">
                     Bước 1
@@ -1476,7 +1489,7 @@ export function EnglishCenter() {
                 </a>
               </li>
 
-              <li className="flex flex-col justify-between rounded-2xl border border-slate-200 bg-slate-50 p-6">
+              <li className="list-enter flex h-full flex-col justify-between rounded-2xl border border-slate-200 bg-slate-50 p-6" style={{ animationDelay: '60ms' }}>
                 <div>
                   <span className="inline-block rounded-md bg-indigo-100 px-2.5 py-0.5 text-xs sm:text-sm font-extrabold uppercase tracking-wider text-indigo-900">
                     Bước 2
@@ -1495,7 +1508,7 @@ export function EnglishCenter() {
                 </button>
               </li>
 
-              <li className="flex flex-col justify-between rounded-2xl border border-amber-300 bg-amber-50/80 p-6">
+              <li className="list-enter flex h-full flex-col justify-between rounded-2xl border border-amber-300 bg-amber-50/80 p-6" style={{ animationDelay: '120ms' }}>
                 <div>
                   <span className="inline-block rounded-md bg-amber-200 px-2.5 py-0.5 text-xs sm:text-sm font-extrabold uppercase tracking-wider text-amber-950">
                     Bước 3
@@ -1553,7 +1566,7 @@ export function EnglishCenter() {
       </main>
 
       {/* FOOTER */}
-      <footer id="contact" className="bg-[#0A192F] px-5 pb-8 pt-14 text-white lg:px-8 border-t border-slate-800">
+      <footer id="contact" className="border-t border-slate-800 bg-[#0A192F] px-4 pb-8 pt-14 text-white sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="grid gap-10 border-b border-slate-800 pb-12 md:grid-cols-[1.2fr_.8fr_.9fr_1.1fr]">
             <div>

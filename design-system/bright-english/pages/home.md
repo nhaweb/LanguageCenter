@@ -33,8 +33,8 @@
 ### Motion Overrides
 
 - Do not add GSAP. Use a CSS stagger of 400ms with a 60ms delay, once, on the offer cards and on the course grid after a filter change.
-- No looping motion. Counters run once when they enter view.
-- `prefers-reduced-motion` short-circuits animation in `app/globals.css`.
+- The hero is the only looping scene: a slow mesh drift and a Ken Burns pan on the collage. Card photos move only on hover, with scale that stays inside `overflow-hidden`.
+- Counters run once. `prefers-reduced-motion` short-circuits animation in `app/globals.css` and leaves the final still frame.
 
 ### Component Overrides
 
