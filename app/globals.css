@@ -214,20 +214,21 @@ textarea:focus-visible {
   outline-offset: 2px;
 }
 
+body {
+  font-family: var(--font-jakarta), 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  overflow-x: clip;
+}
+
 h1,
 h2,
 h3,
 h4 {
-  font-family: var(--font-heading), sans-serif;
+  font-family: var(--font-jakarta), 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
 }
 
 html {
   scroll-padding-top: var(--header-offset);
   scroll-behavior: smooth;
-  overflow-x: clip;
-}
-
-body {
   overflow-x: clip;
 }
 

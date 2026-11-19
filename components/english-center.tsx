@@ -310,10 +310,10 @@ function Stat({ to, suffix = '', label }: { to: number; suffix?: string; label: 
 
   return (
     <div className="rounded-2xl border border-white/80 bg-white/95 p-3.5 shadow-xl backdrop-blur-sm">
-      <p className="text-xl font-black tabular-nums tracking-tight text-slate-900 sm:text-2xl">
+      <p className="text-xl sm:text-2xl font-black tabular-nums tracking-tight text-[#0A192F]">
         {n.toLocaleString('vi-VN')}{suffix}
       </p>
-      <p className="text-xs sm:text-sm font-semibold text-slate-700">{label}</p>
+      <p className="text-xs font-semibold text-slate-700 mt-0.5">{label}</p>
     </div>
   )
 }
@@ -416,107 +416,120 @@ export function EnglishCenter() {
   return (
     <div className="relative min-h-screen overflow-x-hidden bg-[#F8FAFC] text-[#0F172A]">
       {/* Top Announcement Bar - Promos & Direct Hotline */}
-      <div className="bg-slate-900 text-slate-100 border-b border-slate-800 text-xs sm:text-sm">
-        <div className="mx-auto flex h-10 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+      <div className="bg-slate-900 text-slate-100 border-b border-slate-800 text-[11.5px] sm:text-xs">
+        <div className="mx-auto flex h-9 sm:h-10 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-2 truncate">
-            <span className="inline-flex items-center gap-1 rounded-full bg-amber-400/20 px-2.5 py-0.5 text-xs font-bold text-amber-300 ring-1 ring-inset ring-amber-400/30 shrink-0">
-              <Percent size={12} className="text-amber-300" />
+            <span className="inline-flex items-center gap-1 rounded-full bg-amber-400/20 px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wider text-amber-300 ring-1 ring-inset ring-amber-400/30 shrink-0">
+              <Percent size={11} className="text-amber-300" />
               Ưu đãi tháng này
             </span>
-            <span className="truncate text-slate-200 text-xs sm:text-sm">
+            <span className="truncate text-slate-300 text-[11.5px] sm:text-xs font-medium">
               Giảm đến <strong className="text-white font-extrabold">35% học phí</strong> IELTS & Cambridge
             </span>
             <a
               href="#offers"
-              className="inline-flex items-center font-bold text-amber-300 hover:text-amber-200 underline decoration-amber-400/50 underline-offset-2 shrink-0 ml-1 text-xs sm:text-sm"
+              className="inline-flex items-center font-bold text-amber-300 hover:text-amber-200 underline decoration-amber-400/50 underline-offset-2 shrink-0 ml-1 text-[11.5px] sm:text-xs"
             >
               Nhận ngay →
             </a>
           </div>
-          <div className="hidden md:flex items-center gap-4 text-xs sm:text-sm shrink-0 text-slate-300">
+          <div className="hidden md:flex items-center gap-4 text-[11.5px] sm:text-xs shrink-0 text-slate-300 font-medium">
             <a
               href="tel:19006868"
-              className="inline-flex items-center gap-1.5 hover:text-white transition-colors font-medium text-xs sm:text-sm"
+              className="min-h-[36px] flex items-center gap-1.5 hover:text-amber-300 transition-colors py-1"
             >
-              <Phone aria-hidden="true" size={13} className="text-amber-400" />
+              <Phone aria-hidden="true" size={12} className="text-amber-400" />
               Hotline: <strong className="text-white">1900 6868</strong>
             </a>
             <span className="text-slate-600">|</span>
-            <span className="text-slate-300 text-xs sm:text-sm">8:00 - 21:30 (T2–CN)</span>
+            <span className="text-slate-400">8:00 - 21:30 (T2–CN)</span>
           </div>
         </div>
       </div>
 
       {/* Streamlined Sticky Header */}
       <header
-        className={`sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur-md transition-shadow duration-200 ${
-          scrolled ? 'border-slate-200 shadow-md' : 'border-indigo-100/70'
+        className={`sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur-md transition-all duration-300 ${
+          scrolled ? 'border-slate-200 shadow-md py-2.5' : 'border-slate-100 py-3'
         }`}
       >
-        <div className="mx-auto flex h-[68px] w-full max-w-7xl items-center justify-between gap-2.5 xl:gap-4 px-4 sm:px-6 lg:px-6 xl:px-8">
-          {/* Logo */}
-          <a href="#home" className="flex items-center gap-2 shrink-0" aria-label="Bright English trang chủ">
-            <span className="grid size-9 place-items-center rounded-2xl bg-gradient-to-br from-indigo-600 to-cyan-500 text-white shadow-md shadow-indigo-500/25">
-              <Sparkles aria-hidden="true" size={19} />
-            </span>
-            <span className="text-lg xl:text-xl font-extrabold tracking-tight whitespace-nowrap">
-              Bright <span className="text-indigo-600">English</span>
-            </span>
+        <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+          {/* Logo with matching PML typography */}
+          <a href="#home" className="flex items-center gap-2.5 group focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 rounded-lg min-h-[44px] shrink-0" aria-label="Bright English trang chủ">
+            <div className="size-10 rounded-xl bg-gradient-to-br from-[#0A192F] via-[#163265] to-[#4F46E5] flex items-center justify-center text-white shadow-md shadow-indigo-900/15 group-hover:scale-105 transition-transform duration-200 border border-white/10 shrink-0">
+              <Sparkles aria-hidden="true" size={19} className="text-amber-300" />
+            </div>
+            <div className="flex flex-col">
+              <div className="flex items-center gap-1">
+                <span className="text-base sm:text-lg font-extrabold tracking-tight text-[#0A192F] leading-none">BRIGHT</span>
+                <span className="text-indigo-600 font-extrabold text-sm sm:text-base leading-none">ENGLISH</span>
+              </div>
+              <span className="text-[9px] font-bold tracking-[0.2em] text-slate-500 uppercase mt-0.5 leading-none">ACADEMY &amp; CAMBRIDGE</span>
+            </div>
           </a>
 
-          {/* Streamlined Desktop Navigation - 6 Essential Links */}
-          <nav className="hidden items-center gap-0.5 xl:gap-1 text-sm font-semibold text-slate-700 lg:flex shrink-0" aria-label="Điều hướng chính">
-            <a className="inline-flex h-10 items-center rounded-lg px-2.5 xl:px-3.5 hover:text-indigo-600 hover:bg-indigo-50/70 whitespace-nowrap shrink-0 transition-colors" href="#courses">
+          {/* Navigation - Exact 13.5px font matching PML */}
+          <nav className="hidden items-center gap-6 xl:gap-8 text-[13.5px] font-semibold text-slate-700 lg:flex shrink-0" aria-label="Điều hướng chính">
+            <a className="min-h-[44px] flex items-center px-1 transition-colors hover:text-indigo-600 whitespace-nowrap" href="#courses">
               Khóa học
             </a>
-            <a className="inline-flex h-10 items-center rounded-lg px-2.5 xl:px-3.5 hover:text-indigo-600 hover:bg-indigo-50/70 whitespace-nowrap shrink-0 transition-colors" href="#who">
+            <a className="min-h-[44px] flex items-center px-1 transition-colors hover:text-indigo-600 whitespace-nowrap" href="#who">
               Độ tuổi
             </a>
-            <a className="inline-flex h-10 items-center rounded-lg px-2.5 xl:px-3.5 hover:text-indigo-600 hover:bg-indigo-50/70 whitespace-nowrap shrink-0 transition-colors" href="#teachers">
+            <a className="min-h-[44px] flex items-center px-1 transition-colors hover:text-indigo-600 whitespace-nowrap" href="#teachers">
               Giáo viên
             </a>
-            <a className="inline-flex h-10 items-center rounded-lg px-2.5 xl:px-3.5 hover:text-indigo-600 hover:bg-indigo-50/70 whitespace-nowrap shrink-0 transition-colors" href="#schedule">
+            <a className="min-h-[44px] flex items-center px-1 transition-colors hover:text-indigo-600 whitespace-nowrap" href="#schedule">
               Lịch học
             </a>
-            <a className="inline-flex h-10 items-center rounded-lg px-2.5 xl:px-3.5 hover:text-indigo-600 hover:bg-indigo-50/70 whitespace-nowrap shrink-0 transition-colors" href="#why">
+            <a className="min-h-[44px] flex items-center px-1 transition-colors hover:text-indigo-600 whitespace-nowrap" href="#why">
               Về Bright
             </a>
-            <a className="inline-flex h-10 items-center rounded-lg px-2.5 xl:px-3.5 hover:text-indigo-600 hover:bg-indigo-50/70 whitespace-nowrap shrink-0 transition-colors" href="#faq">
+            <a className="min-h-[44px] flex items-center px-1 transition-colors hover:text-indigo-600 whitespace-nowrap" href="#faq">
               FAQ
             </a>
           </nav>
 
-          {/* Focused Desktop Actions - 2 High-Converting CTAs */}
-          <div className="hidden items-center gap-2 xl:gap-2.5 lg:flex shrink-0">
+          {/* Desktop Actions - Exact PML button hierarchy */}
+          <div className="hidden items-center gap-3 lg:flex shrink-0">
             <button
               type="button"
               onClick={() => setModal('quiz')}
-              className="inline-flex h-10 items-center rounded-full border border-amber-300 bg-amber-50 px-3.5 xl:px-4 text-sm font-bold text-amber-900 transition hover:bg-amber-100 whitespace-nowrap shrink-0"
+              className="h-11 px-3.5 text-xs font-semibold text-slate-700 hover:text-indigo-700 hover:bg-slate-50 rounded-xl transition-colors inline-flex items-center gap-1.5 border border-transparent hover:border-slate-200 cursor-pointer"
             >
-              <Zap aria-hidden="true" size={14} className="mr-1.5 text-amber-600" />
-              Test 3 phút
+              <Zap aria-hidden="true" size={14} className="text-amber-500" />
+              <span>Test 3 phút</span>
             </button>
             <button
               type="button"
               onClick={() => openRegister()}
-              className="inline-flex h-10 items-center rounded-full bg-[#D97706] px-4 xl:px-5 text-sm font-bold text-slate-950 shadow-sm transition hover:bg-amber-500 whitespace-nowrap shrink-0"
+              className="h-11 inline-flex items-center gap-1.5 px-4 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl shadow-md shadow-indigo-600/20 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
             >
-              Đăng ký tư vấn
-              <ArrowRight aria-hidden="true" className="ml-1.5" size={14} />
+              <span>Đăng ký tư vấn</span>
+              <ArrowRight aria-hidden="true" size={14} />
             </button>
           </div>
 
-          {/* Mobile Menu Button */}
-          <button
-            type="button"
-            onClick={() => setMenuOpen(!menuOpen)}
-            className="grid size-11 place-items-center rounded-xl border border-slate-200 text-slate-700 transition hover:bg-slate-50 lg:hidden shrink-0"
-            aria-label={menuOpen ? 'Đóng menu' : 'Mở menu'}
-            aria-expanded={menuOpen}
-            aria-controls="mobile-navigation-drawer"
-          >
-            {menuOpen ? <X aria-hidden="true" size={20} /> : <Menu aria-hidden="true" size={20} />}
-          </button>
+          {/* Mobile Actions */}
+          <div className="flex lg:hidden items-center gap-2">
+            <button
+              type="button"
+              onClick={() => openRegister()}
+              className="h-11 px-3 rounded-lg text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 flex items-center gap-1 shadow-xs cursor-pointer"
+            >
+              <span>Tư vấn</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setMenuOpen(!menuOpen)}
+              className="size-11 min-h-[44px] min-w-[44px] rounded-lg border border-slate-200 flex items-center justify-center text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer"
+              aria-label={menuOpen ? 'Đóng menu' : 'Mở menu'}
+              aria-expanded={menuOpen}
+              aria-controls="mobile-navigation-drawer"
+            >
+              {menuOpen ? <X aria-hidden="true" size={20} /> : <Menu aria-hidden="true" size={20} />}
+            </button>
+          </div>
         </div>
 
         {/* Mobile Navigation Drawer */}
@@ -611,14 +624,20 @@ export function EnglishCenter() {
           id="home"
           className="relative scroll-mt-24 overflow-hidden bg-[radial-gradient(ellipse_at_78%_5%,rgba(99,102,241,.14),transparent_35%),linear-gradient(135deg,#f8fafc_10%,#eef2ff_54%,#f8fafc_100%)]"
         >
-          <div className="mx-auto grid max-w-7xl items-center gap-8 px-5 pb-14 pt-12 sm:px-6 md:pb-20 md:pt-16 lg:grid-cols-[1.04fr_.96fr] lg:px-8 lg:pt-20">
+          <div className="mx-auto grid max-w-7xl items-center gap-8 px-5 pb-14 pt-10 sm:px-6 md:pb-20 md:pt-14 lg:grid-cols-[1.04fr_.96fr] lg:px-8 lg:pt-16">
             <div className="relative z-10 min-w-0">
-              <p className="mb-5 inline-flex items-center gap-2 rounded-full border border-indigo-100 bg-white px-4 py-2 text-xs sm:text-sm font-bold text-indigo-800 shadow-sm">
-                <span className="size-2 rounded-full bg-emerald-500 animate-pulse" /> TIẾNG ANH MỞ RA THẾ GIỚI
-              </p>
+              <div className="mb-4 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-slate-200/90 shadow-xs text-xs font-bold text-slate-800">
+                <span className="flex size-2 rounded-full bg-emerald-500 animate-ping" />
+                <span className="text-indigo-700 font-extrabold uppercase tracking-wider text-[11px]">Tuyển Sinh 2026 - 2027</span>
+                <span className="text-slate-300">|</span>
+                <span className="text-slate-700 flex items-center gap-1 font-semibold text-[11px]">
+                  <Sparkles aria-hidden="true" size={12} className="text-amber-500" />
+                  Chuẩn Quốc Tế Cambridge &amp; IELTS
+                </span>
+              </div>
               
-              {/* H1 with natural wrapping on mobile */}
-              <h1 className="max-w-2xl text-[28px] sm:text-4xl md:text-5xl lg:text-[60px] font-extrabold leading-[1.2] tracking-tight">
+              {/* H1 with exact PML sizing */}
+              <h1 className="max-w-2xl text-3xl sm:text-5xl lg:text-[54px] font-extrabold text-[#0A192F] tracking-tight leading-[1.14]">
                 Bứt phá tiếng Anh,<br />
                 chinh phục{' '}
                 <span className="whitespace-nowrap bg-gradient-to-r from-indigo-600 via-violet-600 to-cyan-600 bg-clip-text text-transparent">
@@ -626,7 +645,7 @@ export function EnglishCenter() {
                 </span><br className="sm:hidden" /> toàn cầu.
               </h1>
               
-              <p className="mt-5 max-w-lg text-base sm:text-lg leading-relaxed text-slate-700">
+              <p className="mt-4 max-w-xl text-base sm:text-lg text-slate-600 leading-relaxed font-normal">
                 Mỗi buổi học là một hành trình vui khám phá. Cùng 100% giáo viên quốc tế và phương pháp học qua trải nghiệm, con tự tin làm chủ tiếng Anh mỗi ngày.
               </p>
 
@@ -634,29 +653,29 @@ export function EnglishCenter() {
                 <button
                   type="button"
                   onClick={() => openRegister()}
-                  className="inline-flex min-h-12 items-center rounded-full bg-[#D97706] px-6 py-3.5 text-sm sm:text-base font-bold text-slate-950 shadow-xl shadow-amber-800/15 transition hover:bg-amber-500"
+                  className="inline-flex items-center justify-center gap-2.5 px-6 h-12 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 shadow-lg shadow-indigo-600/25 transition-all duration-200 hover:-translate-y-0.5 cursor-pointer"
                 >
-                  Đăng ký học thử <ArrowRight aria-hidden="true" className="ml-2 inline" size={16} />
+                  Đăng ký học thử <ArrowRight aria-hidden="true" size={15} />
                 </button>
                 <button
                   type="button"
                   onClick={() => setModal('quiz')}
-                  className="inline-flex min-h-12 items-center rounded-full border border-indigo-200 bg-white px-6 py-3.5 text-sm sm:text-base font-bold text-indigo-800 shadow-sm transition hover:border-indigo-400 hover:bg-indigo-50"
+                  className="inline-flex items-center justify-center gap-2 px-5 h-12 rounded-xl text-sm font-bold text-slate-800 bg-white border border-slate-300 hover:border-indigo-500 hover:text-indigo-600 shadow-xs hover:shadow transition-all duration-200 cursor-pointer"
                 >
-                  <Zap aria-hidden="true" className="mr-2 inline text-amber-500" size={16} />
+                  <Zap aria-hidden="true" size={15} className="text-amber-500" />
                   Test miễn phí · 3 phút
                 </button>
                 <a
                   href="#courses"
-                  className="inline-flex min-h-12 items-center rounded-full border border-slate-200 bg-white px-5 py-3.5 text-sm sm:text-base font-bold text-slate-700 transition hover:bg-slate-50"
+                  className="inline-flex items-center justify-center gap-2 px-5 h-12 rounded-xl text-sm font-bold text-slate-700 bg-white border border-slate-200 hover:bg-slate-50 transition-all cursor-pointer"
                 >
-                  <Play aria-hidden="true" className="mr-2 inline fill-slate-700 text-slate-700" size={13} />
+                  <Play aria-hidden="true" className="fill-slate-700 text-slate-700" size={12} />
                   Khám phá khóa học
                 </a>
               </div>
 
               {/* Social proof avatar stack */}
-              <div className="mt-9 flex items-center gap-4">
+              <div className="mt-8 flex items-center gap-3.5">
                 <div className="flex -space-x-3">
                   {[
                     { id: 'photo-1534528741775-53994a69daeb', alt: 'Học viên Minh Anh - IELTS 8.0' },
@@ -679,9 +698,9 @@ export function EnglishCenter() {
                     {[1, 2, 3, 4, 5].map((s) => (
                       <Star key={s} aria-hidden="true" size={14} fill="currentColor" />
                     ))}
-                    <span className="ml-1 text-sm font-extrabold text-slate-800">4.9/5</span>
+                    <span className="ml-1 text-xs sm:text-sm font-extrabold text-[#0A192F]">4.9/5</span>
                   </div>
-                  <p className="mt-0.5 text-sm text-slate-600">Được tin yêu bởi 15.000+ gia đình phụ huynh</p>
+                  <p className="mt-0.5 text-xs text-slate-600">Được tin yêu bởi 15.000+ gia đình phụ huynh</p>
                 </div>
               </div>
             </div>
@@ -743,29 +762,29 @@ export function EnglishCenter() {
         <section id="offers" className="scroll-reveal scroll-mt-24 px-5 py-14 sm:px-6 lg:px-8 lg:py-20">
           <div className="mx-auto grid max-w-7xl items-center gap-8 rounded-[28px] border border-amber-300 bg-white p-6 shadow-[0_18px_50px_rgba(217,119,6,0.12)] sm:p-10 lg:grid-cols-[0.92fr_1.08fr]">
             <div>
-              <p className="inline-flex items-center gap-2 rounded-full bg-amber-100 px-4 py-1.5 text-xs sm:text-sm font-bold uppercase tracking-wide text-amber-950">
-                <Percent aria-hidden="true" size={14} className="text-amber-700" /> Ưu đãi tuyển sinh tháng này
+              <p className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100/80 border border-amber-200/90 text-amber-950 text-[11px] font-extrabold uppercase tracking-wider mb-2 shadow-2xs">
+                <Percent aria-hidden="true" size={13} className="text-amber-700" /> Ưu đãi tuyển sinh tháng này
               </p>
-              <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-slate-950 sm:text-4xl">
+              <h2 className="mt-3 text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-[#0A192F]">
                 Học phí giảm đến 35%
               </h2>
-              <p className="mt-3 max-w-md text-base leading-relaxed text-slate-700">
+              <p className="mt-2.5 max-w-md text-sm sm:text-base text-slate-600 leading-relaxed font-normal">
                 Ưu đãi áp dụng có giới hạn cho các khóa IELTS và Cambridge trong tuần này. Tặng kèm 01 buổi kiểm tra trình độ 1-kèm-1 và giáo trình độc quyền.
               </p>
               <div className="mt-6 flex flex-wrap gap-3">
                 <button
                   type="button"
                   onClick={() => openRegister('IELTS Mastery 7.0+', 'Đăng ký nhận ưu đãi giảm 35%')}
-                  className="inline-flex min-h-12 items-center rounded-full bg-[#D97706] px-5 py-3 text-sm sm:text-base font-bold text-slate-950 transition hover:bg-amber-500"
+                  className="inline-flex items-center justify-center gap-2 px-5 h-12 rounded-xl text-xs sm:text-sm font-bold text-slate-950 bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 shadow-md shadow-amber-500/20 transition-all duration-200 cursor-pointer"
                 >
-                  Đăng ký giữ ưu đãi <ArrowRight aria-hidden="true" className="ml-2" size={16} />
+                  Đăng ký giữ ưu đãi <ArrowRight aria-hidden="true" size={14} />
                 </button>
                 <button
                   type="button"
                   onClick={() => setModal('quiz')}
-                  className="inline-flex min-h-12 items-center rounded-full border border-slate-300 bg-white px-5 py-3 text-sm sm:text-base font-bold text-slate-800 transition hover:border-amber-500 hover:bg-amber-50"
+                  className="inline-flex items-center justify-center gap-2 px-5 h-12 rounded-xl text-xs sm:text-sm font-bold text-slate-800 bg-white border border-slate-300 hover:border-amber-500 hover:bg-amber-50 shadow-xs transition-all duration-200 cursor-pointer"
                 >
-                  <Zap aria-hidden="true" className="mr-1.5 text-amber-500" size={15} />
+                  <Zap aria-hidden="true" size={14} className="text-amber-500" />
                   Test miễn phí · 3 phút
                 </button>
               </div>
@@ -788,22 +807,22 @@ export function EnglishCenter() {
                     loading="lazy"
                   />
                   <div className="min-w-0 flex-1">
-                    <span className="inline-block rounded-md bg-amber-200 px-2.5 py-0.5 text-xs font-bold uppercase tracking-wide text-amber-950">
+                    <span className="inline-block rounded-md bg-amber-200 px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wider text-amber-950">
                       {course.badge}
                     </span>
-                    <h3 className="mt-1 text-lg font-bold text-slate-950">{course.title}</h3>
-                    <p className="text-sm text-slate-600">{course.level} · {course.duration}</p>
+                    <h3 className="mt-1 text-base sm:text-lg font-extrabold text-[#0A192F]">{course.title}</h3>
+                    <p className="text-xs text-slate-600 mt-0.5">{course.level} · {course.duration}</p>
                     <div className="mt-2 flex items-baseline gap-2">
-                      <span className="text-base font-extrabold text-amber-900">{course.price}</span>
+                      <span className="text-base sm:text-lg font-black text-amber-900">{course.price}</span>
                       {course.originalPrice && (
-                        <span className="text-sm text-slate-400 line-through">{course.originalPrice}</span>
+                        <span className="text-xs text-slate-400 line-through">{course.originalPrice}</span>
                       )}
                     </div>
                   </div>
                   <button
                     type="button"
                     onClick={() => openRegister(course.title, `Đăng ký giữ ưu đãi cho khóa ${course.title}`)}
-                    className="inline-flex min-h-11 shrink-0 items-center justify-center rounded-full bg-slate-950 px-5 text-sm font-bold text-white transition hover:bg-indigo-700"
+                    className="inline-flex h-10 px-4 shrink-0 items-center justify-center rounded-xl bg-slate-900 text-xs font-bold text-white hover:bg-indigo-700 transition-colors cursor-pointer"
                   >
                     Giữ chỗ ngay
                   </button>
@@ -816,11 +835,13 @@ export function EnglishCenter() {
         {/* WHO IT IS FOR SECTION */}
         <section id="who" className="scroll-reveal scroll-mt-24 mx-auto max-w-7xl px-5 py-14 sm:px-6 lg:px-8">
           <div className="max-w-2xl">
-            <p className="text-xs sm:text-sm font-bold uppercase tracking-wider text-indigo-700">Chương trình đào tạo</p>
-            <h2 className="mt-2.5 text-3xl font-extrabold tracking-tight sm:text-4xl">
+            <p className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-50 border border-indigo-200/80 text-indigo-800 text-[11px] font-extrabold uppercase tracking-wider mb-2 shadow-2xs">
+              Chương trình đào tạo
+            </p>
+            <h2 className="mt-2 text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-[#0A192F]">
               Chọn chương trình theo độ tuổi
             </h2>
-            <p className="mt-2 text-base leading-relaxed text-slate-600">
+            <p className="mt-2 text-sm sm:text-base leading-relaxed text-slate-600 font-normal">
               Thiết kế cá nhân hóa từ mầm non đến người đi làm. Bấm vào một nhóm để lọc nhanh các khóa học tương ứng.
             </p>
           </div>
@@ -846,14 +867,14 @@ export function EnglishCenter() {
                       className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                       loading="lazy"
                     />
-                    <span className="absolute top-2 left-2 rounded-md bg-white/95 px-2 py-0.5 text-xs font-bold text-indigo-900 shadow-sm">
+                    <span className="absolute top-2 left-2 rounded-md bg-white/95 px-2 py-0.5 text-[10px] font-bold text-indigo-900 shadow-sm">
                       {prog.ages}
                     </span>
                   </div>
-                  <h3 className="mt-3 text-lg font-bold text-slate-900">{prog.title}</h3>
-                  <p className="mt-1 text-sm leading-relaxed text-slate-600">{prog.detail}</p>
+                  <h3 className="mt-3 text-base font-extrabold text-[#0A192F]">{prog.title}</h3>
+                  <p className="mt-1 text-xs sm:text-[13px] leading-relaxed text-slate-600">{prog.detail}</p>
                 </div>
-                <div className="mt-4 flex items-center justify-between border-t border-slate-100 pt-3 text-sm font-bold text-indigo-700">
+                <div className="mt-4 flex items-center justify-between border-t border-slate-100 pt-3 text-xs font-bold text-indigo-700">
                   <span>{prog.coursesCount}</span>
                   <span className="group-hover:translate-x-1 transition-transform">→</span>
                 </div>
@@ -866,24 +887,26 @@ export function EnglishCenter() {
         <section id="courses" className="scroll-reveal scroll-mt-24 mx-auto max-w-7xl px-5 py-16 sm:px-6 lg:px-8 lg:py-20">
           <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
             <div>
-              <p className="text-xs sm:text-sm font-bold uppercase tracking-wider text-indigo-700">Lộ trình học cá nhân hóa</p>
-              <h2 className="mt-2 text-3xl font-extrabold tracking-tight sm:text-[40px]">
-                Các khóa học tại Bright English
+              <p className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-100/80 border border-blue-200/90 text-blue-800 text-[11px] font-extrabold uppercase tracking-wider mb-2 shadow-2xs">
+                Lộ trình học cá nhân hóa
+              </p>
+              <h2 className="mt-2 text-2xl sm:text-[28px] md:text-3xl lg:text-[36px] xl:text-[40px] font-black text-[#0A192F] tracking-tight leading-tight">
+                Các Khóa Học Tại Bright English
               </h2>
-              <p className="mt-2 max-w-xl text-base leading-relaxed text-slate-600">
+              <p className="mt-2 max-w-xl text-sm sm:text-base leading-relaxed text-slate-600 font-normal">
                 Sĩ số vàng 8–12 học viên/lớp. 100% giáo viên quốc tế đồng hành sát sao cùng cố vấn học tập.
               </p>
             </div>
             <button
               type="button"
               onClick={() => openRegister()}
-              className="inline-flex min-h-11 items-center text-base font-bold text-indigo-700 transition hover:text-indigo-900"
+              className="inline-flex min-h-11 items-center text-xs sm:text-sm font-bold text-indigo-700 transition hover:text-indigo-900 cursor-pointer"
             >
-              Nhận tư vấn lộ trình riêng <ArrowRight aria-hidden="true" className="ml-1.5" size={16} />
+              Nhận tư vấn lộ trình riêng <ArrowRight aria-hidden="true" className="ml-1.5" size={15} />
             </button>
           </div>
 
-          {/* Filter Tablist */}
+          {/* Filter Tablist - Exact PML Pill button styling */}
           <div className="mt-8 flex w-full max-w-full min-w-0 gap-2 overflow-x-auto pb-2" role="tablist" aria-label="Lọc khóa học theo nhóm">
             {filterCategories.map((cat) => {
               const isSelected = activeCategory === cat
@@ -894,10 +917,10 @@ export function EnglishCenter() {
                   role="tab"
                   aria-selected={isSelected}
                   onClick={() => setActiveCategory(cat)}
-                  className={`shrink-0 rounded-full px-5 py-2.5 text-sm font-semibold transition-all duration-200 ${
+                  className={`relative h-11 px-5 rounded-full text-xs sm:text-sm font-bold whitespace-nowrap transition-all duration-200 inline-flex items-center justify-center cursor-pointer shrink-0 ${
                     isSelected
-                      ? 'bg-[#111B3C] text-white shadow-md shadow-slate-950/20'
-                      : 'border border-slate-200 bg-white text-slate-700 hover:border-indigo-300 hover:text-indigo-800'
+                      ? 'bg-gradient-to-r from-[#0A192F] to-indigo-950 text-white shadow-lg shadow-blue-950/20 ring-2 ring-indigo-500/30'
+                      : 'bg-white text-slate-700 hover:text-indigo-600 hover:bg-slate-100 hover:border-indigo-300 border border-slate-200/90 shadow-2xs'
                   }`}
                 >
                   {cat}
@@ -927,34 +950,34 @@ export function EnglishCenter() {
                         loading="lazy"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent" />
-                      <span className={`absolute left-4 top-4 rounded-full border px-3 py-1 text-xs font-bold ${course.color}`}>
+                      <span className={`absolute left-4 top-4 rounded-md border px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wider ${course.color}`}>
                         {course.badge}
                       </span>
-                      <span className="absolute bottom-3 right-4 rounded-full bg-white/95 px-2.5 py-1 text-xs sm:text-sm font-bold text-amber-900 shadow-sm">
-                        <Star aria-hidden="true" size={14} fill="currentColor" className="mr-1 inline text-amber-500" />
+                      <span className="absolute bottom-3 right-4 rounded-full bg-white/95 px-2.5 py-1 text-xs font-bold text-slate-800 shadow-sm flex items-center">
+                        <Star aria-hidden="true" size={13} fill="currentColor" className="mr-1 inline text-amber-500" />
                         {course.rating}
                       </span>
                     </div>
 
                     <div className="p-5">
-                      <div className="flex items-center justify-between text-sm font-bold text-indigo-700">
+                      <div className="flex items-center justify-between text-xs font-bold text-indigo-700">
                         <span>{course.level}</span>
-                        <span className="text-slate-500 font-normal">Độ tuổi: {course.targetAge}</span>
+                        <span className="text-slate-500 font-normal text-[11px]">Độ tuổi: {course.targetAge}</span>
                       </div>
-                      <h3 className="mt-2 text-xl font-bold tracking-tight text-slate-900">
+                      <h3 className="mt-2 text-lg font-extrabold tracking-tight text-[#0A192F] group-hover:text-indigo-600 transition-colors line-clamp-2 leading-snug min-h-[48px] cursor-pointer">
                         {course.title}
                       </h3>
-                      <p className="mt-2 text-sm leading-relaxed text-slate-600 line-clamp-2">
+                      <p className="mt-2 text-xs sm:text-[13px] leading-relaxed text-slate-600 line-clamp-2">
                         {course.description}
                       </p>
 
-                      <div className="mt-4 flex items-center gap-4 text-sm font-medium text-slate-600">
+                      <div className="mt-4 flex items-center gap-4 text-xs font-medium text-slate-600">
                         <span className="inline-flex items-center gap-1.5">
-                          <Clock3 aria-hidden="true" size={15} className="text-indigo-600" />
+                          <Clock3 aria-hidden="true" size={14} className="text-indigo-600" />
                           {course.duration}
                         </span>
                         <span className="inline-flex items-center gap-1.5">
-                          <Users aria-hidden="true" size={15} className="text-indigo-600" />
+                          <Users aria-hidden="true" size={14} className="text-indigo-600" />
                           8–12 học viên
                         </span>
                       </div>
@@ -964,16 +987,16 @@ export function EnglishCenter() {
                   <div className="border-t border-slate-100 p-5 pt-4">
                     <div className="flex items-center justify-between">
                       <div>
-                        <span className="block text-xs font-medium text-slate-500">Học phí</span>
-                        <span className="text-base font-extrabold text-slate-900">{course.price}</span>
+                        <span className="block text-[11px] font-medium text-slate-500">Học phí</span>
+                        <span className="text-base sm:text-lg font-black text-[#0A192F]">{course.price}</span>
                       </div>
                       <button
                         type="button"
                         onClick={() => openRegister(course.title, `Quan tâm khóa học ${course.title}`)}
-                        className="inline-flex min-h-11 items-center justify-center rounded-full bg-indigo-50 px-4 text-sm font-bold text-indigo-700 transition hover:bg-indigo-600 hover:text-white"
+                        className="inline-flex h-10 px-4 items-center justify-center rounded-xl bg-indigo-50 text-xs font-bold text-indigo-700 hover:bg-indigo-600 hover:text-white transition-colors cursor-pointer"
                         aria-label={`Đăng ký tư vấn khóa học ${course.title}`}
                       >
-                        Đăng ký học thử <ArrowUpRight size={15} className="ml-1" />
+                        Đăng ký học thử <ArrowUpRight size={14} className="ml-1" />
                       </button>
                     </div>
                   </div>
@@ -986,7 +1009,7 @@ export function EnglishCenter() {
             <button
               type="button"
               onClick={() => setActiveCategory(activeCategory === 'Tất cả' ? 'THCS & IELTS' : 'Tất cả')}
-              className="inline-flex min-h-12 items-center rounded-full border border-slate-200 bg-white px-6 py-3 text-sm font-bold text-slate-700 transition hover:border-indigo-400 hover:text-indigo-800"
+              className="inline-flex h-11 items-center rounded-xl border border-slate-200 bg-white px-5 text-xs sm:text-sm font-bold text-slate-700 hover:border-indigo-400 hover:text-indigo-800 transition-colors cursor-pointer"
             >
               {activeCategory === 'Tất cả' ? 'Xem các khóa IELTS nâng cao' : 'Xem toàn bộ 6 khóa học'}
               <ArrowRight aria-hidden="true" className="ml-1.5" size={14} />
@@ -999,21 +1022,21 @@ export function EnglishCenter() {
           <div className="relative mx-auto max-w-7xl overflow-hidden rounded-[32px] bg-gradient-to-r from-[#181D4C] via-indigo-700 to-[#5B50E7] px-6 py-10 text-white shadow-2xl shadow-indigo-900/20 sm:px-12 sm:py-14">
             <div className="relative grid items-center gap-8 md:grid-cols-[1fr_auto]">
               <div>
-                <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3.5 py-1.5 text-xs sm:text-sm font-bold uppercase tracking-wider">
-                  <Zap aria-hidden="true" size={14} className="text-amber-300" /> 3 phút · 100% Miễn phí
+                <div className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-[11px] font-extrabold uppercase tracking-wider">
+                  <Zap aria-hidden="true" size={13} className="text-amber-300" /> 3 phút · 100% Miễn phí
                 </div>
-                <h2 className="mt-4 max-w-xl text-3xl font-extrabold tracking-tight sm:text-[40px]">
+                <h2 className="mt-3 max-w-xl text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-white">
                   Tiếng Anh của bạn đang ở level nào?
                 </h2>
-                <p className="mt-3 max-w-lg text-base leading-relaxed text-indigo-100">
+                <p className="mt-2.5 max-w-lg text-xs sm:text-sm leading-relaxed text-indigo-100 font-normal">
                   Làm bài kiểm tra tương tác 3 phút để khám phá điểm mạnh, nhận ngay gợi ý lộ trình phù hợp và quà tặng buổi học thử 1-1 cùng giáo viên quốc tế.
                 </p>
                 <button
                   type="button"
                   onClick={() => setModal('quiz')}
-                  className="mt-6 inline-flex min-h-12 items-center rounded-full bg-[#D97706] px-6 py-3.5 text-base font-bold text-slate-950 transition hover:bg-amber-500 shadow-lg shadow-amber-950/20"
+                  className="mt-6 inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 px-6 text-sm font-bold text-slate-950 shadow-lg shadow-amber-950/20 transition-all duration-200 cursor-pointer"
                 >
-                  Bắt đầu bài test ngay <ArrowRight aria-hidden="true" className="ml-2 inline" size={16} />
+                  Bắt đầu bài test ngay <ArrowRight aria-hidden="true" size={15} />
                 </button>
               </div>
 
@@ -1021,10 +1044,10 @@ export function EnglishCenter() {
                 <div className="grid size-24 place-items-center rounded-full bg-[#D97706] text-slate-950 shadow-[0_0_40px_rgba(217,119,6,.4)] sm:size-32">
                   <Sparkles aria-hidden="true" size={40} />
                 </div>
-                <span className="absolute right-0 top-3 rounded-xl bg-white px-2.5 py-1 text-xs sm:text-sm font-bold text-indigo-800 shadow-md">
+                <span className="absolute right-0 top-3 rounded-xl bg-white px-2.5 py-1 text-[10px] font-bold text-indigo-800 shadow-md">
                   Let&apos;s go!
                 </span>
-                <span className="absolute bottom-0 left-0 rounded-xl bg-cyan-200 px-2.5 py-1 text-xs sm:text-sm font-bold text-slate-950">
+                <span className="absolute bottom-0 left-0 rounded-xl bg-cyan-200 px-2.5 py-1 text-[10px] font-bold text-slate-950">
                   3 min challenge
                 </span>
               </div>
@@ -1036,20 +1059,22 @@ export function EnglishCenter() {
         <section id="teachers" className="scroll-reveal scroll-mt-24 mx-auto max-w-7xl px-5 py-16 sm:px-6 lg:px-8">
           <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
             <div>
-              <p className="text-xs sm:text-sm font-bold uppercase tracking-wider text-indigo-700">Đội ngũ quốc tế</p>
-              <h2 className="mt-2 text-3xl font-extrabold tracking-tight sm:text-[40px]">
-                100% Giáo viên quốc tế tận tâm
+              <p className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-100/80 border border-blue-200/90 text-blue-800 text-[11px] font-extrabold uppercase tracking-wider mb-2 shadow-2xs">
+                Đội ngũ quốc tế
+              </p>
+              <h2 className="mt-2 text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#0A192F] tracking-tight">
+                100% Giáo Viên Quốc Tế Tận Tâm
               </h2>
-              <p className="mt-2 max-w-xl text-base leading-relaxed text-slate-600">
+              <p className="mt-2 max-w-xl text-sm sm:text-base leading-relaxed text-slate-600 font-normal">
                 100% thầy cô sở hữu bằng cấp sư phạm quốc tế CELTA/TESOL, giàu kinh nghiệm truyền cảm hứng và yêu trẻ.
               </p>
             </div>
             <button
               type="button"
               onClick={() => openRegister('', 'Muốn tìm hiểu thêm về đội ngũ giáo viên')}
-              className="inline-flex min-h-11 items-center text-base font-bold text-indigo-700 transition hover:text-indigo-900"
+              className="inline-flex min-h-11 items-center text-xs sm:text-sm font-bold text-indigo-700 transition hover:text-indigo-900 cursor-pointer"
             >
-              Học thử cùng giáo viên <ArrowRight aria-hidden="true" className="ml-1.5" size={16} />
+              Học thử cùng giáo viên <ArrowRight aria-hidden="true" className="ml-1.5" size={15} />
             </button>
           </div>
 
@@ -1069,16 +1094,16 @@ export function EnglishCenter() {
                       loading="lazy"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent" />
-                    <span className="absolute bottom-3 left-3 rounded-full bg-white/95 px-2.5 py-1 text-xs font-bold text-indigo-900 shadow-sm">
+                    <span className="absolute bottom-3 left-3 rounded-md bg-black/60 backdrop-blur-md px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wider text-amber-300 border border-amber-300/30">
                       {teacher.badge}
                     </span>
                   </div>
 
                   <div className="mt-4">
-                    <h3 className="text-lg font-bold text-slate-900">{teacher.name}</h3>
-                    <p className="text-sm font-bold text-indigo-700">{teacher.role}</p>
-                    <p className="mt-1 text-xs sm:text-sm font-medium text-slate-500">{teacher.creds} · {teacher.experience}</p>
-                    <p className="mt-3 text-sm italic leading-relaxed text-slate-600 border-l-2 border-indigo-200 pl-2.5">
+                    <h3 className="text-base font-extrabold text-[#0A192F] tracking-tight">{teacher.name}</h3>
+                    <p className="text-xs font-bold text-indigo-700 mt-0.5">{teacher.role}</p>
+                    <p className="mt-1 text-[11px] font-medium text-slate-500">{teacher.creds} · {teacher.experience}</p>
+                    <p className="mt-2.5 text-xs sm:text-[13px] italic leading-relaxed text-slate-600 border-l-2 border-indigo-200 pl-2.5">
                       &ldquo;{teacher.quote}&rdquo;
                     </p>
                   </div>
@@ -1088,7 +1113,7 @@ export function EnglishCenter() {
                   <button
                     type="button"
                     onClick={() => openRegister('', `Đăng ký lớp học của ${teacher.name}`)}
-                    className="inline-flex min-h-10 items-center justify-center text-sm font-bold text-indigo-600 hover:text-indigo-800"
+                    className="inline-flex min-h-10 items-center justify-center text-xs font-bold text-indigo-600 hover:text-indigo-800 cursor-pointer"
                   >
                     Xem lịch lớp của thầy/cô →
                   </button>
@@ -1102,11 +1127,13 @@ export function EnglishCenter() {
         <section id="schedule" className="scroll-reveal scroll-mt-24 bg-white px-5 py-16 sm:px-6 lg:px-8 lg:py-20 border-y border-slate-200/70">
           <div className="mx-auto max-w-7xl">
             <div className="max-w-2xl">
-              <p className="text-xs sm:text-sm font-bold uppercase tracking-wider text-indigo-700">Khung giờ đào tạo</p>
-              <h2 className="mt-2 text-3xl font-extrabold tracking-tight sm:text-[38px]">
-                Lịch học linh hoạt phù hợp mọi lứa tuổi
+              <p className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-100/80 border border-blue-200/90 text-blue-800 text-[11px] font-extrabold uppercase tracking-wider mb-2 shadow-2xs">
+                Khung giờ đào tạo
+              </p>
+              <h2 className="mt-2 text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-[#0A192F]">
+                Lịch Học Linh Hoạt Phù Hợp Mọi Lứa Tuổi
               </h2>
-              <p className="mt-2 text-base leading-relaxed text-slate-600">
+              <p className="mt-2 text-sm sm:text-base leading-relaxed text-slate-600 font-normal">
                 Ca học đa dạng các ngày trong tuần và cuối tuần. Chính sách học bù linh hoạt và bảo lưu học phí lên tới 6 tháng.
               </p>
             </div>
@@ -1139,18 +1166,18 @@ export function EnglishCenter() {
                 },
               ].map((s) => (
                 <div key={s.shift} className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
-                  <span className="inline-block rounded-md bg-indigo-100 px-2.5 py-1 text-xs font-bold uppercase tracking-wide text-indigo-900">
+                  <span className="inline-block rounded-md bg-indigo-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-indigo-900">
                     {s.badge}
                   </span>
-                  <h3 className="mt-3 text-lg font-bold text-slate-900">{s.shift}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-slate-600">{s.desc}</p>
+                  <h3 className="mt-2.5 text-base font-bold text-[#0A192F]">{s.shift}</h3>
+                  <p className="mt-1.5 text-xs sm:text-[13px] leading-relaxed text-slate-600">{s.desc}</p>
                 </div>
               ))}
             </div>
 
-            <div className="mt-6 flex flex-wrap items-center justify-between gap-4 rounded-2xl bg-amber-50 p-4 border border-amber-200 text-sm sm:text-base text-amber-950">
+            <div className="mt-6 flex flex-wrap items-center justify-between gap-4 rounded-2xl bg-amber-50 p-4 border border-amber-200 text-xs sm:text-sm text-amber-950">
               <div className="flex items-center gap-2">
-                <CheckCircle2 size={18} className="text-amber-700 shrink-0" />
+                <CheckCircle2 size={16} className="text-amber-700 shrink-0" />
                 <span>
                   <strong>Học bù linh hoạt:</strong> Bận lịch đột xuất? Dễ dàng đặt lịch học bù tại ca tương đương trong tuần.
                 </span>
@@ -1158,7 +1185,7 @@ export function EnglishCenter() {
               <button
                 type="button"
                 onClick={() => openRegister('', 'Hỏi chi tiết về lịch học các ca')}
-                className="inline-flex min-h-11 items-center font-bold text-amber-900 underline underline-offset-2 hover:text-amber-700"
+                className="inline-flex min-h-9 items-center font-bold text-amber-900 underline underline-offset-2 hover:text-amber-700 cursor-pointer"
               >
                 Nhận thời khóa biểu chi tiết →
               </button>
@@ -1170,11 +1197,13 @@ export function EnglishCenter() {
         <section id="why" className="scroll-reveal scroll-mt-24 bg-[#F1F5F9] px-5 py-16 sm:px-6 lg:px-8 lg:py-24">
           <div className="mx-auto max-w-7xl">
             <div className="mx-auto max-w-2xl text-center">
-              <p className="text-xs sm:text-sm font-bold uppercase tracking-wider text-indigo-700">Điểm khác biệt của Bright</p>
-              <h2 className="mt-2 text-3xl font-extrabold tracking-tight sm:text-[40px]">
-                Học khác biệt. Tiến bộ thật.
+              <p className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-100/80 border border-blue-200/90 text-blue-800 text-[11px] font-extrabold uppercase tracking-wider mb-2 shadow-2xs">
+                Điểm khác biệt của Bright
+              </p>
+              <h2 className="mt-2 text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-[#0A192F]">
+                Học Khác Biệt. Tiến Bộ Thật.
               </h2>
-              <p className="mt-2 text-base leading-relaxed text-slate-600">
+              <p className="mt-2 text-sm sm:text-base leading-relaxed text-slate-600 font-normal">
                 Môi trường nơi mỗi cá tính được tôn trọng và mỗi bước tiến đều được ghi nhận bằng lộ trình rõ ràng.
               </p>
             </div>
@@ -1184,13 +1213,13 @@ export function EnglishCenter() {
                 <span className="grid size-11 place-items-center rounded-2xl bg-indigo-400/20 text-indigo-200">
                   <Target aria-hidden="true" size={24} />
                 </span>
-                <h3 className="mt-5 text-xl font-extrabold">Blended Learning — Học tập đa trải nghiệm</h3>
-                <p className="mt-2 text-base leading-relaxed text-slate-200">
+                <h3 className="mt-5 text-lg sm:text-xl font-extrabold">Blended Learning — Học tập đa trải nghiệm</h3>
+                <p className="mt-2 text-xs sm:text-sm leading-relaxed text-slate-200 font-normal">
                   Kết hợp giữa lớp học tương tác trực tiếp, ứng dụng luyện tập trí tuệ nhân tạo và các buổi dã ngoại thực tế giúp tiếng Anh trở thành một phần cuộc sống.
                 </p>
                 <div className="mt-6 flex flex-wrap gap-2">
                   {['Learn with Joy', 'Practice Everyday', 'Shine Globally'].map((text, i) => (
-                    <span key={text} className="rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-xs sm:text-sm font-bold">
+                    <span key={text} className="rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs font-bold">
                       <span className="mr-1.5 text-cyan-300">0{i + 1}</span>
                       {text}
                     </span>
@@ -1202,12 +1231,12 @@ export function EnglishCenter() {
                 <span className="grid size-11 place-items-center rounded-2xl bg-cyan-100 text-cyan-800">
                   <GraduationCap aria-hidden="true" size={24} />
                 </span>
-                <h3 className="mt-5 text-xl font-extrabold text-slate-900">Cam kết chuẩn đầu ra bằng văn bản</h3>
-                <p className="mt-2 text-base leading-relaxed text-slate-600">
+                <h3 className="mt-5 text-lg sm:text-xl font-extrabold text-[#0A192F]">Cam kết chuẩn đầu ra bằng văn bản</h3>
+                <p className="mt-2 text-xs sm:text-sm leading-relaxed text-slate-600 font-normal">
                   Hợp đồng đào tạo rõ ràng cho từng lộ trình Cambridge và IELTS. Được học lại miễn phí nếu chưa đạt band điểm cam kết.
                 </p>
-                <div className="mt-5 flex items-center gap-2 text-sm font-bold text-emerald-700 bg-emerald-50 p-3 rounded-xl border border-emerald-100">
-                  <CheckCircle2 size={16} /> 100% học viên an tâm tuyệt đối về chất lượng
+                <div className="mt-5 flex items-center gap-2 text-xs font-bold text-emerald-700 bg-emerald-50 p-3 rounded-xl border border-emerald-100">
+                  <CheckCircle2 size={15} /> 100% học viên an tâm tuyệt đối về chất lượng
                 </div>
               </div>
 
@@ -1222,11 +1251,11 @@ export function EnglishCenter() {
                 {/* Dark gradient scrim ensures contrast > 7:1 */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent" />
                 <div className="absolute bottom-0 p-6 text-white">
-                  <span className="rounded-full bg-white/20 backdrop-blur-sm px-3 py-1 text-xs font-bold uppercase tracking-wider">
+                  <span className="rounded-md bg-black/60 backdrop-blur-md px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wider text-amber-300 border border-amber-300/30">
                     Cơ sở vật chất 5 sao
                   </span>
-                  <h3 className="mt-2.5 text-xl font-extrabold">Không gian truyền cảm hứng học tập</h3>
-                  <p className="mt-1 text-sm text-slate-200">
+                  <h3 className="mt-2.5 text-lg sm:text-xl font-extrabold">Không gian truyền cảm hứng học tập</h3>
+                  <p className="mt-1 text-xs sm:text-[13px] text-slate-200">
                     Phòng học đa phương tiện, bảng tương tác thông minh và thư viện mở chuẩn quốc tế.
                   </p>
                 </div>
@@ -1236,8 +1265,8 @@ export function EnglishCenter() {
                 <span className="grid size-11 place-items-center rounded-2xl bg-amber-200 text-amber-950">
                   <MessageCircle aria-hidden="true" size={24} />
                 </span>
-                <h3 className="mt-5 text-xl font-extrabold text-slate-900">Cố vấn học tập 1-kèm-1 sát sao</h3>
-                <p className="mt-2 text-base leading-relaxed text-slate-600">
+                <h3 className="mt-5 text-lg sm:text-xl font-extrabold text-[#0A192F]">Cố vấn học tập 1-kèm-1 sát sao</h3>
+                <p className="mt-2 text-xs sm:text-sm leading-relaxed text-slate-600 font-normal">
                   Báo cáo tiến bộ hàng tuần gửi thẳng về điện thoại phụ huynh. Gia sư trợ giảng sẵn sàng hỗ trợ bài tập và sửa phát âm bất cứ khi nào bạn cần.
                 </p>
               </div>
@@ -1249,17 +1278,19 @@ export function EnglishCenter() {
         <section id="stories" className="scroll-reveal scroll-mt-24 mx-auto max-w-7xl px-5 py-16 sm:px-6 lg:px-8 lg:py-24">
           <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
             <div>
-              <p className="text-xs sm:text-sm font-bold uppercase tracking-wider text-indigo-700">Người thật · Thành quả thật</p>
-              <h2 className="mt-2 text-3xl font-extrabold tracking-tight sm:text-[40px]">
-                Câu chuyện tiến bộ từ học viên Bright
+              <p className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-100/80 border border-blue-200/90 text-blue-800 text-[11px] font-extrabold uppercase tracking-wider mb-2 shadow-2xs">
+                Người thật · Thành quả thật
+              </p>
+              <h2 className="mt-2 text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-[#0A192F]">
+                Câu Chuyện Tiến Bộ Từ Học Viên Bright
               </h2>
             </div>
             <div className="flex items-center gap-1.5 text-amber-500">
               {[1, 2, 3, 4, 5].map((s) => (
-                <Star key={s} aria-hidden="true" size={16} fill="currentColor" />
+                <Star key={s} aria-hidden="true" size={14} fill="currentColor" />
               ))}
-              <span className="text-base font-extrabold text-slate-800 ml-1">4.9/5</span>
-              <span className="text-sm text-slate-500">(2.400+ đánh giá phụ huynh)</span>
+              <span className="text-xs sm:text-sm font-extrabold text-[#0A192F] ml-1">4.9/5</span>
+              <span className="text-xs text-slate-500">(2.400+ đánh giá phụ huynh)</span>
             </div>
           </div>
 
@@ -1295,26 +1326,26 @@ export function EnglishCenter() {
                   <div className="flex items-center justify-between">
                     <span className="flex gap-0.5 text-amber-500">
                       {[1, 2, 3, 4, 5].map((i) => (
-                        <Star key={i} aria-hidden="true" size={13} fill="currentColor" />
+                        <Star key={i} aria-hidden="true" size={12} fill="currentColor" />
                       ))}
                     </span>
-                    <Quote aria-hidden="true" size={22} className="text-indigo-200" />
+                    <Quote aria-hidden="true" size={20} className="text-indigo-200" />
                   </div>
-                  <p className="mt-4 text-base leading-relaxed text-slate-700">&ldquo;{student.quote}&rdquo;</p>
+                  <p className="mt-3.5 text-xs sm:text-sm text-slate-700 leading-relaxed italic">&ldquo;{student.quote}&rdquo;</p>
                 </div>
 
-                <div className="mt-6 flex items-center gap-3 border-t border-slate-100 pt-4">
+                <div className="mt-5 flex items-center gap-3 border-t border-slate-100 pt-4">
                   <img
                     src={image(student.image, 140)}
                     alt={`Học viên ${student.name} - ${student.school}`}
-                    className="size-12 rounded-full object-cover border-2 border-indigo-100"
+                    className="size-11 rounded-full object-cover border-2 border-indigo-100"
                     loading="lazy"
                   />
                   <div className="min-w-0 flex-1">
-                    <h3 className="text-base font-bold text-slate-900">{student.name}</h3>
-                    <p className="truncate text-sm text-slate-500">{student.school}</p>
+                    <h3 className="text-xs sm:text-sm font-extrabold text-[#0A192F]">{student.name}</h3>
+                    <p className="truncate text-[11px] text-slate-500 mt-0.5">{student.school}</p>
                   </div>
-                  <span className="shrink-0 rounded-full bg-indigo-50 px-2.5 py-1 text-xs sm:text-sm font-bold text-indigo-700">
+                  <span className="shrink-0 rounded-full bg-indigo-50 px-2.5 py-0.5 text-[10px] sm:text-[11px] font-bold text-indigo-700">
                     {student.score}
                   </span>
                 </div>
@@ -1327,11 +1358,13 @@ export function EnglishCenter() {
         <section id="faq" className="scroll-reveal scroll-mt-24 bg-[#F8FAFC] px-5 py-16 sm:px-6 lg:px-8 lg:py-20 border-t border-slate-200/70">
           <div className="mx-auto max-w-4xl">
             <div className="text-center">
-              <p className="text-xs sm:text-sm font-bold uppercase tracking-wider text-indigo-700">Hỏi đáp thường gặp</p>
-              <h2 className="mt-2 text-3xl font-extrabold tracking-tight sm:text-[38px]">
-                Những câu hỏi phụ huynh quan tâm nhất
+              <p className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-100/80 border border-blue-200/90 text-blue-800 text-[11px] font-extrabold uppercase tracking-wider mb-2 shadow-2xs">
+                Hỏi đáp thường gặp
+              </p>
+              <h2 className="mt-2 text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-[#0A192F]">
+                Những Câu Hỏi Phụ Huynh Quan Tâm Nhất
               </h2>
-              <p className="mt-2 text-base leading-relaxed text-slate-600">
+              <p className="mt-2 text-sm sm:text-base leading-relaxed text-slate-600 font-normal">
                 Mọi thông tin về học phí, cam kết đầu ra và hình thức học thử tại Bright English.
               </p>
             </div>
@@ -1348,7 +1381,7 @@ export function EnglishCenter() {
                       type="button"
                       aria-expanded={isOpen}
                       onClick={() => setOpenFaq(isOpen ? null : idx)}
-                      className="flex min-h-12 w-full items-center justify-between gap-4 p-5 text-left text-base sm:text-lg font-bold text-slate-900 hover:bg-slate-50"
+                      className="flex min-h-12 w-full items-center justify-between gap-4 p-5 text-left text-sm sm:text-base font-bold text-[#0A192F] hover:bg-slate-50 cursor-pointer"
                     >
                       <span className="flex items-center gap-2.5">
                         <HelpCircle size={18} className="text-indigo-600 shrink-0" />
@@ -1360,7 +1393,7 @@ export function EnglishCenter() {
                       />
                     </button>
                     {isOpen && (
-                      <div className="border-t border-slate-100 bg-slate-50/50 p-5 text-base leading-relaxed text-slate-700">
+                      <div className="border-t border-slate-100 bg-slate-50/50 p-5 text-xs sm:text-sm leading-relaxed text-slate-600">
                         {faq.a}
                       </div>
                     )}
@@ -1376,13 +1409,15 @@ export function EnglishCenter() {
           <div className="mx-auto max-w-7xl">
             <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
               <div>
-                <p className="text-xs sm:text-sm font-bold uppercase tracking-wider text-indigo-700">Không gian trải nghiệm</p>
-                <h2 className="mt-2 text-3xl font-extrabold tracking-tight sm:text-[38px]">
-                  Cơ sở vật chất hiện đại chuẩn 5 sao
+                <p className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-100/80 border border-blue-200/90 text-blue-800 text-[11px] font-extrabold uppercase tracking-wider mb-2 shadow-2xs">
+                  Không gian trải nghiệm
+                </p>
+                <h2 className="mt-2 text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-[#0A192F]">
+                  Cơ Sở Vật Chất Hiện Đại Chuẩn 5 Sao
                 </h2>
               </div>
-              <a href="#start" className="inline-flex min-h-11 items-center text-base font-bold text-indigo-800">
-                Ghé thăm trực tiếp cơ sở <ArrowRight aria-hidden="true" className="ml-1.5" size={16} />
+              <a href="#start" className="inline-flex min-h-11 items-center text-xs sm:text-sm font-bold text-indigo-800 hover:text-indigo-900">
+                Ghé thăm trực tiếp cơ sở <ArrowRight aria-hidden="true" className="ml-1.5" size={15} />
               </a>
             </div>
 
@@ -1403,8 +1438,8 @@ export function EnglishCenter() {
                   {/* Scrim: Dark gradient to ensure high contrast for text (>=7:1) */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent" />
                   <div className="absolute bottom-5 left-5 right-5 text-white">
-                    <p className="text-lg sm:text-xl font-bold">{item.caption}</p>
-                    <p className="mt-0.5 text-sm text-slate-200">{item.sub}</p>
+                    <p className="text-base sm:text-lg font-bold">{item.caption}</p>
+                    <p className="mt-0.5 text-xs sm:text-[13px] text-slate-200">{item.sub}</p>
                   </div>
                 </div>
               ))}
@@ -1415,63 +1450,65 @@ export function EnglishCenter() {
         {/* HOW TO START SECTION */}
         <section id="start" className="scroll-reveal scroll-mt-24 px-5 pb-16 lg:px-8 lg:pb-24">
           <div className="mx-auto max-w-7xl rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm sm:p-10">
-            <p className="text-xs sm:text-sm font-bold uppercase tracking-wider text-indigo-700">Lộ trình đăng ký</p>
-            <h2 className="mt-2.5 max-w-xl text-3xl font-extrabold tracking-tight sm:text-4xl">
-              Ba bước đơn giản để bắt đầu cùng Bright
+            <p className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-100/80 border border-blue-200/90 text-blue-800 text-[11px] font-extrabold uppercase tracking-wider mb-2 shadow-2xs">
+              Lộ trình đăng ký
+            </p>
+            <h2 className="mt-2 text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-[#0A192F]">
+              Ba Bước Đơn Giản Để Bắt Đầu Cùng Bright
             </h2>
 
             <ol className="mt-8 grid gap-5 lg:grid-cols-3">
               <li className="flex flex-col justify-between rounded-2xl border border-slate-200 bg-slate-50 p-6">
                 <div>
-                  <span className="inline-block rounded-md bg-indigo-100 px-2.5 py-1 text-xs sm:text-sm font-bold text-indigo-800">
+                  <span className="inline-block rounded-md bg-indigo-100 px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wider text-indigo-900">
                     Bước 1
                   </span>
-                  <h3 className="mt-3 text-lg font-bold text-slate-900">Chọn chương trình học</h3>
-                  <p className="mt-2 text-base leading-relaxed text-slate-600">
+                  <h3 className="mt-2.5 text-base font-extrabold text-[#0A192F]">Chọn chương trình học</h3>
+                  <p className="mt-1.5 text-xs sm:text-[13px] leading-relaxed text-slate-600">
                     Khám phá các khóa học phù hợp độ tuổi từ mầm non, tiểu học, THCS & IELTS tới giao tiếp người đi làm.
                   </p>
                 </div>
                 <a
                   href="#courses"
-                  className="mt-5 inline-flex min-h-11 items-center text-base font-bold text-indigo-700 hover:text-indigo-900"
+                  className="mt-5 inline-flex min-h-10 items-center text-xs sm:text-sm font-bold text-indigo-700 hover:text-indigo-900"
                 >
-                  Xem danh sách khóa học <ArrowRight size={15} className="ml-1.5" />
+                  Xem danh sách khóa học <ArrowRight size={14} className="ml-1.5" />
                 </a>
               </li>
 
               <li className="flex flex-col justify-between rounded-2xl border border-slate-200 bg-slate-50 p-6">
                 <div>
-                  <span className="inline-block rounded-md bg-indigo-100 px-2.5 py-1 text-xs sm:text-sm font-bold text-indigo-800">
+                  <span className="inline-block rounded-md bg-indigo-100 px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wider text-indigo-900">
                     Bước 2
                   </span>
-                  <h3 className="mt-3 text-lg font-bold text-slate-900">Làm bài test 3 phút</h3>
-                  <p className="mt-2 text-base leading-relaxed text-slate-600">
+                  <h3 className="mt-2.5 text-base font-extrabold text-[#0A192F]">Làm bài test 3 phút</h3>
+                  <p className="mt-1.5 text-xs sm:text-[13px] leading-relaxed text-slate-600">
                     Kiểm tra nhanh trình độ trực tuyến để nhận kết quả phân loại CEFR và đề xuất khóa học phù hợp.
                   </p>
                 </div>
                 <button
                   type="button"
                   onClick={() => setModal('quiz')}
-                  className="mt-5 inline-flex min-h-11 items-center text-base font-bold text-indigo-700 hover:text-indigo-900 text-left"
+                  className="mt-5 inline-flex min-h-10 items-center text-xs sm:text-sm font-bold text-indigo-700 hover:text-indigo-900 text-left cursor-pointer"
                 >
-                  Bắt đầu bài test ngay <ArrowRight size={15} className="ml-1.5" />
+                  Bắt đầu bài test ngay <ArrowRight size={14} className="ml-1.5" />
                 </button>
               </li>
 
               <li className="flex flex-col justify-between rounded-2xl border border-amber-300 bg-amber-50/80 p-6">
                 <div>
-                  <span className="inline-block rounded-md bg-amber-200 px-2.5 py-1 text-xs sm:text-sm font-bold text-amber-950">
+                  <span className="inline-block rounded-md bg-amber-200 px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wider text-amber-950">
                     Bước 3
                   </span>
-                  <h3 className="mt-3 text-lg font-bold text-slate-950">Đăng ký tư vấn & học thử</h3>
-                  <p className="mt-2 text-base leading-relaxed text-slate-700">
+                  <h3 className="mt-2.5 text-base font-extrabold text-[#0A192F]">Đăng ký tư vấn & học thử</h3>
+                  <p className="mt-1.5 text-xs sm:text-[13px] leading-relaxed text-slate-700">
                     Để lại thông tin, tư vấn viên sẽ gọi điện xác nhận trong 15 phút và gửi lịch học thử miễn phí.
                   </p>
                 </div>
                 <button
                   type="button"
                   onClick={() => openRegister()}
-                  className="mt-5 inline-flex min-h-11 items-center justify-center rounded-full bg-[#D97706] px-5 text-base font-bold text-slate-950 transition hover:bg-amber-500 shadow-sm"
+                  className="mt-5 inline-flex h-11 items-center justify-center rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 px-5 text-xs sm:text-sm font-bold text-slate-950 transition shadow-sm cursor-pointer"
                 >
                   Đăng ký tư vấn miễn phí
                 </button>
@@ -1479,34 +1516,34 @@ export function EnglishCenter() {
             </ol>
 
             {/* Campus Address & Contacts */}
-            <div className="mt-8 grid gap-4 border-t border-slate-200 pt-6 sm:grid-cols-2 lg:grid-cols-4 text-base">
+            <div className="mt-8 grid gap-4 border-t border-slate-200 pt-6 sm:grid-cols-2 lg:grid-cols-4 text-xs sm:text-sm">
               <a
                 href="tel:19006868"
                 className="inline-flex min-h-11 items-center gap-2 font-bold text-slate-900 hover:text-indigo-600"
               >
-                <Phone aria-hidden="true" size={17} className="text-indigo-600 shrink-0" />
+                <Phone aria-hidden="true" size={15} className="text-indigo-600 shrink-0" />
                 Hotline: 1900 6868
               </a>
               <a
                 href="mailto:hello@brightenglish.vn"
                 className="inline-flex min-h-11 items-center gap-2 font-bold text-slate-900 hover:text-indigo-600"
               >
-                <Mail aria-hidden="true" size={17} className="text-indigo-600 shrink-0" />
+                <Mail aria-hidden="true" size={15} className="text-indigo-600 shrink-0" />
                 hello@brightenglish.vn
               </a>
               {BRANCHES.map((b) => (
                 <div key={b.name} className="flex flex-col justify-center">
-                  <p className="flex items-start gap-1.5 text-sm text-slate-700">
-                    <MapPin aria-hidden="true" size={16} className="mt-0.5 text-indigo-600 shrink-0" />
+                  <p className="flex items-start gap-1.5 text-xs text-slate-700">
+                    <MapPin aria-hidden="true" size={14} className="mt-0.5 text-indigo-600 shrink-0" />
                     <span>{b.address}</span>
                   </p>
                   <a
                     href={b.mapLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mt-1 inline-flex items-center gap-1 text-xs sm:text-sm font-semibold text-indigo-600 hover:underline pl-5"
+                    className="mt-1 inline-flex items-center gap-1 text-[11px] font-semibold text-indigo-600 hover:underline pl-5"
                   >
-                    Xem chỉ đường trên Google Maps <ExternalLink size={12} />
+                    Xem chỉ đường trên Google Maps <ExternalLink size={11} />
                   </a>
                 </div>
               ))}
@@ -1516,27 +1553,27 @@ export function EnglishCenter() {
       </main>
 
       {/* FOOTER */}
-      <footer id="contact" className="bg-[#111A39] px-5 pb-8 pt-14 text-white lg:px-8">
+      <footer id="contact" className="bg-[#0A192F] px-5 pb-8 pt-14 text-white lg:px-8 border-t border-slate-800">
         <div className="mx-auto max-w-7xl">
-          <div className="grid gap-10 border-b border-white/10 pb-12 md:grid-cols-[1.2fr_.8fr_.9fr_1.1fr]">
+          <div className="grid gap-10 border-b border-slate-800 pb-12 md:grid-cols-[1.2fr_.8fr_.9fr_1.1fr]">
             <div>
               <a href="#home" className="flex items-center gap-2.5">
-                <span className="grid size-10 place-items-center rounded-2xl bg-gradient-to-br from-indigo-500 to-cyan-400">
+                <span className="grid size-10 place-items-center rounded-xl bg-gradient-to-br from-indigo-500 to-cyan-400 text-white shadow-md shadow-indigo-900/20">
                   <Sparkles aria-hidden="true" size={20} />
                 </span>
-                <span className="text-xl font-extrabold tracking-tight">
+                <span className="text-base sm:text-lg font-extrabold tracking-tight">
                   Bright <span className="text-cyan-300">English</span>
                 </span>
               </a>
-              <p className="mt-4 max-w-xs text-sm leading-relaxed text-slate-300">
+              <p className="mt-3.5 max-w-xs text-xs sm:text-[13px] leading-relaxed text-slate-400">
                 Đồng hành cùng thế hệ trẻ Việt Nam tự tin làm chủ tiếng Anh, khai phóng tiềm năng và vươn ra thế giới.
               </p>
-              <div className="mt-5 flex items-center gap-3">
+              <div className="mt-5 flex items-center gap-2.5">
                 <a
                   href="https://facebook.com/brightenglish.vn"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex min-h-11 items-center justify-center rounded-lg bg-white/10 px-3.5 text-sm text-slate-300 hover:bg-white/20 hover:text-white"
+                  className="inline-flex min-h-10 items-center justify-center rounded-xl bg-slate-800 border border-slate-700 px-3 text-xs font-semibold text-slate-300 hover:bg-slate-700 hover:text-white transition-colors"
                 >
                   Facebook Page
                 </a>
@@ -1544,7 +1581,7 @@ export function EnglishCenter() {
                   href="https://zalo.me/0901234567"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex min-h-11 items-center justify-center rounded-lg bg-white/10 px-3.5 text-sm text-slate-300 hover:bg-white/20 hover:text-white"
+                  className="inline-flex min-h-10 items-center justify-center rounded-xl bg-slate-800 border border-slate-700 px-3 text-xs font-semibold text-slate-300 hover:bg-slate-700 hover:text-white transition-colors"
                 >
                   Zalo OA
                 </a>
@@ -1552,68 +1589,68 @@ export function EnglishCenter() {
             </div>
 
             <div>
-              <h3 className="text-sm font-bold uppercase tracking-wider text-white">Khám phá</h3>
-              <nav className="mt-4 flex flex-col gap-1 text-sm text-slate-300">
-                <a className="inline-flex min-h-11 items-center hover:text-white" href="#offers">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-white">Khám phá</h4>
+              <nav className="mt-4 flex flex-col gap-1 text-xs sm:text-[13px] text-slate-400">
+                <a className="inline-flex min-h-[38px] items-center hover:text-white transition-colors" href="#offers">
                   Ưu đãi học phí
                 </a>
-                <a className="inline-flex min-h-11 items-center hover:text-white" href="#who">
+                <a className="inline-flex min-h-[38px] items-center hover:text-white transition-colors" href="#who">
                   Chương trình theo độ tuổi
                 </a>
-                <a className="inline-flex min-h-11 items-center hover:text-white" href="#courses">
+                <a className="inline-flex min-h-[38px] items-center hover:text-white transition-colors" href="#courses">
                   Danh sách khóa học
                 </a>
-                <a className="inline-flex min-h-11 items-center hover:text-white" href="#teachers">
+                <a className="inline-flex min-h-[38px] items-center hover:text-white transition-colors" href="#teachers">
                   Đội ngũ giáo viên
                 </a>
-                <a className="inline-flex min-h-11 items-center hover:text-white" href="#schedule">
+                <a className="inline-flex min-h-[38px] items-center hover:text-white transition-colors" href="#schedule">
                   Lịch học & ca học
                 </a>
-                <a className="inline-flex min-h-11 items-center hover:text-white" href="#stories">
+                <a className="inline-flex min-h-[38px] items-center hover:text-white transition-colors" href="#stories">
                   Câu chuyện thành công
                 </a>
               </nav>
             </div>
 
             <div>
-              <h3 className="text-sm font-bold uppercase tracking-wider text-white">Hệ thống cơ sở</h3>
-              <div className="mt-4 flex flex-col gap-3 text-sm text-slate-300">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-white">Hệ thống cơ sở</h4>
+              <div className="mt-4 flex flex-col gap-3 text-xs sm:text-[13px] text-slate-400">
                 {BRANCHES.map((b) => (
-                  <div key={b.name} className="flex flex-col gap-1">
-                    <span className="font-bold text-white">{b.name}</span>
+                  <div key={b.name} className="flex flex-col gap-0.5">
+                    <span className="font-bold text-white text-xs sm:text-[13px]">{b.name}</span>
                     <span className="leading-relaxed">{b.address}</span>
                     <a
                       href={b.mapLink}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 text-sm text-cyan-300 hover:underline"
+                      className="inline-flex items-center gap-1 text-xs text-cyan-300 hover:underline mt-0.5"
                     >
-                      Xem bản đồ <ExternalLink size={13} />
+                      Xem bản đồ <ExternalLink size={11} />
                     </a>
                   </div>
                 ))}
-                <a className="inline-flex min-h-11 items-center gap-2 hover:text-white text-sm" href="tel:19006868">
-                  <Phone aria-hidden="true" size={15} /> Hotline: 1900 6868
+                <a className="inline-flex min-h-[36px] items-center gap-2 hover:text-white text-xs sm:text-[13px] text-slate-300 font-medium" href="tel:19006868">
+                  <Phone aria-hidden="true" size={13} className="text-amber-400" /> Hotline: <strong className="text-white">1900 6868</strong>
                 </a>
-                <a className="inline-flex min-h-11 items-center gap-2 hover:text-white text-sm" href="mailto:hello@brightenglish.vn">
-                  <Mail aria-hidden="true" size={15} /> hello@brightenglish.vn
+                <a className="inline-flex min-h-[36px] items-center gap-2 hover:text-white text-xs sm:text-[13px] text-slate-300" href="mailto:hello@brightenglish.vn">
+                  <Mail aria-hidden="true" size={13} className="text-indigo-400" /> hello@brightenglish.vn
                 </a>
               </div>
             </div>
 
             <div>
-              <h3 className="text-sm font-bold uppercase tracking-wider text-white">Bí kíp học tiếng Anh</h3>
-              <p className="mt-3 text-sm leading-relaxed text-slate-300">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-white">Bí kíp học tiếng Anh</h4>
+              <p className="mt-3 text-xs sm:text-[13px] leading-relaxed text-slate-400">
                 Nhận tài liệu ngữ pháp, đề thi thử IELTS và thông tin học bổng gửi định kỳ vào hộp thư của bạn.
               </p>
 
               {newsletterSuccess ? (
-                <div role="status" className="mt-4 flex items-center gap-2 rounded-xl bg-emerald-500/20 p-3.5 text-sm font-semibold text-emerald-300 border border-emerald-500/30">
-                  <Check aria-hidden="true" size={18} /> Đăng ký thành công! Hãy kiểm tra hộp thư bạn nhé.
+                <div role="status" className="mt-4 flex items-center gap-2 rounded-xl bg-emerald-500/20 p-3 text-xs font-semibold text-emerald-300 border border-emerald-500/30">
+                  <Check aria-hidden="true" size={16} /> Đăng ký thành công! Hãy kiểm tra hộp thư bạn nhé.
                 </div>
               ) : (
                 <form onSubmit={handleNewsletterSubmit} className="mt-4" noValidate>
-                  <div className="flex rounded-full border border-white/20 bg-white/5 p-1 focus-within:border-indigo-400">
+                  <div className="flex rounded-xl border border-slate-700 bg-slate-900/60 p-1 focus-within:border-indigo-400">
                     <label htmlFor="newsletter-email" className="sr-only">
                       Email nhận bản tin
                     </label>
@@ -1626,18 +1663,18 @@ export function EnglishCenter() {
                         if (newsletterError) setNewsletterError('')
                       }}
                       placeholder="Nhập email của bạn..."
-                      className="min-w-0 flex-1 bg-transparent px-4 text-sm text-white outline-none placeholder:text-slate-400"
+                      className="min-w-0 flex-1 bg-transparent px-3.5 text-xs sm:text-sm text-white outline-none placeholder:text-slate-500"
                     />
                     <button
                       type="submit"
                       aria-label="Đăng ký nhận bản tin"
-                      className="grid size-11 shrink-0 place-items-center rounded-full bg-indigo-600 text-white transition hover:bg-indigo-500"
+                      className="grid size-10 shrink-0 place-items-center rounded-lg bg-indigo-600 text-white transition hover:bg-indigo-500 cursor-pointer"
                     >
-                      <ArrowRight aria-hidden="true" size={16} />
+                      <ArrowRight aria-hidden="true" size={15} />
                     </button>
                   </div>
                   {newsletterError && (
-                    <p className="mt-1.5 text-sm font-medium text-rose-300" role="alert">
+                    <p className="mt-1.5 text-xs font-medium text-rose-300" role="alert">
                       {newsletterError}
                     </p>
                   )}
@@ -1646,7 +1683,7 @@ export function EnglishCenter() {
             </div>
           </div>
 
-          <div className="flex flex-col justify-between gap-3 pt-6 text-xs sm:text-sm text-slate-400 sm:flex-row">
+          <div className="flex flex-col justify-between gap-3 pt-6 text-xs text-slate-400 sm:flex-row">
             <span>© 2026 Bright English Center. Học vui, tiến bộ thật. Bảo lưu mọi quyền.</span>
             <span>Chính sách bảo mật · Điều khoản dịch vụ</span>
           </div>
@@ -1680,20 +1717,20 @@ export function EnglishCenter() {
       >
         <a
           href="tel:19006868"
-          className="flex min-h-12 items-center justify-center gap-2 rounded-full border border-slate-200 bg-white px-2 text-slate-800"
+          className="flex min-h-12 items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-2 text-slate-800"
         >
-          <Phone aria-hidden="true" size={17} className="shrink-0 text-indigo-600" />
-          <span className="text-center text-xs sm:text-sm font-bold leading-tight">
+          <Phone aria-hidden="true" size={16} className="shrink-0 text-indigo-600" />
+          <span className="text-center text-xs font-bold leading-tight">
             Gọi hotline
-            <span className="mt-0.5 block text-xs font-semibold text-slate-500">1900 6868</span>
+            <span className="mt-0.5 block text-[10px] font-semibold text-slate-500">1900 6868</span>
           </span>
         </a>
         <button
           type="button"
           onClick={() => openRegister()}
-          className="flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#D97706] px-3 text-sm font-bold text-slate-950 shadow-md"
+          className="flex min-h-12 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 text-xs sm:text-sm font-bold text-slate-950 shadow-md cursor-pointer"
         >
-          Đăng ký tư vấn <ArrowRight aria-hidden="true" size={15} />
+          Đăng ký tư vấn <ArrowRight aria-hidden="true" size={14} />
         </button>
       </div>
 

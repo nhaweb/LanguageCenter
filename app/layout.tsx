@@ -1,18 +1,13 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
-import { Plus_Jakarta_Sans, Work_Sans } from 'next/font/google'
+import { Plus_Jakarta_Sans } from 'next/font/google'
 import './globals.css'
 
-const headingFont = Plus_Jakarta_Sans({
+const jakarta = Plus_Jakarta_Sans({
   subsets: ['latin', 'vietnamese'],
-  variable: '--font-heading',
+  variable: '--font-jakarta',
   display: 'swap',
-})
-
-const bodyFont = Work_Sans({
-  subsets: ['latin', 'vietnamese'],
-  variable: '--font-body',
-  display: 'swap',
+  weight: ['400', '500', '600', '700', '800'],
 })
 
 export const metadata: Metadata = {
@@ -103,14 +98,14 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="vi" className={`${headingFont.variable} ${bodyFont.variable}`}>
+    <html lang="vi" className={`${jakarta.variable} scroll-smooth`}>
       <head>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className={`${bodyFont.className} antialiased selection:bg-indigo-500 selection:text-white`}>
+      <body className={`${jakarta.className} antialiased selection:bg-indigo-500 selection:text-white`}>
         {children}
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
