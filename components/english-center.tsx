@@ -415,75 +415,83 @@ export function EnglishCenter() {
 
   return (
     <div className="relative min-h-screen overflow-x-hidden bg-[#F8FAFC] text-[#0F172A]">
-      {/* Unified Single-Row Sticky Header */}
+      {/* Top Announcement Bar - Promos & Direct Hotline */}
+      <div className="bg-slate-900 text-slate-100 border-b border-slate-800 text-xs">
+        <div className="mx-auto flex h-9 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center gap-2 truncate">
+            <span className="inline-flex items-center gap-1 rounded-full bg-amber-400/20 px-2 py-0.5 text-[10px] sm:text-[11px] font-bold text-amber-300 ring-1 ring-inset ring-amber-400/30 shrink-0">
+              <Percent size={11} className="text-amber-300" />
+              Ưu đãi tháng này
+            </span>
+            <span className="truncate text-slate-200 text-[11px] sm:text-xs">
+              Giảm đến <strong className="text-white font-extrabold">35% học phí</strong> IELTS & Cambridge cho 50 suất đăng ký sớm
+            </span>
+            <a
+              href="#offers"
+              className="inline-flex items-center font-bold text-amber-300 hover:text-amber-200 underline decoration-amber-400/50 underline-offset-2 shrink-0 ml-1 text-[11px] sm:text-xs"
+            >
+              Nhận ngay →
+            </a>
+          </div>
+          <div className="hidden md:flex items-center gap-4 text-xs shrink-0 text-slate-300">
+            <a
+              href="tel:19006868"
+              className="inline-flex items-center gap-1.5 hover:text-white transition-colors font-medium text-xs"
+            >
+              <Phone aria-hidden="true" size={12} className="text-amber-400" />
+              Hotline: <strong className="text-white">1900 6868</strong>
+            </a>
+            <span className="text-slate-600">|</span>
+            <span className="text-slate-400 text-xs">8:00 - 21:30 (T2–CN)</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Streamlined Sticky Header */}
       <header
         className={`sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur-md transition-shadow duration-200 ${
           scrolled ? 'border-slate-200 shadow-md' : 'border-indigo-100/70'
         }`}
       >
-        <div className="mx-auto flex h-[68px] w-full max-w-7xl items-center justify-between gap-3 px-4 sm:px-6 lg:px-8">
-          {/* Logo + Offer Badge in 1 single line */}
-          <div className="flex items-center gap-3 shrink-0">
-            <a href="#home" className="flex items-center gap-2 shrink-0" aria-label="Bright English trang chủ">
-              <span className="grid size-9 place-items-center rounded-2xl bg-gradient-to-br from-indigo-600 to-cyan-500 text-white shadow-md shadow-indigo-500/25">
-                <Sparkles aria-hidden="true" size={19} />
-              </span>
-              <span className="text-[17px] font-extrabold tracking-tight whitespace-nowrap">
-                Bright <span className="text-indigo-600">English</span>
-              </span>
-            </a>
-            <a
-              href="#offers"
-              className="hidden sm:inline-flex items-center gap-1 rounded-full bg-amber-100 border border-amber-300 px-2.5 py-1 text-[11px] font-extrabold text-amber-900 transition hover:bg-amber-200 whitespace-nowrap shrink-0"
-            >
-              <Percent size={12} className="text-amber-700" />
-              Ưu đãi đến 35%
-            </a>
-          </div>
+        <div className="mx-auto flex h-[68px] w-full max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+          {/* Logo */}
+          <a href="#home" className="flex items-center gap-2.5 shrink-0" aria-label="Bright English trang chủ">
+            <span className="grid size-9 place-items-center rounded-2xl bg-gradient-to-br from-indigo-600 to-cyan-500 text-white shadow-md shadow-indigo-500/25">
+              <Sparkles aria-hidden="true" size={19} />
+            </span>
+            <span className="text-[17px] font-extrabold tracking-tight whitespace-nowrap">
+              Bright <span className="text-indigo-600">English</span>
+            </span>
+          </a>
 
-          {/* Desktop Navigation - Strictly 1 Line with whitespace-nowrap and shrink-0 */}
+          {/* Streamlined Desktop Navigation - 6 Essential Links */}
           <nav className="hidden items-center gap-1 text-[13px] font-semibold text-slate-700 lg:flex shrink-0" aria-label="Điều hướng chính">
-            <a className="inline-flex h-9 items-center rounded-lg px-2.5 hover:text-indigo-600 hover:bg-indigo-50/70 whitespace-nowrap shrink-0 transition-colors" href="#offers">
-              Ưu đãi
-            </a>
-            <a className="inline-flex h-9 items-center rounded-lg px-2.5 hover:text-indigo-600 hover:bg-indigo-50/70 whitespace-nowrap shrink-0 transition-colors" href="#who">
-              Độ tuổi
-            </a>
-            <a className="inline-flex h-9 items-center rounded-lg px-2.5 hover:text-indigo-600 hover:bg-indigo-50/70 whitespace-nowrap shrink-0 transition-colors" href="#courses">
+            <a className="inline-flex h-9 items-center rounded-lg px-3 hover:text-indigo-600 hover:bg-indigo-50/70 whitespace-nowrap shrink-0 transition-colors" href="#courses">
               Khóa học
             </a>
-            <a className="inline-flex h-9 items-center rounded-lg px-2.5 hover:text-indigo-600 hover:bg-indigo-50/70 whitespace-nowrap shrink-0 transition-colors" href="#teachers">
+            <a className="inline-flex h-9 items-center rounded-lg px-3 hover:text-indigo-600 hover:bg-indigo-50/70 whitespace-nowrap shrink-0 transition-colors" href="#who">
+              Độ tuổi
+            </a>
+            <a className="inline-flex h-9 items-center rounded-lg px-3 hover:text-indigo-600 hover:bg-indigo-50/70 whitespace-nowrap shrink-0 transition-colors" href="#teachers">
               Giáo viên
             </a>
-            <a className="inline-flex h-9 items-center rounded-lg px-2.5 hover:text-indigo-600 hover:bg-indigo-50/70 whitespace-nowrap shrink-0 transition-colors" href="#schedule">
+            <a className="inline-flex h-9 items-center rounded-lg px-3 hover:text-indigo-600 hover:bg-indigo-50/70 whitespace-nowrap shrink-0 transition-colors" href="#schedule">
               Lịch học
             </a>
-            <a className="hidden xl:inline-flex h-9 items-center rounded-lg px-2.5 hover:text-indigo-600 hover:bg-indigo-50/70 whitespace-nowrap shrink-0 transition-colors" href="#why">
+            <a className="inline-flex h-9 items-center rounded-lg px-3 hover:text-indigo-600 hover:bg-indigo-50/70 whitespace-nowrap shrink-0 transition-colors" href="#why">
               Về Bright
             </a>
-            <a className="hidden xl:inline-flex h-9 items-center rounded-lg px-2.5 hover:text-indigo-600 hover:bg-indigo-50/70 whitespace-nowrap shrink-0 transition-colors" href="#stories">
-              Học viên
-            </a>
-            <a className="hidden 2xl:inline-flex h-9 items-center rounded-lg px-2.5 hover:text-indigo-600 hover:bg-indigo-50/70 whitespace-nowrap shrink-0 transition-colors" href="#faq">
+            <a className="inline-flex h-9 items-center rounded-lg px-3 hover:text-indigo-600 hover:bg-indigo-50/70 whitespace-nowrap shrink-0 transition-colors" href="#faq">
               FAQ
-            </a>
-            <a className="hidden 2xl:inline-flex h-9 items-center rounded-lg px-2.5 hover:text-indigo-600 hover:bg-indigo-50/70 whitespace-nowrap shrink-0 transition-colors" href="#campus">
-              Cơ sở
             </a>
           </nav>
 
-          {/* Desktop Actions - Strictly 1 Line */}
-          <div className="hidden items-center gap-2 lg:flex shrink-0">
-            <a
-              href="tel:19006868"
-              className="hidden xl:inline-flex h-9 items-center gap-1.5 rounded-full border border-slate-200 px-3 text-xs font-bold text-slate-700 transition hover:border-indigo-300 hover:text-indigo-700 whitespace-nowrap shrink-0"
-            >
-              <Phone aria-hidden="true" size={13} className="text-indigo-600" /> 1900 6868
-            </a>
+          {/* Focused Desktop Actions - 2 High-Converting CTAs */}
+          <div className="hidden items-center gap-2.5 lg:flex shrink-0">
             <button
               type="button"
               onClick={() => setModal('quiz')}
-              className="inline-flex h-9 items-center rounded-full border border-amber-300 bg-amber-50 px-3 text-xs font-bold text-amber-900 transition hover:bg-amber-100 whitespace-nowrap shrink-0"
+              className="inline-flex h-9 items-center rounded-full border border-amber-300 bg-amber-50 px-3.5 text-xs font-bold text-amber-900 transition hover:bg-amber-100 whitespace-nowrap shrink-0"
             >
               <Zap aria-hidden="true" size={13} className="mr-1 text-amber-600" />
               Test 3 phút
@@ -518,20 +526,38 @@ export function EnglishCenter() {
             role="dialog"
             aria-modal="true"
             aria-labelledby="mobile-navigation-title"
-            className="fixed inset-0 top-[68px] z-50 flex flex-col bg-white px-5 py-5 lg:hidden overflow-y-auto"
+            className="fixed inset-0 z-50 flex flex-col bg-white px-5 py-5 lg:hidden overflow-y-auto"
           >
-            <h2 id="mobile-navigation-title" className="sr-only">Menu Bright English</h2>
-            <nav className="flex flex-col gap-1 pb-4 border-b border-slate-100">
+            <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+              <div className="flex items-center gap-2.5">
+                <span className="grid size-9 place-items-center rounded-2xl bg-gradient-to-br from-indigo-600 to-cyan-500 text-white shadow-md shadow-indigo-500/25">
+                  <Sparkles aria-hidden="true" size={19} />
+                </span>
+                <span className="text-[17px] font-extrabold tracking-tight">
+                  Bright <span className="text-indigo-600">English</span>
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={() => setMenuOpen(false)}
+                className="grid size-11 place-items-center rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-50"
+                aria-label="Đóng menu"
+              >
+                <X aria-hidden="true" size={20} />
+              </button>
+            </div>
+
+            <nav className="flex flex-col gap-1 py-4 border-b border-slate-100">
               {[
-                ['Ưu đãi tháng này', '#offers'],
-                ['Chương trình theo độ tuổi', '#who'],
+                ['Ưu đãi tháng này (Giảm 35%)', '#offers'],
                 ['Danh sách khóa học', '#courses'],
+                ['Chương trình theo độ tuổi', '#who'],
                 ['Đội ngũ giáo viên', '#teachers'],
                 ['Lịch ca học linh hoạt', '#schedule'],
-                ['Tại sao chọn Bright', '#why'],
+                ['Tại sao chọn Bright English', '#why'],
                 ['Câu chuyện học viên', '#stories'],
                 ['Hỏi đáp thường gặp', '#faq'],
-                ['Cơ sở vật chất', '#campus'],
+                ['Hệ thống cơ sở', '#campus'],
               ].map(([label, href]) => (
                 <a
                   key={label}
@@ -544,7 +570,7 @@ export function EnglishCenter() {
               ))}
             </nav>
 
-            <div className="mt-5 grid gap-3">
+            <div className="mt-5 grid gap-3 pb-8">
               <button
                 type="button"
                 onClick={() => {
