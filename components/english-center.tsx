@@ -1,6 +1,9 @@
 'use client'
 
-import { useEffect, useState, useMemo } from 'react'
+import { useEffect, useRef, useState, useMemo } from 'react'
+import Image from 'next/image'
+import type { SceneId } from '@/components/scene-art'
+import { saveLead } from '@/lib/lead'
 import {
   ArrowRight,
   ArrowUpRight,
@@ -19,10 +22,7 @@ import {
   MessageCircle,
   Percent,
   Phone,
-  Play,
-  Quote,
   Sparkles,
-  Star,
   Target,
   Users,
   X,
@@ -33,99 +33,97 @@ import { QuizModal } from '@/components/quiz-modal'
 
 type Course = {
   title: string
-  level: string
   category: 'Mầm non' | 'Tiểu học' | 'THCS & IELTS' | 'Người đi làm'
-  image: string
-  badge: string
-  rating: string
+  scene: SceneId
+  badge?: string
   duration: string
+  sessions: string
   price: string
   originalPrice?: string
-  color: string
+  discountNote?: string
   description: string
+  outcome: string
   targetAge: string
+  classSize: string
 }
 
 const COURSES: Course[] = [
   {
     title: 'English Explorers',
-    level: 'Mầm non · 4–6 tuổi',
     category: 'Mầm non',
-    image: 'photo-1587654780291-39c9404d746b',
-    badge: 'Bé yêu thích',
-    rating: '4.9',
-    duration: '8 tháng (2 buổi/tuần)',
+    scene: 'explorers',
+    duration: '8 tháng',
+    sessions: '2 buổi/tuần',
     price: 'Từ 1.590.000đ/tháng',
-    color: 'bg-amber-100 text-amber-900 border-amber-200',
-    description: 'Học tiếng Anh qua bài hát, trò chơi vận động và kể chuyện tương tác, giúp bé phản xạ tự nhiên như tiếng mẹ đẻ.',
+    description: 'Học qua bài hát, trò chơi vận động và kể chuyện. Bé nghe và đáp lại trước khi học chữ.',
+    outcome: 'Phản xạ chào hỏi, màu sắc, số đếm và kể một câu ngắn.',
     targetAge: '4–6 tuổi',
+    classSize: '8–12 học viên',
   },
   {
     title: 'Bright Stars',
-    level: 'Tiểu học · 6–11 tuổi',
     category: 'Tiểu học',
-    image: 'photo-1509062522246-3755977927d7',
-    badge: 'Hot trend',
-    rating: '5.0',
-    duration: '10 tháng (2 buổi/tuần)',
+    scene: 'stars',
+    duration: '10 tháng',
+    sessions: '2 buổi/tuần',
     price: 'Từ 1.790.000đ/tháng',
-    color: 'bg-rose-100 text-rose-900 border-rose-200',
-    description: 'Xây dựng nền tảng ngữ pháp vững chắc kết hợp 4 kỹ năng Nghe - Nói - Đọc - Viết, tự tin dẫn đầu trên lớp.',
+    description: 'Nền ngữ pháp và bốn kỹ năng nghe, nói, đọc, viết cho bậc tiểu học.',
+    outcome: 'Đọc đoạn ngắn, viết câu đúng và nói về chủ đề quen thuộc.',
     targetAge: '6–11 tuổi',
+    classSize: '8–12 học viên',
   },
   {
     title: 'Cambridge Champions',
-    level: 'Starters · Movers · Flyers',
     category: 'Tiểu học',
-    image: 'photo-1503676260728-1c00da094a0b',
-    badge: 'Ưu đãi tháng này',
-    rating: '4.9',
-    duration: '8 tháng (2 buổi/tuần)',
-    price: 'Từ 1.690.000đ/tháng',
+    scene: 'cambridge',
+    duration: '8 tháng',
+    sessions: '2 buổi/tuần',
+    price: '1.690.000đ/tháng',
     originalPrice: '2.190.000đ/tháng',
-    color: 'bg-amber-200 text-amber-950 border-amber-300',
-    description: 'Luyện thi chứng chỉ quốc tế Cambridge chuẩn chuẩn hóa, cam kết 13–15 khiên tối đa cho từng cấp độ.',
+    discountNote: 'Giảm 23%',
+    description: 'Luyện Starters, Movers hoặc Flyers. Thang điểm Cambridge Young Learners tối đa 15 khiên; mục tiêu cụ thể được ghi trong hợp đồng sau bài test.',
+    outcome: 'Làm quen dạng đề và từ vựng của cấp Starters, Movers hoặc Flyers đã chọn.',
     targetAge: '7–12 tuổi',
+    classSize: '8–12 học viên',
   },
   {
     title: 'IELTS Breakthrough',
-    level: 'IELTS Foundation · 12–17 tuổi',
     category: 'THCS & IELTS',
-    image: 'photo-1523240795612-9a054b0db644',
-    badge: 'Cam kết đầu ra',
-    rating: '4.9',
-    duration: '6 tháng (3 buổi/tuần)',
+    scene: 'ielts-base',
+    duration: '6 tháng',
+    sessions: '3 buổi/tuần',
     price: 'Từ 2.490.000đ/tháng',
-    color: 'bg-violet-100 text-violet-900 border-violet-200',
-    description: 'Xây nền tảng tư duy học thuật, chiến lược giải đề thực chiến và bứt phá band điểm từ 5.0 lên 6.5+.',
+    description: 'Bốn kỹ năng học thuật và cách làm từng dạng câu hỏi IELTS nền tảng.',
+    outcome: 'Nắm cấu trúc đề và luyện band mục tiêu ghi trong hợp đồng nếu đăng ký cam kết.',
     targetAge: '12–17 tuổi',
+    classSize: '8–12 học viên',
   },
   {
     title: 'IELTS Mastery 7.0+',
-    level: 'IELTS Advanced · 15+ tuổi',
     category: 'THCS & IELTS',
-    image: 'photo-1434030216411-0b793f4b4173',
-    badge: 'Giảm 35%',
-    rating: '5.0',
-    duration: '5 tháng (3 buổi/tuần)',
-    price: 'Từ 2.990.000đ/tháng',
+    scene: 'ielts-high',
+    badge: 'Ưu đãi tháng này',
+    duration: '5 tháng',
+    sessions: '3 buổi/tuần',
+    price: '2.990.000đ/tháng',
     originalPrice: '4.600.000đ/tháng',
-    color: 'bg-amber-200 text-amber-950 border-amber-300',
-    description: 'Chinh phục band điểm 7.0–8.0+ cùng cựu giám khảo chấm thi. Hỗ trợ săn học bổng du học và xét tuyển đại học top đầu.',
+    discountNote: 'Giảm 35%',
+    description: 'Luyện band cao hơn nền hiện tại. Mức cam kết, nếu có, được viết trong hợp đồng sau khi test trình độ.',
+    outcome: 'Chiến lược viết và nói cho mục tiêu đã thống nhất với tư vấn viên.',
     targetAge: '15+ tuổi',
+    classSize: '8–12 học viên',
   },
   {
     title: 'Speak with Confidence',
-    level: 'Giao tiếp · Người đi làm',
     category: 'Người đi làm',
-    image: 'photo-1521737711867-e3b97375f902',
-    badge: 'Lịch linh hoạt',
-    rating: '4.8',
-    duration: '4 tháng (2 buổi/tuần)',
+    scene: 'speak',
+    duration: '4 tháng',
+    sessions: '2 buổi/tuần',
     price: 'Từ 1.990.000đ/tháng',
-    color: 'bg-emerald-100 text-emerald-900 border-emerald-200',
-    description: 'Luyện phản xạ nói trôi chảy, viết email công sở, thuyết trình tiếng Anh và tự tin trao đổi trong môi trường đa quốc gia.',
-    targetAge: 'Người đi làm & SV',
+    description: 'Nói trong cuộc họp, viết email và thuyết trình ngắn.',
+    outcome: 'Xử lý một tình huống công việc bằng tiếng Anh mà không đọc bài soạn.',
+    targetAge: 'Sinh viên và người đi làm',
+    classSize: '8–12 học viên',
   },
 ]
 
@@ -136,7 +134,7 @@ const AGE_PROGRAMS = [
     ages: '4–6 tuổi',
     detail: 'Khám phá đầu đời & phản xạ tự nhiên',
     filter: 'Mầm non' as const,
-    image: 'photo-1587654780291-39c9404d746b',
+    scene: 'age-kids' as SceneId,
     coursesCount: '1 khóa chuyên sâu',
   },
   {
@@ -145,7 +143,7 @@ const AGE_PROGRAMS = [
     ages: '6–11 tuổi',
     detail: 'Giao tiếp tự tin & chứng chỉ Cambridge',
     filter: 'Tiểu học' as const,
-    image: 'photo-1503676260728-1c00da094a0b',
+    scene: 'age-primary' as SceneId,
     coursesCount: '2 khóa học',
   },
   {
@@ -154,7 +152,7 @@ const AGE_PROGRAMS = [
     ages: '12–15 tuổi',
     detail: 'Vững vàng học thuật & nền tảng IELTS',
     filter: 'THCS & IELTS' as const,
-    image: 'photo-1523240795612-9a054b0db644',
+    scene: 'age-secondary' as SceneId,
     coursesCount: '2 lộ trình',
   },
   {
@@ -163,7 +161,7 @@ const AGE_PROGRAMS = [
     ages: '15+ tuổi',
     detail: 'Bứt phá 7.0+ & xét tuyển đại học',
     filter: 'THCS & IELTS' as const,
-    image: 'photo-1434030216411-0b793f4b4173',
+    scene: 'age-ielts' as SceneId,
     coursesCount: '2 lộ trình',
   },
   {
@@ -172,74 +170,70 @@ const AGE_PROGRAMS = [
     ages: 'Sinh viên & Đi làm',
     detail: 'English at Work & đàm phán quốc tế',
     filter: 'Người đi làm' as const,
-    image: 'photo-1522202176988-66273c2fd55f',
+    scene: 'age-work' as SceneId,
     coursesCount: '1 khóa chuyên sâu',
   },
 ]
 
 const TEACHERS = [
   {
-    name: 'Thầy Mark Wilson',
-    role: 'Giám đốc Học thuật · Anh Quốc',
-    creds: 'Thạc sĩ TESOL · CELTA Cambridge',
-    image: 'photo-1560250097-0b93528c311a',
-    experience: '11 năm giảng dạy quốc tế',
-    quote: 'Tiếng Anh là chiếc cầu nối mở ra cánh cửa tri thức thế giới, chứ không đơn thuần là một bài kiểm tra trên giấy.',
-    badge: 'Cựu giám khảo khảo thí',
+    name: 'Nhóm mầm non',
+    role: 'Dạy bằng trò chơi và kể chuyện',
+    creds: 'Tiêu chuẩn tuyển: CELTA hoặc chứng chỉ dạy trẻ em',
+    scene: 'role-young' as SceneId,
+    experience: 'Chưa công bố hồ sơ từng giáo viên',
+    quote: 'Tên và video giới thiệu sẽ được đăng khi trung tâm cung cấp hồ sơ thật.',
   },
   {
-    name: 'Cô Sarah Jenkins',
-    role: 'Chuyên gia Mầm non & Tiểu học · Canada',
-    creds: 'B.Ed Primary Education · TEYL Certified',
-    image: 'photo-1573496359142-b8d87734a5a2',
-    experience: '8 năm đào tạo trẻ em',
-    quote: 'Mỗi đứa trẻ đều có nhịp học riêng. Khi việc học tràn ngập niềm vui, sự tiến bộ sẽ đến một cách diệu kỳ.',
-    badge: 'Bé yêu thích nhất',
+    name: 'Nhóm tiểu học',
+    role: 'Ngữ pháp và bốn kỹ năng',
+    creds: 'Tiêu chuẩn tuyển: CELTA hoặc TESOL',
+    scene: 'role-academic' as SceneId,
+    experience: 'Chưa công bố số năm kinh nghiệm cá nhân',
+    quote: 'Minh họa vai trò giảng dạy, không phải chân dung một người có thật.',
   },
   {
-    name: 'Thầy Alex Miller',
-    role: 'Chuyên gia Luyện thi IELTS 8.5+ · Úc',
-    creds: 'IELTS 9.0 Overall · CELTA Cambridge',
-    image: 'photo-1539571696357-5a69c17a67c6',
-    experience: '9 năm chuyên luyện thi 7.0+',
-    quote: 'Tư duy logic và phản xạ ngôn ngữ tự nhiên quan trọng hơn việc học vẹt từ vựng hay các mẹo làm bài rập khuôn.',
-    badge: 'Đào tạo 500+ học viên 7.0+',
+    name: 'Nhóm IELTS',
+    role: 'Luyện bốn kỹ năng thi',
+    creds: 'Tiêu chuẩn tuyển: CELTA hoặc TESOL',
+    scene: 'role-exam' as SceneId,
+    experience: 'Mức band cam kết ghi trong hợp đồng sau bài test',
+    quote: 'Không dùng danh hiệu cựu giám khảo khi chưa có giấy xác nhận.',
   },
   {
-    name: 'Cô Emma Watson',
-    role: 'Cố vấn Phát âm & Thuyết trình · Mỹ',
-    creds: 'MA Applied Linguistics · Pronunciation Coach',
-    image: 'photo-1580894732486-1e62688005ec',
-    experience: '7 năm đào tạo giao tiếp',
-    quote: 'Sự tự tin cất lời chính là vũ khí quyền lực nhất để bạn bước vào bất cứ môi trường đa quốc gia nào.',
-    badge: 'Huấn luyện viên Accent',
+    name: 'Nhóm giao tiếp',
+    role: 'Phát âm và nói trong công việc',
+    creds: 'Tiêu chuẩn tuyển: CELTA hoặc TESOL',
+    scene: 'role-speech' as SceneId,
+    experience: 'Lịch lớp xác nhận khi đăng ký',
+    quote: 'Video 30–60 giây của giáo viên sẽ thay minh họa này khi có bản ghi.',
   },
 ]
 
 const CAMPUS_PHOTOS = [
   {
-    id: 'photo-1509062522246-3755977927d7',
-    alt: 'Phòng học tương tác thông minh tại Bright English',
-    caption: 'Phòng học tương tác thông minh',
-    sub: 'Trang bị bảng tương tác & thiết bị học chuẩn Cambridge',
+    id: 'space-class' as SceneId,
+    alt: 'Minh họa phòng học nhóm',
+    caption: 'Phòng học nhóm',
+    sub: 'Minh họa. Ảnh chụp phòng thật sẽ thay khi trung tâm gửi.',
   },
   {
-    id: 'photo-1498243691581-b145c3f54a5a',
-    alt: 'Thư viện mở chuẩn quốc tế tại Bright English',
-    caption: 'Thư viện sách tiếng Anh chuẩn quốc tế',
-    sub: 'Hơn 3.000 đầu sách phân cấp theo CEFR và độ tuổi',
+    id: 'space-books' as SceneId,
+    alt: 'Minh họa góc sách',
+    caption: 'Góc sách',
+    sub: 'Số đầu sách chưa được công bố.',
   },
   {
-    id: 'photo-1523240795612-9a054b0db644',
-    alt: 'Khu tự học và thảo luận nhóm sôi nổi tại Bright',
-    caption: 'Không gian thảo luận nhóm & CLB',
-    sub: 'Môi trường 100% tiếng Anh rèn luyện phản xạ mỗi ngày',
+    id: 'space-club' as SceneId,
+    alt: 'Minh họa góc thảo luận',
+    caption: 'Góc thảo luận',
+    sub: 'Dùng cho hoạt động nói theo nhóm.',
   },
   {
-    id: 'photo-1580582932707-520aed937b7b',
-    alt: 'Khu vui chơi trải nghiệm sáng tạo cho học viên nhí',
-    caption: 'Khu sáng tạo & trải nghiệm học viên',
-    sub: 'Vui học khoa học, kịch nghệ và thuyết trình tiếng Anh',
+    id: 'space-play' as SceneId,
+    alt: 'Minh họa góc hoạt động cho trẻ',
+    caption: 'Góc hoạt động',
+    sub: 'Dành cho bài hát và trò chơi vận động.',
   },
 ]
 
@@ -279,8 +273,31 @@ const BRANCHES = [
   },
 ]
 
-function image(id: string, width = 800) {
-  return `https://images.unsplash.com/${id}?auto=format&fit=crop&w=${width}&q=85`
+const ZALO_URL = 'https://zalo.me/19006868'
+
+function FrameImage({
+  id,
+  alt,
+  priority = false,
+  sizes = '(max-width: 768px) 100vw, 40vw',
+}: {
+  id: SceneId
+  alt: string
+  width?: number
+  priority?: boolean
+  sizes?: string
+  className?: string
+}) {
+  return (
+    <Image
+      src={`/images/${id}.jpg`}
+      alt={alt}
+      fill
+      priority={priority}
+      sizes={sizes}
+      className="object-cover"
+    />
+  )
 }
 
 /**
@@ -289,29 +306,36 @@ function image(id: string, width = 800) {
  */
 function Stat({ to, suffix = '', label }: { to: number; suffix?: string; label: string }) {
   const [n, setN] = useState(to)
+  const ref = useRef<HTMLDivElement>(null)
+  const played = useRef(false)
 
   useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      setN(to)
-      return
-    }
-    setN(0)
-    const start = performance.now()
-    const duration = 1200
-    const tick = (now: number) => {
-      const p = Math.min(1, (now - start) / duration)
-      const eased = 1 - Math.pow(1 - p, 3)
-      setN(Math.round(to * eased))
-      if (p < 1) requestAnimationFrame(tick)
-    }
-    const id = requestAnimationFrame(tick)
-    return () => cancelAnimationFrame(id)
+    const node = ref.current
+    if (!node) return
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting || played.current) return
+      played.current = true
+      observer.disconnect()
+      setN(0)
+      const start = performance.now()
+      const duration = 700
+      const tick = (now: number) => {
+        const p = Math.min(1, (now - start) / duration)
+        const eased = 1 - Math.pow(1 - p, 3)
+        setN(Math.round(to * eased))
+        if (p < 1) requestAnimationFrame(tick)
+      }
+      requestAnimationFrame(tick)
+    }, { threshold: 0.6 })
+    observer.observe(node)
+    return () => observer.disconnect()
   }, [to])
 
   return (
-    <div className="rounded-2xl border border-white/80 bg-white/95 p-4 shadow-xl backdrop-blur-sm">
+    <div ref={ref} className="rounded-2xl border border-white/80 bg-white/95 p-4 shadow-xl backdrop-blur-sm">
       <p className="text-2xl sm:text-3xl font-black tabular-nums tracking-tight text-[#0A192F]">
-        {n.toLocaleString('vi-VN')}{suffix}
+        {String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}{suffix}
       </p>
       <p className="text-sm font-bold text-slate-700 mt-1">{label}</p>
     </div>
@@ -323,6 +347,8 @@ export function EnglishCenter() {
   const [modal, setModal] = useState<'register' | 'quiz' | null>(null)
   const [selectedCourse, setSelectedCourse] = useState<string>('')
   const [selectedNote, setSelectedNote] = useState<string>('')
+  const [selectedCampus, setSelectedCampus] = useState('Gò Vấp, TP.HCM')
+  const [detailCourse, setDetailCourse] = useState<Course | null>(null)
   const [menuOpen, setMenuOpen] = useState(false)
   const [openFaq, setOpenFaq] = useState<number | null>(0)
   const [scrolled, setScrolled] = useState(false)
@@ -357,34 +383,6 @@ export function EnglishCenter() {
     }
   }, [menuOpen])
 
-  // Scroll reveal setup
-  useEffect(() => {
-    const sections = document.querySelectorAll<HTMLElement>('.scroll-reveal')
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) {
-      sections.forEach((sec) => sec.classList.add('is-visible'))
-      return
-    }
-
-    document.documentElement.classList.add('scroll-reveal-ready')
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('is-visible')
-            observer.unobserve(entry.target)
-          }
-        })
-      },
-      { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
-    )
-
-    sections.forEach((s) => observer.observe(s))
-    return () => {
-      observer.disconnect()
-      document.documentElement.classList.remove('scroll-reveal-ready')
-    }
-  }, [])
-
   const filterCategories = ['Tất cả', 'Mầm non', 'Tiểu học', 'THCS & IELTS', 'Người đi làm']
 
   const visibleCourses = useMemo(() => {
@@ -398,23 +396,32 @@ export function EnglishCenter() {
     setModal('register')
   }
 
-  const handleNewsletterSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleNewsletterSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    const input = e.currentTarget.elements.namedItem('email')
+    const field = input instanceof HTMLInputElement ? input : null
+    const value = (field?.value || newsletterEmail).trim()
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (!newsletterEmail.trim()) {
-      setNewsletterError('Vui lòng nhập địa chỉ email của bạn.')
-      return
-    }
-    if (!emailRegex.test(newsletterEmail.trim())) {
-      setNewsletterError('Địa chỉ email chưa hợp lệ (ví dụ: name@gmail.com).')
+    let message = ''
+    if (!value) message = 'Vui lòng nhập địa chỉ email của bạn.'
+    else if (!emailRegex.test(value)) message = 'Địa chỉ email chưa hợp lệ (ví dụ: name@gmail.com).'
+    field?.setCustomValidity(message)
+    if (message) {
+      setNewsletterError(message)
+      field?.reportValidity()
       return
     }
     setNewsletterError('')
-    setNewsletterSuccess(true)
+    try {
+      await saveLead({ kind: 'newsletter', email: value, consent: true })
+      setNewsletterSuccess(true)
+    } catch {
+      setNewsletterError('Chưa lưu được email. Thử lại hoặc gọi 1900 6868.')
+    }
   }
 
   return (
-    <div className="relative min-h-screen overflow-x-hidden bg-[#F8FAFC] text-[#0F172A]">
+    <div className="relative min-h-screen bg-[#F8FAFC] text-[#0F172A]">
       {/* Top Announcement Bar - Promos & Direct Hotline */}
       <div className="bg-slate-900 text-slate-100 border-b border-slate-800 text-sm">
         <div className="mx-auto flex h-10 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
@@ -423,20 +430,14 @@ export function EnglishCenter() {
               <Percent size={12} className="text-amber-300" />
               Ưu đãi tháng này
             </span>
-            <span className="truncate text-slate-200 text-sm font-medium">
-              Giảm đến <strong className="text-white font-extrabold">35% học phí</strong> IELTS & Cambridge
-            </span>
-            <a
-              href="#offers"
-              className="inline-flex items-center font-bold text-amber-300 hover:text-amber-200 underline decoration-amber-400/50 underline-offset-2 shrink-0 ml-1 text-sm"
-            >
-              Nhận ngay →
+            <a href="#offers" className="truncate text-sm font-medium text-slate-200 hover:text-white">
+              Tháng này: IELTS Mastery <strong className="font-extrabold text-white">giảm 35%</strong>, Cambridge Champions giảm 23%
             </a>
           </div>
           <div className="hidden md:flex items-center gap-4 text-sm shrink-0 text-slate-200 font-medium">
             <a
               href="tel:19006868"
-              className="min-h-[36px] flex items-center gap-1.5 hover:text-amber-300 transition-colors py-1"
+              className="min-h-11 flex items-center gap-1.5 hover:text-amber-300 transition-colors py-1"
             >
               <Phone aria-hidden="true" size={13} className="text-amber-400" />
               Hotline: <strong className="text-white font-extrabold">1900 6868</strong>
@@ -464,28 +465,28 @@ export function EnglishCenter() {
                 <span className="text-lg sm:text-xl font-extrabold tracking-tight text-[#0A192F] leading-none">BRIGHT</span>
                 <span className="text-indigo-600 font-extrabold text-base sm:text-lg leading-none">ENGLISH</span>
               </div>
-              <span className="text-xs font-bold tracking-[0.14em] text-slate-500 uppercase mt-0.5 leading-none">ACADEMY &amp; CAMBRIDGE</span>
+              <span className="mt-0.5 hidden text-xs font-bold uppercase leading-none tracking-[0.14em] text-slate-500 xl:block">ACADEMY &amp; CAMBRIDGE</span>
             </div>
           </a>
 
           {/* Navigation - Clear readable 14px-15px font */}
-          <nav className="hidden items-center gap-6 xl:gap-8 text-sm xl:text-[15px] font-bold text-slate-700 lg:flex shrink-0" aria-label="Điều hướng chính">
-            <a className="min-h-[44px] flex items-center px-1 transition-colors hover:text-indigo-600 whitespace-nowrap" href="#courses">
+          <nav className="hidden shrink-0 items-center gap-0.5 text-sm font-bold text-slate-700 lg:flex xl:gap-2 xl:text-[15px]" aria-label="Điều hướng chính">
+            <a className="inline-flex min-h-11 min-w-11 items-center justify-center whitespace-nowrap px-2 transition-colors hover:text-indigo-600" href="#courses">
               Khóa học
             </a>
-            <a className="min-h-[44px] flex items-center px-1 transition-colors hover:text-indigo-600 whitespace-nowrap" href="#who">
+            <a className="inline-flex min-h-11 min-w-11 items-center justify-center whitespace-nowrap px-2 transition-colors hover:text-indigo-600" href="#who">
               Độ tuổi
             </a>
-            <a className="min-h-[44px] flex items-center px-1 transition-colors hover:text-indigo-600 whitespace-nowrap" href="#teachers">
+            <a className="inline-flex min-h-11 min-w-11 items-center justify-center whitespace-nowrap px-2 transition-colors hover:text-indigo-600" href="#teachers">
               Giáo viên
             </a>
-            <a className="min-h-[44px] flex items-center px-1 transition-colors hover:text-indigo-600 whitespace-nowrap" href="#schedule">
+            <a className="inline-flex min-h-11 min-w-11 items-center justify-center whitespace-nowrap px-2 transition-colors hover:text-indigo-600" href="#schedule">
               Lịch học
             </a>
-            <a className="min-h-[44px] flex items-center px-1 transition-colors hover:text-indigo-600 whitespace-nowrap" href="#why">
+            <a className="inline-flex min-h-11 min-w-11 items-center justify-center whitespace-nowrap px-2 transition-colors hover:text-indigo-600" href="#why">
               Về Bright
             </a>
-            <a className="min-h-[44px] flex items-center px-1 transition-colors hover:text-indigo-600 whitespace-nowrap" href="#faq">
+            <a className="inline-flex min-h-11 min-w-11 items-center justify-center whitespace-nowrap px-2 transition-colors hover:text-indigo-600" href="#faq">
               FAQ
             </a>
           </nav>
@@ -495,7 +496,7 @@ export function EnglishCenter() {
             <button
               type="button"
               onClick={() => setModal('quiz')}
-              className="h-11 px-4 text-sm font-bold text-slate-700 hover:text-indigo-700 hover:bg-slate-50 rounded-xl transition-colors inline-flex items-center gap-1.5 border border-transparent hover:border-slate-200 cursor-pointer"
+              className="hidden h-11 cursor-pointer items-center gap-1.5 rounded-xl border border-transparent px-3 text-sm font-bold text-slate-700 transition-colors hover:border-slate-200 hover:bg-slate-50 hover:text-indigo-700 xl:inline-flex"
             >
               <Zap aria-hidden="true" size={15} className="text-amber-500" />
               <span>Test 3 phút</span>
@@ -562,7 +563,7 @@ export function EnglishCenter() {
 
             <nav className="flex flex-col gap-1 py-4 border-b border-slate-100">
               {[
-                ['Ưu đãi tháng này (Giảm 35%)', '#offers'],
+                ['Ưu đãi tháng này', '#offers'],
                 ['Danh sách khóa học', '#courses'],
                 ['Chương trình theo độ tuổi', '#who'],
                 ['Đội ngũ giáo viên', '#teachers'],
@@ -639,7 +640,7 @@ export function EnglishCenter() {
               </div>
               
               {/* H1 with generous readable sizing */}
-              <h1 className="hero-rise max-w-2xl text-balance text-3xl font-extrabold leading-[1.12] tracking-tight text-[#0A192F] sm:text-5xl lg:text-[58px]" style={{ animationDelay: '80ms' }}>
+              <h1 className="hero-rise max-w-2xl text-balance text-[34px] font-extrabold leading-[1.15] tracking-tight text-[#0A192F] sm:text-5xl lg:text-[44px] xl:text-[56px]" style={{ animationDelay: '80ms' }}>
                 Bứt phá tiếng Anh,<br />
                 chinh phục{' '}
                 <span className="whitespace-nowrap bg-gradient-to-r from-indigo-600 via-violet-600 to-cyan-600 bg-clip-text text-transparent">
@@ -649,7 +650,7 @@ export function EnglishCenter() {
               </h1>
               
               <p className="hero-rise mt-4 max-w-xl text-base font-normal leading-relaxed text-slate-700 sm:text-lg lg:text-xl" style={{ animationDelay: '160ms' }}>
-                Mỗi buổi học là một hành trình vui khám phá. Cùng 100% giáo viên quốc tế và phương pháp học qua trải nghiệm, con tự tin làm chủ tiếng Anh mỗi ngày.
+                Mỗi buổi học là một hoạt động nghe, nói và làm. Giáo viên được tuyển với CELTA hoặc TESOL. Sĩ số lớp 8–12 học viên.
               </p>
 
               <div className="hero-rise mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center" style={{ animationDelay: '240ms' }}>
@@ -668,43 +669,12 @@ export function EnglishCenter() {
                   <Zap aria-hidden="true" size={17} className="text-amber-500" />
                   Test miễn phí · 3 phút
                 </button>
-                <a
-                  href="#courses"
-                  className="inline-flex h-12 min-h-12 cursor-pointer items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-6 text-base font-bold text-slate-700 transition-all duration-200 hover:-translate-y-0.5 hover:bg-slate-50"
-                >
-                  <Play aria-hidden="true" className="fill-slate-700 text-slate-700" size={14} />
-                  Khám phá khóa học
-                </a>
               </div>
 
-              {/* Social proof avatar stack */}
-              <div className="hero-rise mt-8 flex items-center gap-3.5" style={{ animationDelay: '320ms' }}>
-                <div className="flex -space-x-3">
-                  {[
-                    { id: 'photo-1534528741775-53994a69daeb', alt: 'Học viên Minh Anh - IELTS 8.0' },
-                    { id: 'photo-1500648767791-00dcc994a43e', alt: 'Học viên Hoàng Nam - IELTS 7.5' },
-                    { id: 'photo-1531123897727-8f129e1688ce', alt: 'Học viên Bảo Ngọc - Học bổng Monash' },
-                    { id: 'photo-1506794778202-cad84cf45f1d', alt: 'Học viên Tuấn Kiệt - Cambridge Starters 15 khiên' },
-                  ].map((item) => (
-                    <img
-                      key={item.id}
-                      className="size-11 rounded-full border-[3px] border-white object-cover shadow-sm"
-                      src={image(item.id, 120)}
-                      alt={item.alt}
-                      width={44}
-                      height={44}
-                    />
-                  ))}
-                </div>
-                <div>
-                  <div className="flex items-center gap-1 text-amber-500">
-                    {[1, 2, 3, 4, 5].map((s) => (
-                      <Star key={s} aria-hidden="true" size={15} fill="currentColor" />
-                    ))}
-                    <span className="ml-1 text-base font-extrabold text-[#0A192F]">4.9/5</span>
-                  </div>
-                  <p className="mt-0.5 text-sm sm:text-base text-slate-600">Được tin yêu bởi 15.000+ gia đình phụ huynh</p>
-                </div>
+              <div className="hero-rise mt-8 flex flex-wrap gap-2" style={{ animationDelay: '320ms' }}>
+                <span className="inline-flex min-h-11 items-center rounded-full bg-white px-3 text-sm font-bold text-slate-800 shadow-xs">Sĩ số 8–12</span>
+                <span className="inline-flex min-h-11 items-center rounded-full bg-white px-3 text-sm font-bold text-slate-800 shadow-xs">4 ca mỗi ngày</span>
+                <span className="inline-flex min-h-11 items-center rounded-full bg-white px-3 text-sm font-bold text-slate-800 shadow-xs">2 cơ sở</span>
               </div>
             </div>
 
@@ -713,11 +683,13 @@ export function EnglishCenter() {
               <div className="pointer-events-none absolute -left-6 bottom-16 size-40 rounded-full bg-violet-300/40 blur-3xl mesh-orb [animation-delay:-2s]" />
               <div className="relative grid h-[360px] grid-cols-[1.08fr_.92fr] grid-rows-[1.12fr_.88fr] gap-3 sm:h-[440px] md:h-[500px]">
                 <div className="relative row-span-2 overflow-hidden rounded-[28px] shadow-xl shadow-indigo-950/15">
-                  <img
-                    className="media-pan h-full w-full object-cover"
-                    src={image('photo-1503454537195-1dcabb73ffb9', 900)}
-                    alt="Học viên vui vẻ khám phá tiếng Anh"
-                    loading="eager"
+                  <FrameImage
+                    id="hero-class"
+                    alt="Minh họa buổi học nhóm"
+                    width={900}
+                    priority
+                    sizes="(max-width: 1024px) 70vw, 360px"
+                    className="media-pan object-cover"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-950/75 via-slate-950/10 to-transparent" />
                   <div className="absolute bottom-5 left-5 right-5 text-white">
@@ -727,33 +699,61 @@ export function EnglishCenter() {
                 </div>
 
                 <div className="relative overflow-hidden rounded-[28px] shadow-xl shadow-indigo-950/10">
-                  <img
-                    className="media-pan h-full w-full object-cover [animation-delay:-6s]"
-                    src={image('photo-1523240795612-9a054b0db644', 700)}
-                    alt="Nhóm học viên hào hứng trao đổi bài tập"
-                    loading="lazy"
+                  <FrameImage
+                    id="hero-talk"
+                    alt="Minh họa hoạt động nói"
+                    width={700}
+                    sizes="180px"
+                    className="media-pan object-cover [animation-delay:-6s]"
                   />
                 </div>
 
                 <div className="relative overflow-hidden rounded-[28px] shadow-xl shadow-indigo-950/10">
-                  <img
-                    className="media-pan h-full w-full object-cover [animation-delay:-11s]"
-                    src={image('photo-1509062522246-3755977927d7', 700)}
-                    alt="Phòng học tương tác thông minh tại Bright"
-                    loading="lazy"
+                  <FrameImage
+                    id="hero-room"
+                    alt="Minh họa phòng học"
+                    width={700}
+                    sizes="180px"
+                    className="media-pan object-cover [animation-delay:-11s]"
                   />
                 </div>
               </div>
 
               <div className="mt-3 grid grid-cols-2 gap-3 sm:pointer-events-none sm:absolute sm:inset-0 sm:mt-0 sm:block">
                 <div className="sm:pointer-events-auto sm:absolute sm:left-3 sm:top-6 sm:w-44">
-                  <Stat to={98} suffix="%" label="Đạt mục tiêu học tập" />
+                  <Stat to={12} label="Học viên tối đa mỗi lớp" />
                 </div>
                 <div className="sm:pointer-events-auto sm:absolute sm:bottom-6 sm:right-3 sm:w-44">
-                  <Stat to={15000} suffix="+" label="Học viên tỏa sáng" />
+                  <Stat to={4} label="Ca học mỗi ngày" />
                 </div>
               </div>
             </div>
+          </div>
+        </section>
+
+        <section id="stories" className="scroll-mt-24 mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+          <h2 className="text-2xl font-extrabold tracking-tight text-[#0A192F] sm:text-3xl lg:text-4xl">
+            Ví dụ lộ trình tư vấn
+          </h2>
+          <p className="mt-2 max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg">
+            Ba cách xếp lớp đang dùng. Minh họa này không gắn tên học viên hay điểm số.
+          </p>
+          <div className="mt-8 grid gap-6 md:grid-cols-3">
+            {[
+              { scene: 'path-play' as const, title: 'Mầm non', text: 'Hai buổi mỗi tuần với bài hát, trò chơi và một câu nói. Phụ huynh nhận nội dung buổi học.' },
+              { scene: 'path-exam' as const, title: 'Luyện thi', text: 'Sau bài test, hợp đồng ghi mục tiêu Starters, Movers, Flyers hoặc IELTS. Mức điểm chỉ hứa khi đã biết trình độ.' },
+              { scene: 'path-work' as const, title: 'Đi làm', text: 'Hai buổi tối: viết email, nói trong họp và một bài thuyết trình khoảng ba phút.' },
+            ].map((item) => (
+              <article key={item.title} className="overflow-hidden rounded-[26px] border border-slate-200 bg-white shadow-sm">
+                <div className="relative h-40">
+                  <FrameImage id={item.scene} alt={`Hình minh họa lộ trình ${item.title}`} sizes="(max-width: 768px) 100vw, 33vw" />
+                </div>
+                <div className="p-5">
+                  <h3 className="text-lg font-extrabold text-[#0A192F]">{item.title}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-slate-600 sm:text-base">{item.text}</p>
+                </div>
+              </article>
+            ))}
           </div>
         </section>
 
@@ -765,10 +765,10 @@ export function EnglishCenter() {
                 <Percent aria-hidden="true" size={14} className="text-amber-700" /> Ưu đãi tuyển sinh tháng này
               </p>
               <h2 className="mt-3 text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-[#0A192F]">
-                Học phí giảm đến 35%
+                IELTS Mastery giảm 35% trong tháng này
               </h2>
-              <p className="mt-2.5 max-w-md text-base sm:text-lg text-slate-600 leading-relaxed font-normal">
-                Ưu đãi áp dụng có giới hạn cho các khóa IELTS và Cambridge trong tuần này. Tặng kèm 01 buổi kiểm tra trình độ 1-kèm-1 và giáo trình độc quyền.
+              <p className="mt-2.5 max-w-md text-base leading-relaxed font-normal text-slate-600 sm:text-lg">
+                Cambridge Champions giảm 23%, từ 2.190.000đ còn 1.690.000đ/tháng. Học phí niêm yết giống nhau ở cả hai cơ sở. Lịch khai giảng xác nhận khi gọi lại.
               </p>
               <div className="mt-6 flex flex-wrap gap-3">
                 <button
@@ -789,34 +789,34 @@ export function EnglishCenter() {
               </div>
             </div>
 
-            <div className="grid gap-3.5">
-              {[
-                COURSES.find((c) => c.badge === 'Giảm 35%')!,
-                COURSES.find((c) => c.badge === 'Ưu đãi tháng này')!,
-              ].map((course, idx) => (
+            <div className="motion-list grid gap-3.5">
+              {COURSES.filter((course) => course.originalPrice).map((course, idx) => (
                 <article
                   key={course.title}
                   className="list-enter group flex flex-col gap-4 rounded-2xl border border-amber-200 bg-amber-50/70 p-4 sm:flex-row sm:items-center"
                   style={{ animationDelay: `${idx * 80}ms` }}
                 >
-                  <div className="h-24 w-full shrink-0 overflow-hidden rounded-xl shadow-sm sm:w-32">
-                    <img
-                      src={image(course.image, 320)}
-                      alt={`${course.title} - lớp học tiếng Anh`}
-                      className="media-zoom h-full w-full object-cover"
-                      loading="lazy"
+                  <div className="relative h-24 w-full shrink-0 overflow-hidden rounded-xl shadow-sm sm:w-32">
+                    <FrameImage
+                      id={course.scene}
+                      alt={`Minh họa khóa ${course.title}`}
+                      width={320}
+                      sizes="128px"
+                      className="media-zoom object-cover"
                     />
                   </div>
                   <div className="min-w-0 flex-1">
-                    <span className="inline-block rounded-md bg-amber-200 px-2.5 py-0.5 text-xs sm:text-sm font-extrabold uppercase tracking-wider text-amber-950">
-                      {course.badge}
+                    <span className="inline-block rounded-md bg-amber-200 px-2.5 py-0.5 text-xs font-extrabold uppercase tracking-wider text-amber-950 sm:text-sm">
+                      {course.discountNote}
                     </span>
-                    <h3 className="mt-1 text-lg sm:text-xl font-extrabold text-[#0A192F]">{course.title}</h3>
-                    <p className="text-sm sm:text-base text-slate-600 mt-0.5">{course.level} · {course.duration}</p>
+                    <h3 className="mt-1 text-lg font-extrabold text-[#0A192F] sm:text-xl">{course.title}</h3>
+                    <p className="mt-0.5 text-sm text-slate-600 sm:text-base">
+                      Tuổi {course.targetAge} · {course.duration} · {course.sessions}
+                    </p>
                     <div className="mt-2 flex items-baseline gap-2">
                       <span className="text-xl sm:text-2xl font-black text-amber-900">{course.price}</span>
                       {course.originalPrice && (
-                        <span className="text-sm sm:text-base text-slate-400 line-through">{course.originalPrice}</span>
+                        <span className="text-sm text-slate-600 line-through sm:text-base">{course.originalPrice}</span>
                       )}
                     </div>
                   </div>
@@ -836,10 +836,7 @@ export function EnglishCenter() {
         {/* WHO IT IS FOR SECTION */}
         <section id="who" className="scroll-reveal scroll-mt-24 mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
           <div className="max-w-2xl">
-            <p className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-50 border border-indigo-200/80 text-indigo-800 text-xs sm:text-sm font-extrabold uppercase tracking-wider mb-2 shadow-2xs">
-              Chương trình đào tạo
-            </p>
-            <h2 className="mt-2 text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-[#0A192F]">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-[#0A192F]">
               Chọn chương trình theo độ tuổi
             </h2>
             <p className="mt-2 text-base sm:text-lg leading-relaxed text-slate-600 font-normal">
@@ -862,11 +859,12 @@ export function EnglishCenter() {
               >
                 <div>
                   <div className="relative h-28 overflow-hidden rounded-xl">
-                    <img
-                      src={image(prog.image, 350)}
+                    <FrameImage
+                      id={prog.scene}
                       alt={`Khóa học tiếng Anh cho ${prog.title}`}
-                      className="media-zoom h-full w-full object-cover"
-                      loading="lazy"
+                      width={350}
+                      sizes="(max-width: 1024px) 50vw, 20vw"
+                      className="media-zoom object-cover"
                     />
                     <span className="absolute top-2 left-2 rounded-md bg-white/95 px-2.5 py-0.5 text-xs sm:text-sm font-bold text-indigo-900 shadow-sm">
                       {prog.ages}
@@ -888,14 +886,11 @@ export function EnglishCenter() {
         <section id="courses" className="scroll-reveal scroll-mt-24 mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
           <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
             <div>
-              <p className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-100/80 border border-blue-200/90 text-blue-800 text-xs sm:text-sm font-extrabold uppercase tracking-wider mb-2 shadow-2xs">
-                Lộ trình học cá nhân hóa
-              </p>
-              <h2 className="mt-2 text-2xl sm:text-[28px] md:text-3xl lg:text-[36px] xl:text-[40px] font-black text-[#0A192F] tracking-tight leading-tight">
-                Các Khóa Học Tại Bright English
+              <h2 className="text-2xl font-black tracking-tight text-[#0A192F] sm:text-[28px] md:text-3xl lg:text-[36px] xl:text-[40px]">
+                Các khóa học
               </h2>
-              <p className="mt-2 max-w-xl text-base sm:text-lg leading-relaxed text-slate-600 font-normal">
-                Sĩ số vàng 8–12 học viên/lớp. 100% giáo viên quốc tế đồng hành sát sao cùng cố vấn học tập.
+              <p className="mt-2 max-w-xl text-base font-normal leading-relaxed text-slate-600 sm:text-lg">
+                Sĩ số 8–12 học viên. Giáo viên được tuyển với CELTA hoặc TESOL. Chọn cơ sở trước khi xem lịch.
               </p>
             </div>
             <button
@@ -931,76 +926,83 @@ export function EnglishCenter() {
           </div>
 
           {/* Courses Grid */}
-          <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {visibleCourses.map((course, idx) => {
-              const isPromo = course.badge.includes('Giảm') || course.badge.includes('Ưu đãi')
-              return (
+          <div key={activeCategory} className="motion-list mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {visibleCourses.map((course, idx) => (
                 <article
                   key={course.title}
-                  className={`list-enter group flex flex-col justify-between overflow-hidden rounded-[26px] border bg-white shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-xl ${
-                    isPromo ? 'border-amber-300 ring-2 ring-amber-100' : 'border-slate-200'
+                  className={`list-enter group flex flex-col justify-between overflow-hidden rounded-[26px] border bg-white shadow-sm transition duration-200 hover:-translate-y-1 hover:shadow-xl active:translate-y-0 ${
+                    course.badge ? 'border-amber-300 ring-2 ring-amber-100' : 'border-slate-200'
                   }`}
                   style={{ animationDelay: `${idx * 60}ms` }}
                 >
                   <div>
                     <div className="relative h-52 overflow-hidden">
-                      <img
-                        src={image(course.image, 700)}
-                        alt={`Khóa học ${course.title} - ${course.level}`}
-                        className="media-zoom h-full w-full object-cover"
-                        loading="lazy"
+                      <FrameImage
+                        id={course.scene}
+                        alt={`Minh họa khóa ${course.title}`}
+                        width={700}
+                        sizes="(max-width: 768px) 100vw, 33vw"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent" />
-                      <span className={`absolute left-4 top-4 rounded-md border px-2.5 py-0.5 text-xs sm:text-sm font-extrabold uppercase tracking-wider ${course.color}`}>
-                        {course.badge}
-                      </span>
-                      <span className="absolute bottom-3 right-4 rounded-full bg-white/95 px-3 py-1 text-xs sm:text-sm font-bold text-slate-800 shadow-sm flex items-center">
-                        <Star aria-hidden="true" size={14} fill="currentColor" className="mr-1 inline text-amber-500" />
-                        {course.rating}
-                      </span>
+                      {course.badge && (
+                        <span className="absolute left-4 top-4 rounded-md border border-amber-300 bg-amber-200 px-2.5 py-0.5 text-xs font-extrabold uppercase tracking-wider text-amber-950 sm:text-sm">
+                          {course.badge}
+                        </span>
+                      )}
                     </div>
 
                     <div className="p-5">
-                      <div className="flex items-center justify-between text-sm sm:text-base font-bold text-indigo-700">
-                        <span>{course.level}</span>
-                        <span className="text-slate-500 font-normal text-xs sm:text-sm">Độ tuổi: {course.targetAge}</span>
-                      </div>
-                      <h3 className="mt-2 text-lg sm:text-xl font-extrabold tracking-tight text-[#0A192F] group-hover:text-indigo-600 transition-colors line-clamp-2 leading-snug min-h-[52px] cursor-pointer">
+                      <h3 className="text-lg font-extrabold tracking-tight text-[#0A192F] sm:text-xl">
                         {course.title}
                       </h3>
+                      <dl className="mt-3 grid grid-cols-3 gap-2 text-sm text-slate-700">
+                        <div>
+                          <dt className="text-xs font-bold uppercase tracking-wide text-slate-500">Tuổi</dt>
+                          <dd className="mt-1 font-semibold">{course.targetAge}</dd>
+                        </div>
+                        <div>
+                          <dt className="text-xs font-bold uppercase tracking-wide text-slate-500">Thời lượng</dt>
+                          <dd className="mt-1 font-semibold">{course.duration}</dd>
+                        </div>
+                        <div>
+                          <dt className="text-xs font-bold uppercase tracking-wide text-slate-500">Sĩ số</dt>
+                          <dd className="mt-1 font-semibold">{course.classSize}</dd>
+                        </div>
+                      </dl>
                       <p className="mt-2 text-sm sm:text-base leading-relaxed text-slate-600 line-clamp-2">
                         {course.description}
                       </p>
 
-                      <div className="mt-4 flex items-center gap-4 text-sm sm:text-base font-medium text-slate-600">
-                        <span className="inline-flex items-center gap-1.5">
-                          <Clock3 aria-hidden="true" size={15} className="text-indigo-600" />
-                          {course.duration}
-                        </span>
-                        <span className="inline-flex items-center gap-1.5">
-                          <Users aria-hidden="true" size={15} className="text-indigo-600" />
-                          8–12 học viên
-                        </span>
-                      </div>
                     </div>
                   </div>
 
                   <div className="mt-auto border-t border-slate-100 px-5 pb-5 pt-4">
-                    <span className="block text-xs font-medium text-slate-500 sm:text-sm">Học phí</span>
+                    <span className="block text-xs font-medium text-slate-500 sm:text-sm">Học phí · {course.sessions}</span>
+                    {course.originalPrice && (
+                      <span className="mt-1 block text-sm text-slate-600 line-through">{course.originalPrice}</span>
+                    )}
                     <span className="mt-1 block whitespace-nowrap text-xl font-black leading-none text-[#0A192F] sm:text-2xl">{course.price}</span>
-                    <button
-                      type="button"
-                      onClick={() => openRegister(course.title, `Quan tâm khóa học ${course.title}`)}
-                      className="mt-3 inline-flex h-11 w-full cursor-pointer items-center justify-center gap-1 whitespace-nowrap rounded-xl bg-indigo-50 px-4 text-sm font-bold text-indigo-700 transition-colors hover:bg-indigo-600 hover:text-white"
-                      aria-label={`Đăng ký tư vấn khóa học ${course.title}`}
-                    >
-                      Đăng ký học thử
-                      <ArrowUpRight aria-hidden="true" size={15} />
-                    </button>
+                    {course.discountNote && <span className="mt-1 block text-sm font-bold text-amber-800">{course.discountNote}</span>}
+                    <div className="mt-3 grid grid-cols-2 gap-2">
+                      <button
+                        type="button"
+                        onClick={() => setDetailCourse(course)}
+                        className="inline-flex h-11 items-center justify-center rounded-xl border border-slate-200 text-sm font-bold text-slate-800"
+                      >
+                        Chi tiết
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => openRegister(course.title, `Quan tâm khóa học ${course.title}. Cơ sở ${selectedCampus}.`)}
+                        className="inline-flex h-11 cursor-pointer items-center justify-center gap-1 whitespace-nowrap rounded-xl bg-indigo-50 px-2 text-sm font-bold text-indigo-700 transition-colors hover:bg-indigo-600 hover:text-white"
+                        aria-label={`Đăng ký tư vấn khóa học ${course.title}`}
+                      >
+                        Học thử
+                        <ArrowUpRight aria-hidden="true" size={15} />
+                      </button>
+                    </div>
                   </div>
                 </article>
-              )
-            })}
+            ))}
           </div>
 
           <div className="mt-8 text-center">
@@ -1057,14 +1059,11 @@ export function EnglishCenter() {
         <section id="teachers" className="scroll-reveal scroll-mt-24 mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
           <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
             <div>
-              <p className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-100/80 border border-blue-200/90 text-blue-800 text-xs sm:text-sm font-extrabold uppercase tracking-wider mb-2 shadow-2xs">
-                Đội ngũ quốc tế
-              </p>
-              <h2 className="mt-2 text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#0A192F] tracking-tight">
-                100% Giáo Viên Quốc Tế Tận Tâm
+              <h2 className="text-2xl font-extrabold tracking-tight text-[#0A192F] sm:text-3xl lg:text-4xl">
+                Tiêu chuẩn giáo viên
               </h2>
-              <p className="mt-2 max-w-xl text-base sm:text-lg leading-relaxed text-slate-600 font-normal">
-                100% thầy cô sở hữu bằng cấp sư phạm quốc tế CELTA/TESOL, giàu kinh nghiệm truyền cảm hứng và yêu trẻ.
+              <p className="mt-2 max-w-xl text-base font-normal leading-relaxed text-slate-600 sm:text-lg">
+                Giáo viên đứng lớp cần CELTA hoặc TESOL. Trang này chưa đăng tên, ảnh và video thật.
               </p>
             </div>
             <button
@@ -1085,15 +1084,16 @@ export function EnglishCenter() {
               >
                 <div>
                   <div className="relative h-60 overflow-hidden rounded-2xl">
-                    <img
-                      src={image(teacher.image, 600)}
-                      alt={`Chân dung ${teacher.name} - ${teacher.role}`}
-                      className="media-zoom h-full w-full object-cover"
-                      loading="lazy"
+                    <FrameImage
+                      id={teacher.scene}
+                      alt={`Minh họa ${teacher.name}`}
+                      width={600}
+                      sizes="(max-width: 1024px) 50vw, 25vw"
+                      className="media-zoom object-cover"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent" />
-                    <span className="absolute bottom-3 left-3 rounded-md bg-black/60 backdrop-blur-md px-2.5 py-0.5 text-xs sm:text-sm font-extrabold uppercase tracking-wider text-amber-300 border border-amber-300/30">
-                      {teacher.badge}
+                    <span className="absolute bottom-3 left-3 rounded-md border border-white/30 bg-black/60 px-2.5 py-0.5 text-xs font-extrabold uppercase tracking-wider text-amber-200 sm:text-sm">
+                      Minh họa
                     </span>
                   </div>
 
@@ -1101,8 +1101,8 @@ export function EnglishCenter() {
                     <h3 className="text-lg sm:text-xl font-extrabold text-[#0A192F] tracking-tight">{teacher.name}</h3>
                     <p className="text-sm sm:text-base font-bold text-indigo-700 mt-0.5">{teacher.role}</p>
                     <p className="mt-1 text-xs sm:text-sm font-medium text-slate-500">{teacher.creds} · {teacher.experience}</p>
-                    <p className="mt-2.5 text-sm sm:text-base italic leading-relaxed text-slate-600 border-l-2 border-indigo-200 pl-2.5">
-                      &ldquo;{teacher.quote}&rdquo;
+                    <p className="mt-2.5 border-l-2 border-indigo-200 pl-2.5 text-sm leading-relaxed text-slate-600 sm:text-base">
+                      {teacher.quote}
                     </p>
                   </div>
                 </div>
@@ -1110,10 +1110,10 @@ export function EnglishCenter() {
                 <div className="mt-5 border-t border-slate-100 pt-3 text-center">
                   <button
                     type="button"
-                    onClick={() => openRegister('', `Đăng ký lớp học của ${teacher.name}`)}
-                    className="inline-flex min-h-10 items-center justify-center text-sm sm:text-base font-bold text-indigo-600 hover:text-indigo-800 cursor-pointer"
+                    onClick={() => openRegister('', `Xin lịch lớp cho ${teacher.name} tại ${selectedCampus}`)}
+                    className="inline-flex min-h-11 cursor-pointer items-center justify-center text-sm font-bold text-indigo-600 hover:text-indigo-800 sm:text-base"
                   >
-                    Xem lịch lớp của thầy/cô →
+                    Xem lịch lớp →
                   </button>
                 </div>
               </article>
@@ -1122,84 +1122,93 @@ export function EnglishCenter() {
         </section>
 
         {/* SCHEDULE SECTION */}
-        <section id="schedule" className="scroll-reveal scroll-mt-24 bg-white px-4 py-16 sm:px-6 lg:px-8 lg:py-20 border-y border-slate-200/70">
+        <section id="schedule" className="scroll-mt-24 bg-[#111B3C] px-4 py-16 text-white sm:px-6 lg:px-8 lg:py-20">
           <div className="mx-auto max-w-7xl">
-            <div className="max-w-2xl">
-              <p className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-100/80 border border-blue-200/90 text-blue-800 text-xs sm:text-sm font-extrabold uppercase tracking-wider mb-2 shadow-2xs">
-                Khung giờ đào tạo
-              </p>
-              <h2 className="mt-2 text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-[#0A192F]">
-                Lịch Học Linh Hoạt Phù Hợp Mọi Lứa Tuổi
-              </h2>
-              <p className="mt-2 text-base sm:text-lg leading-relaxed text-slate-600 font-normal">
-                Ca học đa dạng các ngày trong tuần và cuối tuần. Chính sách học bù linh hoạt và bảo lưu học phí lên tới 6 tháng.
-              </p>
-            </div>
-
-            <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-              {[
-                {
-                  shift: 'Ca Sáng (8:30 – 10:30)',
-                  badge: 'Thứ 7 & Chủ Nhật',
-                  desc: 'Mầm non English Explorers, Tiếng Anh phản xạ hè, Lớp nói người đi làm ca gãy.',
-                  icon: Sparkles,
-                },
-                {
-                  shift: 'Ca Chiều (14:30 – 16:30)',
-                  badge: 'T2–T4–T6 hoặc Cuối tuần',
-                  desc: 'Luyện thi Cambridge Starters/Movers/Flyers, CLB kể chuyện và kịch nghệ tiếng Anh.',
-                  icon: BookOpen,
-                },
-                {
-                  shift: 'Ca Tối sớm (17:45 – 19:15)',
-                  badge: 'Tất cả các ngày',
-                  desc: 'Bright Stars tiểu học, Ngữ pháp học thuật THCS, Ôn thi vào lớp 10 chuyên Anh.',
-                  icon: Clock3,
-                },
-                {
-                  shift: 'Ca Tối muộn (19:30 – 21:00)',
-                  badge: 'T3–T5–T7 hoặc Cuối tuần',
-                  desc: 'IELTS Breakthrough, IELTS Mastery 7.0+, Tiếng Anh giao tiếp công sở cho người đi làm.',
-                  icon: Target,
-                },
-              ].map((s, index) => {
-                const Icon = s.icon
-                return (
-                <div
-                  key={s.shift}
-                  className="list-enter flex h-full flex-col rounded-2xl border border-slate-200 bg-slate-50 p-5"
-                  style={{ animationDelay: `${index * 60}ms` }}
-                >
-                  <div className="flex flex-col items-start gap-3">
-                    <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-white text-indigo-700 shadow-sm">
-                      <Icon aria-hidden="true" size={20} />
-                    </span>
-                    <span className="rounded-md bg-indigo-100 px-2.5 py-1 text-xs font-bold uppercase leading-tight tracking-wide text-indigo-900">
-                      {s.badge}
-                    </span>
-                  </div>
-                  <h3 className="mt-4 text-lg font-bold text-[#0A192F] sm:text-xl">{s.shift}</h3>
-                  <p className="mt-1.5 flex-1 text-sm leading-relaxed text-slate-600 sm:text-base">{s.desc}</p>
-                </div>
-                )
-              })}
-            </div>
-
-            <div className="mt-6 flex flex-wrap items-center justify-between gap-4 rounded-2xl bg-amber-50 p-4 border border-amber-200 text-sm sm:text-base text-amber-950">
-              <div className="flex items-center gap-2">
-                <CheckCircle2 size={18} className="text-amber-700 shrink-0" />
-                <span>
-                  <strong>Học bù linh hoạt:</strong> Bận lịch đột xuất? Dễ dàng đặt lịch học bù tại ca tương đương trong tuần.
-                </span>
+            <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+              <div className="max-w-2xl">
+                <p className="text-sm font-bold uppercase tracking-wider text-amber-300">Một ngày tại {selectedCampus}</p>
+                <h2 className="mt-2 text-2xl font-extrabold tracking-tight sm:text-3xl lg:text-4xl">
+                  Lịch học linh hoạt, phù hợp mọi lứa tuổi
+                </h2>
+                <p className="mt-3 max-w-xl text-base leading-relaxed text-slate-300 sm:text-lg">
+                  Bốn ca từ 8:30 đến 21:00. Học bù trong tuần và bảo lưu học phí đến 6 tháng.
+                </p>
               </div>
               <button
                 type="button"
-                onClick={() => openRegister('', 'Hỏi chi tiết về lịch học các ca')}
-                className="inline-flex min-h-9 items-center font-bold text-amber-900 underline underline-offset-2 hover:text-amber-700 cursor-pointer"
+                onClick={() => openRegister('', `Xin thời khóa biểu tại ${selectedCampus}`)}
+                className="inline-flex h-12 shrink-0 cursor-pointer items-center justify-center gap-2 rounded-xl bg-amber-400 px-6 text-sm font-bold text-slate-950 shadow-lg shadow-amber-950/30 transition hover:bg-amber-300 sm:text-base"
               >
-                Nhận thời khóa biểu chi tiết →
+                Nhận thời khóa biểu <ArrowRight aria-hidden="true" size={16} />
               </button>
             </div>
+
+            <ol className="relative mt-10 grid gap-4 md:grid-cols-2 lg:mt-14 lg:grid-cols-4">
+              <span className="absolute left-[12%] right-[12%] top-9 hidden h-px bg-white/25 lg:block" aria-hidden="true" />
+              {[
+                {
+                  time: '8:30',
+                  until: '10:30',
+                  name: 'Ca sáng',
+                  days: 'Thứ 7 và Chủ Nhật',
+                  classes: ['English Explorers', 'Phản xạ hè', 'Người đi làm ca gãy'],
+                  icon: Sparkles,
+                  chip: 'bg-amber-400 text-slate-950',
+                },
+                {
+                  time: '14:30',
+                  until: '16:30',
+                  name: 'Ca chiều',
+                  days: 'T2, T4, T6 hoặc cuối tuần',
+                  classes: ['Cambridge Starters–Flyers', 'CLB kể chuyện', 'Kịch nghệ'],
+                  icon: BookOpen,
+                  chip: 'bg-cyan-300 text-slate-950',
+                },
+                {
+                  time: '17:45',
+                  until: '19:15',
+                  name: 'Tối sớm',
+                  days: 'Tất cả các ngày',
+                  classes: ['Bright Stars', 'Ngữ pháp THCS', 'Ôn lớp 10 chuyên Anh'],
+                  icon: Clock3,
+                  chip: 'bg-violet-300 text-slate-950',
+                },
+                {
+                  time: '19:30',
+                  until: '21:00',
+                  name: 'Tối muộn',
+                  days: 'T3, T5, T7 hoặc cuối tuần',
+                  classes: ['IELTS Breakthrough', 'IELTS Mastery 7.0+', 'Giao tiếp công sở'],
+                  icon: Target,
+                  chip: 'bg-white text-slate-950',
+                },
+              ].map((slot) => {
+                const Icon = slot.icon
+                return (
+                  <li key={slot.time} className="relative flex h-full flex-col rounded-3xl border border-white/10 bg-white/5 p-5 backdrop-blur-sm">
+                    <span className={`relative z-10 grid size-12 place-items-center rounded-2xl ${slot.chip}`}>
+                      <Icon aria-hidden="true" size={20} />
+                    </span>
+                    <p className="mt-5 text-4xl font-black tracking-tight">{slot.time}</p>
+                    <p className="mt-1 text-sm font-bold text-slate-300">đến {slot.until} · {slot.name}</p>
+                    <p className="mt-4 text-sm font-bold text-amber-200">{slot.days}</p>
+                    <ul className="mt-3 flex flex-1 flex-col gap-1.5 text-sm text-slate-200">
+                      {slot.classes.map((item) => (
+                        <li key={item} className="flex gap-2">
+                          <span aria-hidden="true" className="mt-2 size-1.5 shrink-0 rounded-full bg-amber-300" />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </li>
+                )
+              })}
+            </ol>
+
+            <p className="mt-6 flex items-start gap-2 text-sm leading-relaxed text-slate-300 sm:text-base">
+              <CheckCircle2 aria-hidden="true" size={18} className="mt-0.5 shrink-0 text-amber-300" />
+              Bận một buổi thì học bù ở ca tương đương trong tuần. Ca cụ thể được xác nhận khi gọi lại.
+            </p>
           </div>
         </section>
 
@@ -1246,23 +1255,24 @@ export function EnglishCenter() {
                   Hợp đồng đào tạo rõ ràng cho từng lộ trình Cambridge và IELTS. Được học lại miễn phí nếu chưa đạt band điểm cam kết.
                 </p>
                 <div className="mt-5 flex items-center gap-2 text-sm sm:text-base font-bold text-emerald-700 bg-emerald-50 p-3.5 rounded-xl border border-emerald-100">
-                  <CheckCircle2 size={16} /> 100% học viên an tâm tuyệt đối về chất lượng
+                  <CheckCircle2 size={16} /> Cam kết, nếu có, được ghi trong hợp đồng sau bài test.
                 </div>
               </div>
 
               {/* Scrim-protected campus card for high text contrast */}
               <div className="group relative min-h-[260px] overflow-hidden rounded-[26px] md:col-span-2 shadow-md">
-                <img
-                  className="media-zoom absolute inset-0 size-full object-cover"
-                  src={image('photo-1498243691581-b145c3f54a5a', 800)}
-                  alt="Thư viện hiện đại tại Bright English"
-                  loading="lazy"
+                <FrameImage
+                  id="space-why"
+                  alt="Minh họa không gian học"
+                  width={800}
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="media-zoom object-cover"
                 />
                 {/* Dark gradient scrim ensures contrast > 7:1 */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent" />
                 <div className="absolute bottom-0 p-6 text-white">
                   <span className="rounded-md bg-black/60 backdrop-blur-md px-2.5 py-0.5 text-xs sm:text-sm font-extrabold uppercase tracking-wider text-amber-300 border border-amber-300/30">
-                    Cơ sở vật chất 5 sao
+                    Minh họa, chưa phải ảnh cơ sở
                   </span>
                   <h3 className="mt-2.5 text-xl sm:text-2xl font-extrabold">Không gian truyền cảm hứng học tập</h3>
                   <p className="mt-1 text-sm sm:text-base text-slate-200">
@@ -1281,87 +1291,6 @@ export function EnglishCenter() {
                 </p>
               </div>
             </div>
-          </div>
-        </section>
-
-        {/* STORIES SECTION */}
-        <section id="stories" className="scroll-reveal scroll-mt-24 mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
-          <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
-            <div>
-              <p className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-100/80 border border-blue-200/90 text-blue-800 text-xs sm:text-sm font-extrabold uppercase tracking-wider mb-2 shadow-2xs">
-                Người thật · Thành quả thật
-              </p>
-              <h2 className="mt-2 text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-[#0A192F]">
-                Câu Chuyện Tiến Bộ Từ Học Viên Bright
-              </h2>
-            </div>
-            <div className="flex items-center gap-1.5 text-amber-500">
-              {[1, 2, 3, 4, 5].map((s) => (
-                <Star key={s} aria-hidden="true" size={16} fill="currentColor" />
-              ))}
-              <span className="text-sm sm:text-base font-extrabold text-[#0A192F] ml-1">4.9/5</span>
-              <span className="text-sm sm:text-base text-slate-500">(2.400+ đánh giá phụ huynh)</span>
-            </div>
-          </div>
-
-          <div className="mt-10 grid gap-6 md:grid-cols-3">
-            {[
-              {
-                name: 'Minh Anh',
-                school: 'THPT chuyên Hà Nội – Amsterdam',
-                score: 'IELTS 8.0 Overall',
-                image: 'photo-1534528741775-53994a69daeb',
-                quote: 'Từ một cô bé sợ nói tiếng Anh trước đám đông, giờ mình đã tự tin thuyết trình và đạt 8.0 IELTS. Thầy cô ở Bright luôn cổ vũ mình khám phá phiên bản tốt nhất của bản thân.',
-              },
-              {
-                name: 'Hoàng Nam',
-                school: 'THCS Cầu Giấy, Hà Nội',
-                score: 'IELTS 7.5 (Lớp 9)',
-                image: 'photo-1500648767791-00dcc994a43e',
-                quote: 'Các buổi học ở lớp thú vị hơn nhiều so với việc chỉ giải đề. Mình được tranh luận các chủ đề khoa học, xã hội và cảm nhận sự tiến bộ rõ rệt qua từng tháng.',
-              },
-              {
-                name: 'Bảo Ngọc',
-                school: 'Học bổng 100% — Monash University',
-                score: 'Du học sinh Úc',
-                image: 'photo-1531123897727-8f129e1688ce',
-                quote: 'Bright không chỉ rèn luyện tiếng Anh mà còn giúp mình xây dựng tư duy phản biện và sự tự tin để viết bài luận săn học bổng thành công.',
-              },
-            ].map((student, index) => (
-              <article
-                key={student.name}
-                className="list-enter flex h-full flex-col justify-between rounded-[26px] border border-slate-200 bg-white p-6 shadow-sm transition duration-200 hover:-translate-y-1 hover:shadow-lg"
-                style={{ animationDelay: `${index * 60}ms` }}
-              >
-                <div>
-                  <div className="flex items-center justify-between">
-                    <span className="flex gap-0.5 text-amber-500">
-                      {[1, 2, 3, 4, 5].map((i) => (
-                        <Star key={i} aria-hidden="true" size={14} fill="currentColor" />
-                      ))}
-                    </span>
-                    <Quote aria-hidden="true" size={22} className="text-indigo-200" />
-                  </div>
-                  <p className="mt-3.5 text-sm sm:text-base text-slate-700 leading-relaxed italic">&ldquo;{student.quote}&rdquo;</p>
-                </div>
-
-                <div className="mt-5 flex items-center gap-3 border-t border-slate-100 pt-4">
-                  <img
-                    src={image(student.image, 140)}
-                    alt={`Học viên ${student.name} - ${student.school}`}
-                    className="size-11 rounded-full object-cover border-2 border-indigo-100"
-                    loading="lazy"
-                  />
-                  <div className="min-w-0 flex-1">
-                    <h3 className="text-sm sm:text-base font-extrabold text-[#0A192F]">{student.name}</h3>
-                    <p className="truncate text-xs sm:text-sm text-slate-500 mt-0.5">{student.school}</p>
-                  </div>
-                  <span className="shrink-0 rounded-full bg-indigo-50 px-2.5 py-1 text-center text-xs font-bold leading-tight text-indigo-700 sm:text-sm">
-                    {student.score}
-                  </span>
-                </div>
-              </article>
-            ))}
           </div>
         </section>
 
@@ -1425,13 +1354,44 @@ export function EnglishCenter() {
                 <p className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-100/80 border border-blue-200/90 text-blue-800 text-xs sm:text-sm font-extrabold uppercase tracking-wider mb-2 shadow-2xs">
                   Không gian trải nghiệm
                 </p>
-                <h2 className="mt-2 text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-[#0A192F]">
-                  Cơ Sở Vật Chất Hiện Đại Chuẩn 5 Sao
+                <h2 className="mt-2 text-2xl font-extrabold tracking-tight text-[#0A192F] sm:text-3xl lg:text-4xl">
+                  Hai cơ sở
                 </h2>
               </div>
               <a href="#start" className="inline-flex min-h-11 items-center text-sm sm:text-base font-bold text-indigo-800 hover:text-indigo-900">
                 Ghé thăm trực tiếp cơ sở <ArrowRight aria-hidden="true" className="ml-1.5" size={16} />
               </a>
+            </div>
+
+            <div className="mt-6 flex flex-wrap gap-2" role="tablist" aria-label="Chọn cơ sở">
+              {BRANCHES.map((branch) => {
+                const campus = branch.name.includes('Hà Nội') ? 'Cầu Giấy, Hà Nội' : 'Gò Vấp, TP.HCM'
+                const selected = selectedCampus === campus
+                return (
+                  <button
+                    key={branch.name}
+                    type="button"
+                    role="tab"
+                    aria-selected={selected}
+                    onClick={() => setSelectedCampus(campus)}
+                    className={`h-11 rounded-full px-4 text-sm font-bold ${selected ? 'bg-[#0A192F] text-white' : 'border border-slate-200 bg-white text-slate-700'}`}
+                  >
+                    {campus}
+                  </button>
+                )
+              })}
+            </div>
+            <p className="mt-3 max-w-3xl text-sm leading-relaxed text-slate-600 sm:text-base">
+              Học phí niêm yết trên trang giống nhau ở hai cơ sở. Lịch khai giảng có thể khác và được xác nhận khi gọi lại. Video lớp học sẽ được nhúng khi trung tâm cung cấp bản ghi.
+            </p>
+            <div className="mt-4 overflow-hidden rounded-2xl border border-slate-200 bg-white">
+              <iframe
+                title={`Bản đồ ${selectedCampus}`}
+                src={`https://maps.google.com/maps?q=${encodeURIComponent(BRANCHES.find((branch) => branch.name.includes(selectedCampus.includes('Hà Nội') ? 'Hà Nội' : 'HCM'))?.address || '')}&z=16&output=embed`}
+                className="h-64 w-full border-0"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
             </div>
 
             <div className="mt-8 grid auto-rows-[200px] grid-cols-1 gap-4 sm:auto-rows-[240px] sm:grid-cols-2 lg:grid-cols-4">
@@ -1442,11 +1402,12 @@ export function EnglishCenter() {
                     i === 0 ? 'sm:col-span-2 sm:row-span-2' : ''
                   }`}
                 >
-                  <img
-                    className={`${i === 0 ? 'media-pan' : 'media-zoom'} size-full object-cover`}
-                    src={image(item.id, 900)}
+                  <FrameImage
+                    id={item.id}
                     alt={item.alt}
-                    loading="lazy"
+                    width={900}
+                    sizes={i === 0 ? '(max-width: 1024px) 100vw, 50vw' : '(max-width: 1024px) 50vw, 25vw'}
+                    className={`${i === 0 ? 'media-pan' : 'media-zoom'} object-cover`}
                   />
                   {/* Scrim: Dark gradient to ensure high contrast for text (>=7:1) */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent" />
@@ -1469,6 +1430,18 @@ export function EnglishCenter() {
             <h2 className="mt-2 text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-[#0A192F]">
               Ba Bước Đơn Giản Để Bắt Đầu Cùng Bright
             </h2>
+            <div className="relative mt-6 h-44 overflow-hidden rounded-2xl sm:h-56">
+              <FrameImage
+                id="start-visit"
+                alt="Minh họa ba bước bắt đầu"
+                width={1200}
+                sizes="(max-width: 1024px) 100vw, 1100px"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-slate-950/10 to-transparent" />
+              <p className="absolute bottom-4 left-5 right-5 text-base font-bold text-white sm:text-lg">
+                Chọn khóa, làm bài test, rồi giữ lịch học thử.
+              </p>
+            </div>
 
             <ol className="mt-8 grid items-stretch gap-5 lg:grid-cols-3">
               <li className="list-enter flex h-full flex-col justify-between rounded-2xl border border-slate-200 bg-slate-50 p-6">
@@ -1483,7 +1456,7 @@ export function EnglishCenter() {
                 </div>
                 <a
                   href="#courses"
-                  className="mt-5 inline-flex min-h-10 items-center text-sm sm:text-base font-bold text-indigo-700 hover:text-indigo-900"
+                  className="mt-5 inline-flex min-h-11 items-center text-sm font-bold text-indigo-700 hover:text-indigo-900 sm:text-base"
                 >
                   Xem danh sách khóa học <ArrowRight size={15} className="ml-1.5" />
                 </a>
@@ -1502,7 +1475,7 @@ export function EnglishCenter() {
                 <button
                   type="button"
                   onClick={() => setModal('quiz')}
-                  className="mt-5 inline-flex min-h-10 items-center text-sm sm:text-base font-bold text-indigo-700 hover:text-indigo-900 text-left cursor-pointer"
+                  className="mt-5 inline-flex min-h-11 cursor-pointer items-center text-left text-sm font-bold text-indigo-700 hover:text-indigo-900 sm:text-base"
                 >
                   Bắt đầu bài test ngay <ArrowRight size={15} className="ml-1.5" />
                 </button>
@@ -1515,7 +1488,7 @@ export function EnglishCenter() {
                   </span>
                   <h3 className="mt-2.5 text-lg sm:text-xl font-extrabold text-[#0A192F]">Đăng ký tư vấn & học thử</h3>
                   <p className="mt-1.5 text-sm sm:text-base leading-relaxed text-slate-700">
-                    Để lại thông tin, tư vấn viên sẽ gọi điện xác nhận trong 15 phút và gửi lịch học thử miễn phí.
+                    Để lại khóa, độ tuổi, cơ sở và khung giờ gọi lại. Tư vấn viên xác nhận lịch học thử sau khi nhận yêu cầu.
                   </p>
                 </div>
                 <button
@@ -1554,7 +1527,7 @@ export function EnglishCenter() {
                     href={b.mapLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mt-1 inline-flex items-center gap-1 text-xs sm:text-sm font-semibold text-indigo-600 hover:underline pl-5"
+                    className="mt-1 inline-flex min-h-11 items-center gap-1 pl-5 text-xs font-semibold text-indigo-600 hover:underline sm:text-sm"
                   >
                     Xem chỉ đường trên Google Maps <ExternalLink size={12} />
                   </a>
@@ -1570,7 +1543,7 @@ export function EnglishCenter() {
         <div className="mx-auto max-w-7xl">
           <div className="grid gap-10 border-b border-slate-800 pb-12 md:grid-cols-[1.2fr_.8fr_.9fr_1.1fr]">
             <div>
-              <a href="#home" className="flex items-center gap-2.5">
+              <a href="#home" className="inline-flex min-h-11 items-center gap-2.5">
                 <span className="grid size-10 place-items-center rounded-xl bg-gradient-to-br from-indigo-500 to-cyan-400 text-white shadow-md shadow-indigo-900/20">
                   <Sparkles aria-hidden="true" size={20} />
                 </span>
@@ -1586,15 +1559,15 @@ export function EnglishCenter() {
                   href="https://facebook.com/brightenglish.vn"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex min-h-10 items-center justify-center rounded-xl bg-slate-800 border border-slate-700 px-3.5 text-sm font-semibold text-slate-300 hover:bg-slate-700 hover:text-white transition-colors"
+                  className="inline-flex min-h-11 items-center justify-center rounded-xl border border-slate-700 bg-slate-800 px-3.5 text-sm font-semibold text-slate-300 transition-colors hover:bg-slate-700 hover:text-white"
                 >
                   Facebook Page
                 </a>
                 <a
-                  href="https://zalo.me/0901234567"
+                  href="https://zalo.me/19006868"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex min-h-10 items-center justify-center rounded-xl bg-slate-800 border border-slate-700 px-3.5 text-sm font-semibold text-slate-300 hover:bg-slate-700 hover:text-white transition-colors"
+                  className="inline-flex min-h-11 items-center justify-center rounded-xl border border-slate-700 bg-slate-800 px-3.5 text-sm font-semibold text-slate-300 transition-colors hover:bg-slate-700 hover:text-white"
                 >
                   Zalo OA
                 </a>
@@ -1604,22 +1577,22 @@ export function EnglishCenter() {
             <div>
               <h4 className="text-sm sm:text-base font-bold uppercase tracking-wider text-white">Khám phá</h4>
               <nav className="mt-4 flex flex-col gap-1 text-sm sm:text-base text-slate-400">
-                <a className="inline-flex min-h-[38px] items-center hover:text-white transition-colors" href="#offers">
+                <a className="inline-flex min-h-11 items-center hover:text-white transition-colors" href="#offers">
                   Ưu đãi học phí
                 </a>
-                <a className="inline-flex min-h-[38px] items-center hover:text-white transition-colors" href="#who">
+                <a className="inline-flex min-h-11 items-center hover:text-white transition-colors" href="#who">
                   Chương trình theo độ tuổi
                 </a>
-                <a className="inline-flex min-h-[38px] items-center hover:text-white transition-colors" href="#courses">
+                <a className="inline-flex min-h-11 items-center hover:text-white transition-colors" href="#courses">
                   Danh sách khóa học
                 </a>
-                <a className="inline-flex min-h-[38px] items-center hover:text-white transition-colors" href="#teachers">
+                <a className="inline-flex min-h-11 items-center hover:text-white transition-colors" href="#teachers">
                   Đội ngũ giáo viên
                 </a>
-                <a className="inline-flex min-h-[38px] items-center hover:text-white transition-colors" href="#schedule">
+                <a className="inline-flex min-h-11 items-center hover:text-white transition-colors" href="#schedule">
                   Lịch học & ca học
                 </a>
-                <a className="inline-flex min-h-[38px] items-center hover:text-white transition-colors" href="#stories">
+                <a className="inline-flex min-h-11 items-center hover:text-white transition-colors" href="#stories">
                   Câu chuyện thành công
                 </a>
               </nav>
@@ -1636,16 +1609,16 @@ export function EnglishCenter() {
                       href={b.mapLink}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 text-xs sm:text-sm text-cyan-300 hover:underline mt-0.5"
+                      className="mt-0.5 inline-flex min-h-11 items-center gap-1 text-xs text-cyan-300 hover:underline sm:text-sm"
                     >
                       Xem bản đồ <ExternalLink size={12} />
                     </a>
                   </div>
                 ))}
-                <a className="inline-flex min-h-[36px] items-center gap-2 hover:text-white text-sm sm:text-base text-slate-300 font-medium" href="tel:19006868">
+                <a className="inline-flex min-h-11 items-center gap-2 hover:text-white text-sm sm:text-base text-slate-300 font-medium" href="tel:19006868">
                   <Phone aria-hidden="true" size={14} className="text-amber-400" /> Hotline: <strong className="text-white">1900 6868</strong>
                 </a>
-                <a className="inline-flex min-h-[36px] items-center gap-2 hover:text-white text-sm sm:text-base text-slate-300" href="mailto:hello@brightenglish.vn">
+                <a className="inline-flex min-h-11 items-center gap-2 hover:text-white text-sm sm:text-base text-slate-300" href="mailto:hello@brightenglish.vn">
                   <Mail aria-hidden="true" size={14} className="text-indigo-400" /> hello@brightenglish.vn
                 </a>
               </div>
@@ -1654,7 +1627,7 @@ export function EnglishCenter() {
             <div>
               <h4 className="text-sm sm:text-base font-bold uppercase tracking-wider text-white">Bí kíp học tiếng Anh</h4>
               <p className="mt-3 text-sm sm:text-base leading-relaxed text-slate-400">
-                Nhận tài liệu ngữ pháp, đề thi thử IELTS và thông tin học bổng gửi định kỳ vào hộp thư của bạn.
+                Một email mỗi tháng: một mẹo học ngắn và lịch khai giảng. Không có blog riêng trên trang này.
               </p>
 
               {newsletterSuccess ? (
@@ -1669,10 +1642,13 @@ export function EnglishCenter() {
                     </label>
                     <input
                       id="newsletter-email"
+                      name="email"
                       type="email"
+                      required
                       value={newsletterEmail}
                       onChange={(e) => {
                         setNewsletterEmail(e.target.value)
+                        e.currentTarget.setCustomValidity('')
                         if (newsletterError) setNewsletterError('')
                       }}
                       placeholder="Nhập email của bạn..."
@@ -1704,9 +1680,9 @@ export function EnglishCenter() {
       </footer>
 
       {/* FLOATING ACTION BUTTONS (Zalo + Hotline) - Placed safely above mobile dock */}
-      <div className="fixed bottom-24 right-4 z-40 flex flex-col gap-2.5 md:bottom-8 md:right-8">
+      <div className="fixed right-4 z-40 flex flex-col gap-2.5 bottom-[calc(5.75rem+env(safe-area-inset-bottom))] md:bottom-8 md:right-8">
         <a
-          href="https://zalo.me/0901234567"
+          href="https://zalo.me/19006868"
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Chat Zalo cùng tư vấn viên Bright"
@@ -1748,11 +1724,52 @@ export function EnglishCenter() {
       </div>
 
       {/* MODALS */}
+      {detailCourse && (
+        <div className="fixed inset-0 z-[70] overflow-y-auto bg-slate-950/60" role="presentation" onClick={() => setDetailCourse(null)}>
+          <div className="flex min-h-full items-center justify-center p-4">
+            <section
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="course-detail-title"
+              className="w-full max-w-lg rounded-[28px] bg-white p-6 shadow-2xl sm:p-8"
+              onClick={(event) => event.stopPropagation()}
+            >
+              <h2 id="course-detail-title" className="pr-10 text-2xl font-black text-[#0A192F]">{detailCourse.title}</h2>
+              <dl className="mt-4 grid grid-cols-2 gap-3 text-sm">
+                <div><dt className="font-bold text-slate-500">Tuổi</dt><dd className="font-semibold">{detailCourse.targetAge}</dd></div>
+                <div><dt className="font-bold text-slate-500">Thời lượng</dt><dd className="font-semibold">{detailCourse.duration}</dd></div>
+                <div><dt className="font-bold text-slate-500">Nhịp học</dt><dd className="font-semibold">{detailCourse.sessions}</dd></div>
+                <div><dt className="font-bold text-slate-500">Sĩ số</dt><dd className="font-semibold">{detailCourse.classSize}</dd></div>
+              </dl>
+              <p className="mt-4 text-base leading-relaxed text-slate-700">{detailCourse.description}</p>
+              <p className="mt-2 text-base leading-relaxed text-slate-700"><strong>Đầu ra mô tả:</strong> {detailCourse.outcome}</p>
+              <p className="mt-2 text-base font-bold text-[#0A192F]">Học phí: {detailCourse.price}{detailCourse.discountNote ? ` (${detailCourse.discountNote})` : ''}</p>
+              <p className="mt-2 text-sm text-slate-600">Lịch theo ca sáng, chiều hoặc tối tại {selectedCampus}. Ca cụ thể gửi khi gọi lại.</p>
+              <div className="mt-5 flex gap-2">
+                <button type="button" onClick={() => setDetailCourse(null)} className="h-11 flex-1 rounded-xl border border-slate-200 font-bold">Đóng</button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const title = detailCourse.title
+                    setDetailCourse(null)
+                    openRegister(title, `Xem chi tiết khóa ${title} tại ${selectedCampus}`)
+                  }}
+                  className="h-11 flex-1 rounded-xl bg-indigo-600 font-bold text-white"
+                >
+                  Đăng ký học thử
+                </button>
+              </div>
+            </section>
+          </div>
+        </div>
+      )}
+
       {modal === 'register' && (
         <RegistrationModal
           onClose={() => setModal(null)}
           initialCourse={selectedCourse}
           initialNote={selectedNote}
+          initialCampus={selectedCampus}
         />
       )}
 

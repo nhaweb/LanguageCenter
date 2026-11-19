@@ -2,23 +2,49 @@
 
 import { useEffect, useState } from 'react'
 import { ArrowRight, Check, Sparkles, X, AlertCircle } from 'lucide-react'
+import { saveLead } from '@/lib/lead'
+
+const COURSE_OPTIONS = [
+  'English Explorers',
+  'Bright Stars',
+  'Cambridge Champions',
+  'IELTS Breakthrough',
+  'IELTS Mastery 7.0+',
+  'Speak with Confidence',
+  'Chưa xác định',
+] as const
+
+const AGE_OPTIONS = ['4–6 tuổi', '6–11 tuổi', '12–15 tuổi', '15+ tuổi', 'Người đi làm', 'Phụ huynh đăng ký hộ']
+const CALLBACK_OPTIONS = ['Sáng 8:00–11:00', 'Chiều 13:00–17:00', 'Tối 18:00–21:00']
+const CAMPUS_OPTIONS = ['Gò Vấp, TP.HCM', 'Cầu Giấy, Hà Nội']
 
 type RegistrationModalProps = {
   onClose: () => void
   initialCourse?: string
   initialNote?: string
+  initialCampus?: string
 }
 
-export function RegistrationModal({ onClose, initialCourse = '', initialNote = '' }: RegistrationModalProps) {
+export function RegistrationModal({
+  onClose,
+  initialCourse = '',
+  initialNote = '',
+  initialCampus = CAMPUS_OPTIONS[0],
+}: RegistrationModalProps) {
+  const matchedCourse = COURSE_OPTIONS.includes(initialCourse as (typeof COURSE_OPTIONS)[number]) ? initialCourse : ''
   const [fullName, setFullName] = useState('')
   const [phone, setPhone] = useState('')
   const [email, setEmail] = useState('')
-  const [course, setCourse] = useState(initialCourse || '')
-  const [branch, setBranch] = useState('12 Nguyễn Văn Bảo, Gò Vấp, TP.HCM')
-  const [note, setNote] = useState(initialNote || '')
-  
+  const [course, setCourse] = useState(matchedCourse)
+  const [age, setAge] = useState('')
+  const [callback, setCallback] = useState('')
+  const [branch, setBranch] = useState(CAMPUS_OPTIONS.some((item) => item === initialCampus) ? initialCampus : CAMPUS_OPTIONS[0])
+  const [note, setNote] = useState(initialNote || (initialCourse && !matchedCourse ? `Khóa quan tâm: ${initialCourse}` : ''))
+  const [consent, setConsent] = useState(false)
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [submitted, setSubmitted] = useState(false)
+  const [delivered, setDelivered] = useState(false)
+  const [submitError, setSubmitError] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   useEffect(() => {
@@ -62,20 +88,40 @@ export function RegistrationModal({ onClose, initialCourse = '', initialNote = '
     if (!branch) {
       nextErrors.branch = 'Vui lòng chọn cơ sở học tập.'
     }
+    if (!age) nextErrors.age = 'Vui lòng chọn độ tuổi.'
+    if (!callback) nextErrors.callback = 'Vui lòng chọn khung giờ gọi lại.'
+    if (!consent) nextErrors.consent = 'Cần đồng ý xử lý dữ liệu để tư vấn viên được gọi lại.'
 
     setErrors(nextErrors)
     return Object.keys(nextErrors).length === 0
   }
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
+    setSubmitError('')
     if (!validate()) return
 
     setIsSubmitting(true)
-    setTimeout(() => {
-      setIsSubmitting(false)
+    try {
+      const result = await saveLead({
+        kind: 'consultation',
+        name: fullName.trim(),
+        phone: phone.trim(),
+        email: email.trim(),
+        course,
+        campus: branch,
+        age,
+        callback,
+        note: note.trim(),
+        consent,
+      })
+      setDelivered(result.delivered)
       setSubmitted(true)
-    }, 400)
+    } catch {
+      setSubmitError('Chưa gửi được yêu cầu. Kiểm tra mạng rồi thử lại, hoặc gọi 1900 6868.')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -124,8 +170,14 @@ export function RegistrationModal({ onClose, initialCourse = '', initialNote = '
               Cảm ơn {fullName || 'bạn'}!
             </h2>
             <div className="mx-auto mt-3 max-w-sm rounded-2xl bg-indigo-50/70 p-4 text-sm text-slate-700">
-              <p className="font-bold text-indigo-950">Tư vấn viên Bright sẽ liên hệ trong 15 phút</p>
-              <p className="mt-1 text-sm text-slate-600">qua số điện thoại <strong className="text-slate-900">{phone}</strong> để xác nhận lịch hẹn và gửi quà tặng ưu đãi học phí.</p>
+              <p className="font-bold text-indigo-950">
+                {delivered ? 'Đã chuyển yêu cầu cho tư vấn viên' : 'Đã lưu yêu cầu trên trình duyệt này'}
+              </p>
+              <p className="mt-1 text-sm text-slate-600">
+                Khung giờ gọi lại: <strong className="text-slate-900">{callback}</strong>, số{' '}
+                <strong className="text-slate-900">{phone}</strong>, cơ sở {branch}.
+                {delivered ? '' : ' Môi trường này chưa nối máy chủ nhận lead — gọi 1900 6868 nếu cần xếp lịch ngay.'}
+              </p>
             </div>
             <button
               type="button"
@@ -149,7 +201,7 @@ export function RegistrationModal({ onClose, initialCourse = '', initialNote = '
               </div>
             </div>
             <p className="mt-2.5 text-sm sm:text-base leading-relaxed text-slate-600">
-              Nhận tư vấn lộ trình học cá nhân hóa, 1 buổi học thử cùng giáo viên quốc tế và ưu đãi học phí lên tới 35%.
+              Chọn khóa, độ tuổi, cơ sở và khung giờ gọi lại. Học thử được xếp sau khi tư vấn viên xác nhận.
             </p>
 
             {Object.keys(errors).length > 0 && (
@@ -244,21 +296,66 @@ export function RegistrationModal({ onClose, initialCourse = '', initialNote = '
                     errors.course ? 'border-rose-400 bg-rose-50/30 focus:ring-rose-200' : 'border-slate-200 focus:border-indigo-500 focus:ring-indigo-100'
                   }`}
                 >
-                  <option value="" disabled>Chọn chương trình hoặc khóa học</option>
-                  <option value="Mầm non · English Explorers (4–6 tuổi)">Mầm non · English Explorers (4–6 tuổi)</option>
-                  <option value="Tiểu học · Bright Stars (6–11 tuổi)">Tiểu học · Bright Stars (6–11 tuổi)</option>
-                  <option value="Tiểu học · Cambridge Champions (Starters/Movers/Flyers)">Tiểu học · Cambridge Champions (Starters/Movers/Flyers)</option>
-                  <option value="THCS · IELTS Breakthrough (12–17 tuổi)">THCS · IELTS Breakthrough (12–17 tuổi)</option>
-                  <option value="THPT & IELTS · IELTS Mastery 7.0+ (15+ tuổi)">THPT & IELTS · IELTS Mastery 7.0+ (15+ tuổi)</option>
-                  <option value="Giao tiếp người đi làm · Speak with Confidence">Giao tiếp người đi làm · Speak with Confidence</option>
-                  <option value="Chưa xác định - Cần tư vấn kiểm tra trình độ">Chưa xác định - Cần tư vấn kiểm tra trình độ</option>
+                  <option value="" disabled>Chọn khóa học</option>
+                  {COURSE_OPTIONS.map((item) => (
+                    <option key={item} value={item}>{item}</option>
+                  ))}
                 </select>
                 {errors.course && <p className="text-xs sm:text-sm font-medium text-rose-600">{errors.course}</p>}
               </div>
 
+              <div className="grid min-w-0 grid-cols-1 gap-3.5 sm:grid-cols-2 sm:gap-3">
+                <div className="grid min-w-0 gap-1">
+                  <label className="text-sm font-bold text-slate-800" htmlFor="reg-age">
+                    Độ tuổi <span className="text-rose-500">*</span>
+                  </label>
+                  <select
+                    id="reg-age"
+                    required
+                    value={age}
+                    onChange={(e) => {
+                      setAge(e.target.value)
+                      if (errors.age) setErrors((prev) => ({ ...prev, age: '' }))
+                    }}
+                    className={`h-12 w-full min-w-0 rounded-xl border bg-white px-4 text-sm outline-none transition focus:ring-2 sm:text-base ${
+                      errors.age ? 'border-rose-400 focus:ring-rose-200' : 'border-slate-200 focus:border-indigo-500 focus:ring-indigo-100'
+                    }`}
+                  >
+                    <option value="">Chọn độ tuổi</option>
+                    {AGE_OPTIONS.map((item) => (
+                      <option key={item} value={item}>{item}</option>
+                    ))}
+                  </select>
+                  {errors.age && <p className="text-xs font-medium text-rose-600 sm:text-sm">{errors.age}</p>}
+                </div>
+                <div className="grid min-w-0 gap-1">
+                  <label className="text-sm font-bold text-slate-800" htmlFor="reg-callback">
+                    Khung giờ gọi lại <span className="text-rose-500">*</span>
+                  </label>
+                  <select
+                    id="reg-callback"
+                    required
+                    value={callback}
+                    onChange={(e) => {
+                      setCallback(e.target.value)
+                      if (errors.callback) setErrors((prev) => ({ ...prev, callback: '' }))
+                    }}
+                    className={`h-12 w-full min-w-0 rounded-xl border bg-white px-4 text-sm outline-none transition focus:ring-2 sm:text-base ${
+                      errors.callback ? 'border-rose-400 focus:ring-rose-200' : 'border-slate-200 focus:border-indigo-500 focus:ring-indigo-100'
+                    }`}
+                  >
+                    <option value="">Chọn khung giờ</option>
+                    {CALLBACK_OPTIONS.map((item) => (
+                      <option key={item} value={item}>{item}</option>
+                    ))}
+                  </select>
+                  {errors.callback && <p className="text-xs font-medium text-rose-600 sm:text-sm">{errors.callback}</p>}
+                </div>
+              </div>
+
               <div className="grid gap-1">
                 <label className="text-sm font-bold text-slate-800" htmlFor="reg-branch">
-                  Cơ sở gần bạn <span className="text-rose-500">*</span>
+                  Cơ sở <span className="text-rose-500">*</span>
                 </label>
                 <select
                   id="reg-branch"
@@ -270,8 +367,9 @@ export function RegistrationModal({ onClose, initialCourse = '', initialNote = '
                   }}
                   className="h-12 w-full min-w-0 rounded-xl border border-slate-200 bg-white px-4 text-sm text-slate-800 outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 sm:text-base"
                 >
-                  <option value="12 Nguyễn Văn Bảo, Gò Vấp, TP.HCM">Cơ sở 1: 12 Nguyễn Văn Bảo, Gò Vấp, TP.HCM</option>
-                  <option value="28 Trần Thái Tông, Cầu Giấy, Hà Nội">Cơ sở 2: 28 Trần Thái Tông, Cầu Giấy, Hà Nội</option>
+                  {CAMPUS_OPTIONS.map((item) => (
+                    <option key={item} value={item}>{item}</option>
+                  ))}
                 </select>
               </div>
 
@@ -289,20 +387,35 @@ export function RegistrationModal({ onClose, initialCourse = '', initialNote = '
                 />
               </div>
 
+              <label className="flex min-h-11 items-start gap-3 text-sm leading-relaxed text-slate-700">
+                <input
+                  type="checkbox"
+                  checked={consent}
+                  onChange={(e) => {
+                    setConsent(e.target.checked)
+                    if (errors.consent) setErrors((prev) => ({ ...prev, consent: '' }))
+                  }}
+                  className="mt-1 size-4 shrink-0 accent-indigo-600"
+                />
+                <span>Tôi đồng ý để Bright English xử lý họ tên và số điện thoại nhằm gọi tư vấn khóa học, theo Nghị định 13/2023/NĐ-CP.</span>
+              </label>
+              {errors.consent && <p className="text-xs font-medium text-rose-600 sm:text-sm">{errors.consent}</p>}
+              {submitError && (
+                <p role="alert" className="text-sm font-semibold text-rose-700">{submitError}</p>
+              )}
+
               <button
                 type="submit"
                 disabled={isSubmitting}
+                aria-busy={isSubmitting}
                 className="mt-2 inline-flex h-12 w-full items-center justify-center rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-sm sm:text-base font-bold text-slate-950 shadow-md shadow-amber-800/15 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 disabled:opacity-50 cursor-pointer"
               >
-                {isSubmitting ? 'Đang gửi thông tin...' : (
+                {isSubmitting ? 'Đang gửi...' : (
                   <>
                     Gửi đăng ký tư vấn <ArrowRight className="ml-2 inline" size={16} />
                   </>
                 )}
               </button>
-              <p className="text-center text-xs sm:text-sm text-slate-500">
-                Cam kết bảo mật thông tin · Tư vấn viên liên hệ trong 15 phút
-              </p>
             </form>
           </>
         )}

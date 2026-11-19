@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { ArrowRight, Award, CheckCircle2, RotateCcw, Sparkles, X, Zap } from 'lucide-react'
+import { saveLead } from '@/lib/lead'
 
 type QuizModalProps = {
   onClose: () => void
@@ -86,6 +87,12 @@ export function QuizModal({ onClose, onOpenLead }: QuizModalProps) {
     } else {
       setScore(nextScore)
       setShowResult(true)
+      const level = nextScore === 3 ? 'CEFR B2' : nextScore === 2 ? 'CEFR B1' : 'CEFR A2'
+      void saveLead({
+        kind: 'quiz',
+        course: nextScore === 3 ? 'IELTS Mastery 7.0+' : nextScore === 2 ? 'IELTS Breakthrough' : 'Bright Stars',
+        note: `Bài test 3 câu: ${nextScore}/3 · ${level}`,
+      }).catch(() => undefined)
     }
   }
 
@@ -100,21 +107,21 @@ export function QuizModal({ onClose, onOpenLead }: QuizModalProps) {
     if (score === 3) {
       return {
         level: 'CEFR B2 · Advanced (Khá Giỏi)',
-        course: 'THPT & IELTS · IELTS Mastery 7.0+ (15+ tuổi)',
+        course: 'IELTS Mastery 7.0+',
         desc: 'Nền tảng của bạn rất vững chắc! Bạn có khả năng phản xạ và ngữ pháp tốt, hoàn toàn phù hợp để bứt phá band 7.0+ hoặc tham gia các lớp giao tiếp chuyên nghiệp.',
       }
     }
     if (score === 2) {
       return {
         level: 'CEFR B1 · Intermediate (Trung cấp)',
-        course: 'THCS · IELTS Breakthrough (12–17 tuổi)',
+        course: 'IELTS Breakthrough',
         desc: 'Bạn đã có nền tảng ngữ pháp khá tốt! Khóa học tăng cường phản xạ, mở rộng từ vựng học thuật sẽ giúp bạn nhanh chóng tự tin giao tiếp và thi chứng chỉ.',
       }
     }
     return {
       level: 'CEFR A2 · Foundation (Khởi động)',
-      course: 'Tiểu học · Bright Stars (6–11 tuổi)',
-      desc: 'Bạn đang bắt đầu rất tốt! Hãy tham gia lớp học phản xạ tự nhiên cùng 100% giáo viên quốc tế để xây nền móng phát âm chuẩn và tự tin dùng tiếng Anh mỗi ngày.',
+        course: 'Bright Stars',
+      desc: 'Bài test gợi ý Bright Stars. Tư vấn viên sẽ xác nhận lại độ tuổi và cơ sở trước khi xếp lớp.',
     }
   }
 
@@ -122,17 +129,18 @@ export function QuizModal({ onClose, onOpenLead }: QuizModalProps) {
 
   return (
     <div
-      className="fixed inset-0 z-[70] flex items-center justify-center overflow-y-auto bg-slate-950/60 p-4 backdrop-blur-sm"
+      className="fixed inset-0 z-[70] overflow-y-auto bg-slate-950/60 backdrop-blur-sm"
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose()
       }}
       role="presentation"
     >
+      <div className="flex min-h-full items-center justify-center p-4">
       <section
         role="dialog"
         aria-modal="true"
         aria-labelledby="quiz-modal-title"
-        className="relative my-auto w-full max-w-lg animate-[modal-scale-in_300ms_ease-out] rounded-[28px] border border-white/70 bg-white p-6 shadow-2xl sm:p-8"
+        className="relative my-auto w-full min-w-0 max-w-lg animate-[modal-scale-in_300ms_ease-out] rounded-[28px] border border-white/70 bg-white p-6 shadow-2xl sm:p-8"
       >
         <button
           type="button"
@@ -159,14 +167,21 @@ export function QuizModal({ onClose, onOpenLead }: QuizModalProps) {
               </div>
             </div>
 
-            <div className="mt-4 h-2 w-full overflow-hidden rounded-full bg-slate-100">
+            <div
+              className="mt-4 h-2 w-full overflow-hidden rounded-full bg-slate-100"
+              role="progressbar"
+              aria-valuemin={1}
+              aria-valuemax={totalQuestions}
+              aria-valuenow={currentStep + 1}
+              aria-label="Tiến độ bài test"
+            >
               <div
-                className="h-full rounded-full bg-indigo-600 transition-all duration-300"
+                className="h-full rounded-full bg-indigo-600 transition-[width] duration-200"
                 style={{ width: `${((currentStep + 1) / totalQuestions) * 100}%` }}
               />
             </div>
 
-            <div className="mt-4 rounded-xl bg-indigo-50/60 p-4 border border-indigo-100/60">
+            <div key={currentStep} className="quiz-swap mt-4 rounded-xl border border-indigo-100/60 bg-indigo-50/60 p-4">
               <h3 className="text-base sm:text-lg font-extrabold text-[#0A192F]">{q.question}</h3>
               <p className="mt-1 text-sm sm:text-base text-slate-600">{q.subtext}</p>
             </div>
@@ -217,9 +232,14 @@ export function QuizModal({ onClose, onOpenLead }: QuizModalProps) {
           </div>
         ) : (
           <div className="text-center" role="status" aria-live="polite">
-            <div className="relative mx-auto grid size-18 place-items-center rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 text-white shadow-xl shadow-amber-500/25">
-              <Award size={36} />
-              <Sparkles aria-hidden="true" className="absolute -top-1 -right-1 text-amber-300" size={20} />
+            <div className="relative mx-auto grid size-20 place-items-center" aria-hidden="true">
+              <span className="absolute left-1 top-2 size-2 rounded-full bg-amber-400" />
+              <span className="absolute right-2 top-1 size-2.5 rounded-full bg-cyan-400" />
+              <span className="absolute bottom-1 left-4 size-2 rounded-full bg-violet-400" />
+              <span className="grid size-16 place-items-center rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 text-white shadow-xl shadow-amber-500/25">
+                <Award size={32} />
+              </span>
+              <Sparkles className="absolute -right-1 -top-1 text-amber-400" size={18} />
             </div>
 
             <p className="mt-4 text-xs sm:text-sm font-extrabold uppercase tracking-wider text-indigo-700">Kết quả đánh giá nhanh</p>
@@ -263,6 +283,7 @@ export function QuizModal({ onClose, onOpenLead }: QuizModalProps) {
           </div>
         )}
       </section>
+      </div>
     </div>
   )
 }
