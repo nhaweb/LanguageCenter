@@ -150,7 +150,7 @@ export function QuizModal({ onClose, onOpenLead }: QuizModalProps) {
                 <Zap size={20} />
               </span>
               <div>
-                <p className="text-[11px] font-extrabold uppercase tracking-widest text-indigo-700">
+                <p className="text-xs sm:text-sm font-bold uppercase tracking-wider text-indigo-700">
                   Quick Placement Test · 3 phút
                 </p>
                 <h2 id="quiz-modal-title" className="text-xl font-black text-slate-900">
@@ -168,7 +168,7 @@ export function QuizModal({ onClose, onOpenLead }: QuizModalProps) {
 
             <div className="mt-5 rounded-2xl bg-indigo-50/60 p-4 border border-indigo-100/60">
               <h3 className="text-base font-bold text-slate-900">{q.question}</h3>
-              <p className="mt-1 text-xs text-slate-600">{q.subtext}</p>
+              <p className="mt-1 text-sm text-slate-600">{q.subtext}</p>
             </div>
 
             <div className="mt-4 grid gap-2.5" role="radiogroup" aria-label="Đáp án lựa chọn">
@@ -203,7 +203,7 @@ export function QuizModal({ onClose, onOpenLead }: QuizModalProps) {
             </div>
 
             <div className="mt-6 flex items-center justify-between border-t border-slate-100 pt-4">
-              <p className="text-xs text-slate-500">Chọn 1 đáp án để tiếp tục</p>
+              <p className="text-sm text-slate-500">Chọn 1 đáp án để tiếp tục</p>
               <button
                 type="button"
                 disabled={selectedOption === null}
@@ -222,7 +222,7 @@ export function QuizModal({ onClose, onOpenLead }: QuizModalProps) {
               <Sparkles aria-hidden="true" className="absolute -top-1 -right-1 text-amber-300" size={20} />
             </div>
 
-            <p className="mt-4 text-[11px] font-extrabold uppercase tracking-widest text-indigo-700">Kết quả đánh giá nhanh</p>
+            <p className="mt-4 text-xs sm:text-sm font-bold uppercase tracking-wider text-indigo-700">Kết quả đánh giá nhanh</p>
             <h2 id="quiz-modal-title" className="mt-1 text-2xl font-black text-slate-900">
               Bạn đúng {score} / {totalQuestions} câu!
             </h2>
@@ -230,10 +230,10 @@ export function QuizModal({ onClose, onOpenLead }: QuizModalProps) {
             <div className="mt-4 rounded-2xl border border-indigo-100 bg-indigo-50/70 p-4 text-left">
               <div className="flex items-center gap-2">
                 <CheckCircle2 size={18} className="text-emerald-600" />
-                <span className="text-xs font-bold uppercase tracking-wider text-indigo-900">Khuyến nghị lộ trình</span>
+                <span className="text-sm font-bold uppercase tracking-wider text-indigo-900">Khuyến nghị lộ trình</span>
               </div>
               <p className="mt-1.5 text-lg font-extrabold text-indigo-950">{result.level}</p>
-              <p className="mt-1 text-xs leading-5 text-slate-700">{result.desc}</p>
+              <p className="mt-1 text-sm leading-relaxed text-slate-700">{result.desc}</p>
             </div>
 
             <div className="mt-6 flex flex-col gap-2.5">
@@ -246,7 +246,7 @@ export function QuizModal({ onClose, onOpenLead }: QuizModalProps) {
                     `Kết quả kiểm tra trình độ: ${score}/${totalQuestions} câu đúng (${result.level}). Cần tư vấn chi tiết.`
                   )
                 }}
-                className="inline-flex min-h-12 w-full items-center justify-center rounded-full bg-[#D97706] px-5 py-3.5 text-sm font-extrabold text-slate-950 shadow-lg shadow-amber-800/15 transition hover:bg-amber-500"
+                className="inline-flex min-h-12 w-full items-center justify-center rounded-full bg-[#D97706] px-5 py-3.5 text-base font-bold text-slate-950 shadow-lg shadow-amber-800/15 transition hover:bg-amber-500"
               >
                 Nhận lộ trình & đăng ký học thử miễn phí
                 <ArrowRight size={16} className="ml-2" />
@@ -254,7 +254,7 @@ export function QuizModal({ onClose, onOpenLead }: QuizModalProps) {
               <button
                 type="button"
                 onClick={handleRestart}
-                className="inline-flex min-h-11 items-center justify-center rounded-full border border-slate-200 bg-white px-4 text-xs font-bold text-slate-700 hover:bg-slate-50"
+                className="inline-flex min-h-11 items-center justify-center rounded-full border border-slate-200 bg-white px-4 text-sm font-bold text-slate-700 hover:bg-slate-50"
               >
                 <RotateCcw size={13} className="mr-1.5" />
                 Làm lại bài kiểm tra

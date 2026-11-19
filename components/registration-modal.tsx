@@ -113,18 +113,18 @@ export function RegistrationModal({ onClose, initialCourse = '', initialNote = '
               </span>
               <Sparkles aria-hidden="true" className="absolute -right-2 -top-1 text-amber-400" size={19} />
             </div>
-            <p className="mt-5 text-[11px] font-extrabold uppercase tracking-[.2em] text-indigo-700">Đăng ký thành công</p>
+            <p className="mt-5 text-xs sm:text-sm font-bold uppercase tracking-wider text-indigo-700">Đăng ký thành công</p>
             <h2 id="registration-title" className="mt-2 text-2xl font-black tracking-tight text-slate-900">
               Cảm ơn {fullName || 'bạn'}!
             </h2>
             <div className="mx-auto mt-3 max-w-sm rounded-2xl bg-indigo-50/70 p-4 text-sm text-slate-700">
               <p className="font-bold text-indigo-950">Tư vấn viên Bright sẽ liên hệ trong 15 phút</p>
-              <p className="mt-1 text-xs text-slate-600">qua số điện thoại <strong className="text-slate-900">{phone}</strong> để xác nhận lịch hẹn và gửi quà tặng ưu đãi học phí.</p>
+              <p className="mt-1 text-sm text-slate-600">qua số điện thoại <strong className="text-slate-900">{phone}</strong> để xác nhận lịch hẹn và gửi quà tặng ưu đãi học phí.</p>
             </div>
             <button
               type="button"
               onClick={onClose}
-              className="mt-6 inline-flex min-h-12 w-full items-center justify-center rounded-full bg-indigo-600 px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-indigo-500/20 transition hover:bg-indigo-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+              className="mt-6 inline-flex min-h-12 w-full items-center justify-center rounded-full bg-indigo-600 px-6 py-3.5 text-base font-bold text-white shadow-lg shadow-indigo-500/20 transition hover:bg-indigo-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
             >
               Hoàn tất
             </button>
@@ -136,7 +136,7 @@ export function RegistrationModal({ onClose, initialCourse = '', initialNote = '
                 <Sparkles size={22} />
               </span>
               <div>
-                <p className="text-[11px] font-extrabold uppercase tracking-[.2em] text-indigo-700">Bright English</p>
+                <p className="text-xs sm:text-sm font-bold uppercase tracking-wider text-indigo-700">Bright English</p>
                 <h2 id="registration-title" className="text-2xl font-black tracking-tight text-slate-900">
                   Đăng ký tư vấn miễn phí
                 </h2>
@@ -147,7 +147,7 @@ export function RegistrationModal({ onClose, initialCourse = '', initialNote = '
             </p>
 
             {Object.keys(errors).length > 0 && (
-              <div role="alert" className="mt-4 flex items-center gap-2.5 rounded-xl border border-rose-200 bg-rose-50 p-3 text-xs font-semibold text-rose-800">
+              <div role="alert" className="mt-4 flex items-center gap-2.5 rounded-xl border border-rose-200 bg-rose-50 p-3 text-sm font-semibold text-rose-800">
                 <AlertCircle size={16} className="shrink-0 text-rose-600" />
                 <span>Vui lòng kiểm tra lại các trường thông tin được đánh dấu bên dưới.</span>
               </div>
@@ -155,7 +155,7 @@ export function RegistrationModal({ onClose, initialCourse = '', initialNote = '
 
             <form className="mt-5 grid gap-4" onSubmit={handleSubmit} noValidate>
               <div className="grid gap-1">
-                <label className="text-xs font-bold text-slate-800" htmlFor="reg-fullname">
+                <label className="text-sm font-bold text-slate-800" htmlFor="reg-fullname">
                   Họ và tên học viên / phụ huynh <span className="text-rose-500">*</span>
                 </label>
                 <input
@@ -173,12 +173,12 @@ export function RegistrationModal({ onClose, initialCourse = '', initialNote = '
                     errors.fullName ? 'border-rose-400 bg-rose-50/30 focus:ring-rose-200' : 'border-slate-200 focus:border-indigo-500 focus:ring-indigo-100'
                   }`}
                 />
-                {errors.fullName && <p className="text-xs font-medium text-rose-600">{errors.fullName}</p>}
+                {errors.fullName && <p className="text-sm font-medium text-rose-600">{errors.fullName}</p>}
               </div>
 
               <div className="grid gap-1 sm:grid-cols-2 sm:gap-3">
                 <div className="grid gap-1">
-                  <label className="text-xs font-bold text-slate-800" htmlFor="reg-phone">
+                  <label className="text-sm font-bold text-slate-800" htmlFor="reg-phone">
                     Số điện thoại liên hệ <span className="text-rose-500">*</span>
                   </label>
                   <input
@@ -197,11 +197,11 @@ export function RegistrationModal({ onClose, initialCourse = '', initialNote = '
                       errors.phone ? 'border-rose-400 bg-rose-50/30 focus:ring-rose-200' : 'border-slate-200 focus:border-indigo-500 focus:ring-indigo-100'
                     }`}
                   />
-                  {errors.phone && <p className="text-xs font-medium text-rose-600">{errors.phone}</p>}
+                  {errors.phone && <p className="text-sm font-medium text-rose-600">{errors.phone}</p>}
                 </div>
 
                 <div className="grid gap-1">
-                  <label className="text-xs font-bold text-slate-800" htmlFor="reg-email">
+                  <label className="text-sm font-bold text-slate-800" htmlFor="reg-email">
                     Email nhận tài liệu
                   </label>
                   <input
@@ -218,12 +218,12 @@ export function RegistrationModal({ onClose, initialCourse = '', initialNote = '
                       errors.email ? 'border-rose-400 bg-rose-50/30 focus:ring-rose-200' : 'border-slate-200 focus:border-indigo-500 focus:ring-indigo-100'
                     }`}
                   />
-                  {errors.email && <p className="text-xs font-medium text-rose-600">{errors.email}</p>}
+                  {errors.email && <p className="text-sm font-medium text-rose-600">{errors.email}</p>}
                 </div>
               </div>
 
               <div className="grid gap-1">
-                <label className="text-xs font-bold text-slate-800" htmlFor="reg-course">
+                <label className="text-sm font-bold text-slate-800" htmlFor="reg-course">
                   Chương trình quan tâm <span className="text-rose-500">*</span>
                 </label>
                 <select
@@ -247,11 +247,11 @@ export function RegistrationModal({ onClose, initialCourse = '', initialNote = '
                   <option value="Giao tiếp người đi làm · Speak with Confidence">Giao tiếp người đi làm · Speak with Confidence</option>
                   <option value="Chưa xác định - Cần tư vấn kiểm tra trình độ">Chưa xác định - Cần tư vấn kiểm tra trình độ</option>
                 </select>
-                {errors.course && <p className="text-xs font-medium text-rose-600">{errors.course}</p>}
+                {errors.course && <p className="text-sm font-medium text-rose-600">{errors.course}</p>}
               </div>
 
               <div className="grid gap-1">
-                <label className="text-xs font-bold text-slate-800" htmlFor="reg-branch">
+                <label className="text-sm font-bold text-slate-800" htmlFor="reg-branch">
                   Cơ sở gần bạn <span className="text-rose-500">*</span>
                 </label>
                 <select
@@ -270,7 +270,7 @@ export function RegistrationModal({ onClose, initialCourse = '', initialNote = '
               </div>
 
               <div className="grid gap-1">
-                <label className="text-xs font-bold text-slate-800" htmlFor="reg-note">
+                <label className="text-sm font-bold text-slate-800" htmlFor="reg-note">
                   Mục tiêu học tập hoặc câu hỏi (nếu có)
                 </label>
                 <textarea
@@ -286,7 +286,7 @@ export function RegistrationModal({ onClose, initialCourse = '', initialNote = '
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="mt-2 inline-flex min-h-12 w-full items-center justify-center rounded-full bg-[#D97706] py-3.5 text-sm font-extrabold text-slate-950 shadow-lg shadow-amber-800/15 transition hover:bg-amber-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 disabled:opacity-50"
+                className="mt-2 inline-flex min-h-12 w-full items-center justify-center rounded-full bg-[#D97706] py-3.5 text-base font-bold text-slate-950 shadow-lg shadow-amber-800/15 transition hover:bg-amber-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 disabled:opacity-50"
               >
                 {isSubmitting ? 'Đang gửi thông tin...' : (
                   <>
@@ -294,7 +294,7 @@ export function RegistrationModal({ onClose, initialCourse = '', initialNote = '
                   </>
                 )}
               </button>
-              <p className="text-center text-[11px] text-slate-500">
+              <p className="text-center text-xs text-slate-500">
                 Cam kết bảo mật thông tin · Tư vấn viên liên hệ trong 15 phút
               </p>
             </form>
