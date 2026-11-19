@@ -136,26 +136,26 @@ export function RegistrationModal({ onClose, initialCourse = '', initialNote = '
                 <Sparkles size={20} />
               </span>
               <div>
-                <p className="text-[11px] font-extrabold uppercase tracking-wider text-indigo-700">Bright English</p>
-                <h2 id="registration-title" className="text-xl sm:text-2xl font-black tracking-tight text-[#0A192F]">
+                <p className="text-xs sm:text-sm font-extrabold uppercase tracking-wider text-indigo-700">Bright English</p>
+                <h2 id="registration-title" className="text-2xl sm:text-3xl font-black tracking-tight text-[#0A192F]">
                   Đăng ký tư vấn miễn phí
                 </h2>
               </div>
             </div>
-            <p className="mt-2.5 text-xs sm:text-[13px] leading-relaxed text-slate-600">
+            <p className="mt-2.5 text-sm sm:text-base leading-relaxed text-slate-600">
               Nhận tư vấn lộ trình học cá nhân hóa, 1 buổi học thử cùng giáo viên quốc tế và ưu đãi học phí lên tới 35%.
             </p>
 
             {Object.keys(errors).length > 0 && (
-              <div role="alert" className="mt-3.5 flex items-center gap-2 rounded-xl border border-rose-200 bg-rose-50 p-2.5 text-xs font-semibold text-rose-800">
-                <AlertCircle size={15} className="shrink-0 text-rose-600" />
+              <div role="alert" className="mt-3.5 flex items-center gap-2 rounded-xl border border-rose-200 bg-rose-50 p-3 text-xs sm:text-sm font-semibold text-rose-800">
+                <AlertCircle size={16} className="shrink-0 text-rose-600" />
                 <span>Vui lòng kiểm tra lại các trường thông tin được đánh dấu bên dưới.</span>
               </div>
             )}
 
             <form className="mt-4 grid gap-3.5" onSubmit={handleSubmit} noValidate>
               <div className="grid gap-1">
-                <label className="text-xs sm:text-[13px] font-bold text-slate-800" htmlFor="reg-fullname">
+                <label className="text-sm font-bold text-slate-800" htmlFor="reg-fullname">
                   Họ và tên học viên / phụ huynh <span className="text-rose-500">*</span>
                 </label>
                 <input
@@ -169,16 +169,16 @@ export function RegistrationModal({ onClose, initialCourse = '', initialNote = '
                   }}
                   autoComplete="name"
                   placeholder="Ví dụ: Nguyễn Minh Anh"
-                  className={`h-11 rounded-xl border px-3.5 text-xs sm:text-sm outline-none transition placeholder:text-slate-400 focus:ring-2 ${
+                  className={`h-12 rounded-xl border px-4 text-sm sm:text-base outline-none transition placeholder:text-slate-400 focus:ring-2 ${
                     errors.fullName ? 'border-rose-400 bg-rose-50/30 focus:ring-rose-200' : 'border-slate-200 focus:border-indigo-500 focus:ring-indigo-100'
                   }`}
                 />
-                {errors.fullName && <p className="text-xs font-medium text-rose-600">{errors.fullName}</p>}
+                {errors.fullName && <p className="text-xs sm:text-sm font-medium text-rose-600">{errors.fullName}</p>}
               </div>
 
               <div className="grid gap-1 sm:grid-cols-2 sm:gap-3">
                 <div className="grid gap-1">
-                  <label className="text-xs sm:text-[13px] font-bold text-slate-800" htmlFor="reg-phone">
+                  <label className="text-sm font-bold text-slate-800" htmlFor="reg-phone">
                     Số điện thoại liên hệ <span className="text-rose-500">*</span>
                   </label>
                   <input
@@ -193,15 +193,15 @@ export function RegistrationModal({ onClose, initialCourse = '', initialNote = '
                     }}
                     autoComplete="tel"
                     placeholder="Ví dụ: 090 123 4567"
-                    className={`h-11 rounded-xl border px-3.5 text-xs sm:text-sm outline-none transition placeholder:text-slate-400 focus:ring-2 ${
+                    className={`h-12 rounded-xl border px-4 text-sm sm:text-base outline-none transition placeholder:text-slate-400 focus:ring-2 ${
                       errors.phone ? 'border-rose-400 bg-rose-50/30 focus:ring-rose-200' : 'border-slate-200 focus:border-indigo-500 focus:ring-indigo-100'
                     }`}
                   />
-                  {errors.phone && <p className="text-xs font-medium text-rose-600">{errors.phone}</p>}
+                  {errors.phone && <p className="text-xs sm:text-sm font-medium text-rose-600">{errors.phone}</p>}
                 </div>
 
                 <div className="grid gap-1">
-                  <label className="text-xs sm:text-[13px] font-bold text-slate-800" htmlFor="reg-email">
+                  <label className="text-sm font-bold text-slate-800" htmlFor="reg-email">
                     Email nhận tài liệu
                   </label>
                   <input
@@ -214,16 +214,16 @@ export function RegistrationModal({ onClose, initialCourse = '', initialNote = '
                     }}
                     autoComplete="email"
                     placeholder="name@gmail.com"
-                    className={`h-11 rounded-xl border px-3.5 text-xs sm:text-sm outline-none transition placeholder:text-slate-400 focus:ring-2 ${
+                    className={`h-12 rounded-xl border px-4 text-sm sm:text-base outline-none transition placeholder:text-slate-400 focus:ring-2 ${
                       errors.email ? 'border-rose-400 bg-rose-50/30 focus:ring-rose-200' : 'border-slate-200 focus:border-indigo-500 focus:ring-indigo-100'
                     }`}
                   />
-                  {errors.email && <p className="text-xs font-medium text-rose-600">{errors.email}</p>}
+                  {errors.email && <p className="text-xs sm:text-sm font-medium text-rose-600">{errors.email}</p>}
                 </div>
               </div>
 
               <div className="grid gap-1">
-                <label className="text-xs sm:text-[13px] font-bold text-slate-800" htmlFor="reg-course">
+                <label className="text-sm font-bold text-slate-800" htmlFor="reg-course">
                   Chương trình quan tâm <span className="text-rose-500">*</span>
                 </label>
                 <select
@@ -234,7 +234,7 @@ export function RegistrationModal({ onClose, initialCourse = '', initialNote = '
                     setCourse(e.target.value)
                     if (errors.course) setErrors(prev => ({ ...prev, course: '' }))
                   }}
-                  className={`h-11 rounded-xl border bg-white px-3.5 text-xs sm:text-sm text-slate-800 outline-none transition focus:ring-2 ${
+                  className={`h-12 rounded-xl border bg-white px-4 text-sm sm:text-base text-slate-800 outline-none transition focus:ring-2 ${
                     errors.course ? 'border-rose-400 bg-rose-50/30 focus:ring-rose-200' : 'border-slate-200 focus:border-indigo-500 focus:ring-indigo-100'
                   }`}
                 >
@@ -247,11 +247,11 @@ export function RegistrationModal({ onClose, initialCourse = '', initialNote = '
                   <option value="Giao tiếp người đi làm · Speak with Confidence">Giao tiếp người đi làm · Speak with Confidence</option>
                   <option value="Chưa xác định - Cần tư vấn kiểm tra trình độ">Chưa xác định - Cần tư vấn kiểm tra trình độ</option>
                 </select>
-                {errors.course && <p className="text-xs font-medium text-rose-600">{errors.course}</p>}
+                {errors.course && <p className="text-xs sm:text-sm font-medium text-rose-600">{errors.course}</p>}
               </div>
 
               <div className="grid gap-1">
-                <label className="text-xs sm:text-[13px] font-bold text-slate-800" htmlFor="reg-branch">
+                <label className="text-sm font-bold text-slate-800" htmlFor="reg-branch">
                   Cơ sở gần bạn <span className="text-rose-500">*</span>
                 </label>
                 <select
@@ -262,7 +262,7 @@ export function RegistrationModal({ onClose, initialCourse = '', initialNote = '
                     setBranch(e.target.value)
                     if (errors.branch) setErrors(prev => ({ ...prev, branch: '' }))
                   }}
-                  className="h-11 rounded-xl border border-slate-200 bg-white px-3.5 text-xs sm:text-sm text-slate-800 outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+                  className="h-12 rounded-xl border border-slate-200 bg-white px-4 text-sm sm:text-base text-slate-800 outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
                 >
                   <option value="12 Nguyễn Văn Bảo, Gò Vấp, TP.HCM">Cơ sở 1: 12 Nguyễn Văn Bảo, Gò Vấp, TP.HCM</option>
                   <option value="28 Trần Thái Tông, Cầu Giấy, Hà Nội">Cơ sở 2: 28 Trần Thái Tông, Cầu Giấy, Hà Nội</option>
@@ -270,7 +270,7 @@ export function RegistrationModal({ onClose, initialCourse = '', initialNote = '
               </div>
 
               <div className="grid gap-1">
-                <label className="text-xs sm:text-[13px] font-bold text-slate-800" htmlFor="reg-note">
+                <label className="text-sm font-bold text-slate-800" htmlFor="reg-note">
                   Mục tiêu học tập hoặc câu hỏi (nếu có)
                 </label>
                 <textarea
@@ -279,22 +279,22 @@ export function RegistrationModal({ onClose, initialCourse = '', initialNote = '
                   value={note}
                   onChange={(e) => setNote(e.target.value)}
                   placeholder="Ví dụ: Muốn luyện phát âm chuẩn, chuẩn bị thi IELTS hoặc tìm lớp học thử..."
-                  className="rounded-xl border border-slate-200 px-3.5 py-2 text-xs sm:text-sm outline-none transition placeholder:text-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+                  className="rounded-xl border border-slate-200 px-4 py-2.5 text-sm sm:text-base outline-none transition placeholder:text-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
                 />
               </div>
 
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="mt-2 inline-flex h-12 w-full items-center justify-center rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-xs sm:text-sm font-bold text-slate-950 shadow-md shadow-amber-800/15 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 disabled:opacity-50 cursor-pointer"
+                className="mt-2 inline-flex h-12 w-full items-center justify-center rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-sm sm:text-base font-bold text-slate-950 shadow-md shadow-amber-800/15 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 disabled:opacity-50 cursor-pointer"
               >
                 {isSubmitting ? 'Đang gửi thông tin...' : (
                   <>
-                    Gửi đăng ký tư vấn <ArrowRight className="ml-2 inline" size={15} />
+                    Gửi đăng ký tư vấn <ArrowRight className="ml-2 inline" size={16} />
                   </>
                 )}
               </button>
-              <p className="text-center text-[11px] text-slate-500">
+              <p className="text-center text-xs sm:text-sm text-slate-500">
                 Cam kết bảo mật thông tin · Tư vấn viên liên hệ trong 15 phút
               </p>
             </form>
