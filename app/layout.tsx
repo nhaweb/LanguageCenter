@@ -60,42 +60,40 @@ export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   maximumScale: 5,
-  colorScheme: 'light dark',
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#4F46E5' },
-    { media: '(prefers-color-scheme: dark)', color: '#111B3C' },
-  ],
+  colorScheme: 'light',
+  themeColor: '#4F46E5',
 }
 
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'EducationalOrganization',
-  name: 'Bright English Center',
-  alternateName: 'Trung tâm Anh ngữ Bright English',
-  url: 'https://brightenglish.vn',
-  logo: 'https://brightenglish.vn/icon.svg',
-  description: 'Trung tâm tiếng Anh dành cho trẻ em, học sinh và người đi làm với 100% giáo viên quốc tế và cam kết chuẩn đầu ra.',
-  telephone: '19006868',
-  email: 'hello@brightenglish.vn',
+  name: 'PML English — Bright English Center',
+  alternateName: 'Hệ thống Anh ngữ PML Vietnam & Bright English',
+  url: 'https://pmlvietnam.vn',
+  logo: 'https://pmlvietnam.vn/icon.svg',
+  description: 'Trung tâm tiếng Anh dành cho trẻ em, học sinh và người đi làm với 100% giáo viên quốc tế và cam kết chuẩn đầu ra được vận hành bởi PML Vietnam.',
+  telephone: '+84789780167',
+  email: 'pmluanvn@gmail.com',
   address: [
+    {
+      '@type': 'PostalAddress',
+      streetAddress: '208 Trường Chinh, Phường Tân Bình',
+      addressLocality: 'Tân Bình',
+      addressRegion: 'TP. Hồ Chí Minh',
+      addressCountry: 'VN',
+    },
     {
       '@type': 'PostalAddress',
       streetAddress: '12 Nguyễn Văn Bảo, Phường 4',
       addressLocality: 'Gò Vấp',
-      addressRegion: 'Hồ Chí Minh',
-      addressCountry: 'VN',
-    },
-    {
-      '@type': 'PostalAddress',
-      streetAddress: '28 Trần Thái Tông, Dịch Vọng Hậu',
-      addressLocality: 'Cầu Giấy',
-      addressRegion: 'Hà Nội',
+      addressRegion: 'TP. Hồ Chí Minh',
       addressCountry: 'VN',
     },
   ],
   sameAs: [
-    'https://facebook.com/brightenglish.vn',
-    'https://zalo.me/0901234567',
+    'https://facebook.com/pmlvietnam.vn',
+    'https://www.youtube.com/@pmlvietnam',
+    'https://zalo.me/0789780167',
   ],
 }
 

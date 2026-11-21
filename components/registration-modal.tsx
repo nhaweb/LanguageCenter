@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { ArrowRight, Check, Sparkles, X, AlertCircle } from 'lucide-react'
 
 type RegistrationModalProps = {
@@ -9,17 +9,81 @@ type RegistrationModalProps = {
   initialNote?: string
 }
 
+export const COURSE_OPTIONS = [
+  {
+    value: 'Mầm non · English Explorers (4–6 tuổi)',
+    keywords: ['english explorers', 'mầm non', '4–6', 'kids'],
+  },
+  {
+    value: 'Tiểu học · Bright Stars (6–11 tuổi)',
+    keywords: ['bright stars', 'tiểu học', '6–11'],
+  },
+  {
+    value: 'Tiểu học · Cambridge Champions (Starters/Movers/Flyers)',
+    keywords: ['cambridge champions', 'cambridge', 'starters', 'movers', 'flyers'],
+  },
+  {
+    value: 'THCS · IELTS Breakthrough (12–17 tuổi)',
+    keywords: ['ielts breakthrough', 'thcs', '12–17', 'foundation'],
+  },
+  {
+    value: 'THPT & IELTS · IELTS Mastery 7.0+ (15+ tuổi)',
+    keywords: ['ielts mastery', '7.0+', 'thpt', '15+'],
+  },
+  {
+    value: 'Giao tiếp người đi làm · Speak with Confidence',
+    keywords: ['speak with confidence', 'người đi làm', 'giao tiếp'],
+  },
+  {
+    value: 'Chưa xác định - Cần tư vấn kiểm tra trình độ',
+    keywords: ['chưa xác định', 'tư vấn'],
+  },
+]
+
+export function resolveCourseOption(raw?: string): string {
+  if (!raw || !raw.trim()) return ''
+  const trimmed = raw.trim()
+  const exact = COURSE_OPTIONS.find((opt) => opt.value === trimmed)
+  if (exact) return exact.value
+
+  const lower = trimmed.toLowerCase()
+  const matched = COURSE_OPTIONS.find(
+    (opt) =>
+      opt.value.toLowerCase().includes(lower) ||
+      opt.keywords.some((k) => lower.includes(k))
+  )
+  return matched ? matched.value : COURSE_OPTIONS[COURSE_OPTIONS.length - 1].value
+}
+
+const FIELD_METADATA: Record<string, { id: string; label: string }> = {
+  fullName: { id: 'reg-fullname', label: 'Họ và tên học viên / phụ huynh' },
+  phone: { id: 'reg-phone', label: 'Số điện thoại liên hệ' },
+  email: { id: 'reg-email', label: 'Email nhận tài liệu' },
+  course: { id: 'reg-course', label: 'Chương trình quan tâm' },
+  branch: { id: 'reg-branch', label: 'Cơ sở gần bạn' },
+}
+
 export function RegistrationModal({ onClose, initialCourse = '', initialNote = '' }: RegistrationModalProps) {
   const [fullName, setFullName] = useState('')
   const [phone, setPhone] = useState('')
   const [email, setEmail] = useState('')
-  const [course, setCourse] = useState(initialCourse || '')
-  const [branch, setBranch] = useState('12 Nguyễn Văn Bảo, Gò Vấp, TP.HCM')
+  const [course, setCourse] = useState(() => resolveCourseOption(initialCourse))
+  const [branch, setBranch] = useState('208 Trường Chinh, Phường Tân Bình, TP.HCM')
   const [note, setNote] = useState(initialNote || '')
-  
+
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [submitted, setSubmitted] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const errorSummaryRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    setCourse(resolveCourseOption(initialCourse))
+  }, [initialCourse])
+
+  useEffect(() => {
+    if (initialNote) setNote(initialNote)
+  }, [initialNote])
 
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
@@ -35,7 +99,7 @@ export function RegistrationModal({ onClose, initialCourse = '', initialNote = '
     }
   }, [onClose])
 
-  function validate(): boolean {
+  function validate(): Record<string, string> {
     const nextErrors: Record<string, string> = {}
     const trimmedName = fullName.trim()
     const cleanPhone = phone.replace(/[\s.-]/g, '')
@@ -64,19 +128,27 @@ export function RegistrationModal({ onClose, initialCourse = '', initialNote = '
     }
 
     setErrors(nextErrors)
-    return Object.keys(nextErrors).length === 0
+    return nextErrors
   }
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
-    if (!validate()) return
+    const nextErrors = validate()
+    if (Object.keys(nextErrors).length > 0) {
+      requestAnimationFrame(() => {
+        errorSummaryRef.current?.focus()
+      })
+      return
+    }
 
     setIsSubmitting(true)
     setTimeout(() => {
       setIsSubmitting(false)
       setSubmitted(true)
-    }, 400)
+    }, 350)
   }
+
+  const activeErrorKeys = Object.keys(errors).filter((k) => Boolean(errors[k]))
 
   return (
     <div
@@ -92,221 +164,294 @@ export function RegistrationModal({ onClose, initialCourse = '', initialNote = '
           if (event.target === event.currentTarget) onClose()
         }}
       >
-      <section
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="registration-title"
-        className="relative my-auto w-full min-w-0 max-w-lg animate-[modal-scale-in_300ms_ease-out] rounded-[28px] border border-white/70 bg-white p-6 shadow-2xl shadow-slate-950/20 sm:p-8"
-      >
-        <button
-          type="button"
-          onClick={onClose}
-          aria-label="Đóng cửa sổ đăng ký"
-          className="absolute right-5 top-5 grid size-11 place-items-center rounded-full bg-slate-100 text-slate-500 transition hover:bg-slate-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+        <section
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="registration-title"
+          className="relative my-auto w-full min-w-0 max-w-lg animate-[modal-scale-in_300ms_ease-out] rounded-[28px] border border-white/70 bg-white p-6 shadow-2xl shadow-slate-950/20 sm:p-8"
         >
-          <X size={18} />
-        </button>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Đóng cửa sổ đăng ký"
+            className="absolute right-5 top-5 grid size-11 place-items-center rounded-full bg-slate-100 text-slate-500 transition hover:bg-slate-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 cursor-pointer"
+          >
+            <X size={18} />
+          </button>
 
-        {submitted ? (
-          <div className="px-1 py-6 text-center" role="status" aria-live="polite">
-            <div className="relative mx-auto grid size-24 place-items-center">
-              <span aria-hidden="true" className="absolute left-1 top-3 size-2 rounded-full bg-amber-400" />
-              <span aria-hidden="true" className="absolute right-1 top-5 size-2.5 rounded-full bg-cyan-400" />
-              <span aria-hidden="true" className="absolute bottom-2 left-3 size-2.5 rounded-full bg-violet-400" />
-              <span aria-hidden="true" className="absolute bottom-4 right-1 size-2 rounded-full bg-rose-400" />
-              <span className="grid size-[68px] place-items-center rounded-3xl bg-gradient-to-br from-emerald-500 to-teal-500 text-white shadow-xl shadow-emerald-500/25">
-                <Check size={34} strokeWidth={3} />
-              </span>
-              <Sparkles aria-hidden="true" className="absolute -right-2 -top-1 text-amber-400" size={19} />
-            </div>
-            <p className="mt-5 text-xs sm:text-sm font-bold uppercase tracking-wider text-indigo-700">Đăng ký thành công</p>
-            <h2 id="registration-title" className="mt-2 text-2xl font-black tracking-tight text-slate-900">
-              Cảm ơn {fullName || 'bạn'}!
-            </h2>
-            <div className="mx-auto mt-3 max-w-sm rounded-2xl bg-indigo-50/70 p-4 text-sm text-slate-700">
-              <p className="font-bold text-indigo-950">Tư vấn viên Bright sẽ liên hệ trong 15 phút</p>
-              <p className="mt-1 text-sm text-slate-600">qua số điện thoại <strong className="text-slate-900">{phone}</strong> để xác nhận lịch hẹn và gửi quà tặng ưu đãi học phí.</p>
-            </div>
-            <button
-              type="button"
-              onClick={onClose}
-              className="mt-6 inline-flex min-h-12 w-full items-center justify-center rounded-full bg-indigo-600 px-6 py-3.5 text-base font-bold text-white shadow-lg shadow-indigo-500/20 transition hover:bg-indigo-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
-            >
-              Hoàn tất
-            </button>
-          </div>
-        ) : (
-          <>
-            <div className="flex min-w-0 items-start gap-3 pr-12">
-              <span className="grid size-11 place-items-center rounded-xl bg-indigo-100 text-indigo-700 shadow-sm shrink-0">
-                <Sparkles size={20} />
-              </span>
-              <div>
-                <p className="text-xs sm:text-sm font-extrabold uppercase tracking-wider text-indigo-700">Bright English</p>
-                <h2 id="registration-title" className="text-balance text-2xl font-black tracking-tight text-[#0A192F] sm:text-3xl">
-                  Đăng ký tư vấn miễn phí
-                </h2>
+          {submitted ? (
+            <div className="px-1 py-6 text-center" role="status" aria-live="polite">
+              <div className="relative mx-auto grid size-24 place-items-center">
+                <span aria-hidden="true" className="absolute left-1 top-3 size-2 rounded-full bg-amber-400" />
+                <span aria-hidden="true" className="absolute right-1 top-5 size-2.5 rounded-full bg-cyan-400" />
+                <span aria-hidden="true" className="absolute bottom-2 left-3 size-2.5 rounded-full bg-violet-400" />
+                <span aria-hidden="true" className="absolute bottom-4 right-1 size-2 rounded-full bg-rose-400" />
+                <span className="grid size-[68px] place-items-center rounded-3xl bg-gradient-to-br from-emerald-500 to-teal-500 text-white shadow-xl shadow-emerald-500/25">
+                  <Check size={34} strokeWidth={3} />
+                </span>
+                <Sparkles aria-hidden="true" className="absolute -right-2 -top-1 text-amber-400" size={19} />
               </div>
-            </div>
-            <p className="mt-2.5 text-sm sm:text-base leading-relaxed text-slate-600">
-              Nhận tư vấn lộ trình học cá nhân hóa, 1 buổi học thử cùng giáo viên quốc tế và ưu đãi học phí lên tới 35%.
-            </p>
-
-            {Object.keys(errors).length > 0 && (
-              <div role="alert" className="mt-3.5 flex items-center gap-2 rounded-xl border border-rose-200 bg-rose-50 p-3 text-xs sm:text-sm font-semibold text-rose-800">
-                <AlertCircle size={16} className="shrink-0 text-rose-600" />
-                <span>Vui lòng kiểm tra lại các trường thông tin được đánh dấu bên dưới.</span>
+              <p className="mt-5 text-xs sm:text-sm font-bold uppercase tracking-wider text-indigo-700">Đăng ký thành công</p>
+              <h2 id="registration-title" className="mt-2 text-2xl font-black tracking-tight text-slate-900">
+                Cảm ơn {fullName || 'bạn'}!
+              </h2>
+              <div className="mx-auto mt-3 max-w-sm rounded-2xl bg-indigo-50/70 p-4 text-sm text-slate-700">
+                <p className="font-bold text-indigo-950">Tư vấn viên Bright sẽ liên hệ trong 15 phút</p>
+                <p className="mt-1 text-sm text-slate-600">
+                  qua số điện thoại <strong className="text-slate-900">{phone}</strong> để xác nhận lịch hẹn cho chương trình{' '}
+                  <strong className="text-indigo-900">{course}</strong> và gửi quà tặng ưu đãi học phí.
+                </p>
               </div>
-            )}
-
-            <form className="mt-4 grid min-w-0 grid-cols-1 gap-3.5" onSubmit={handleSubmit} noValidate>
-              <div className="grid gap-1">
-                <label className="text-sm font-bold text-slate-800" htmlFor="reg-fullname">
-                  Họ và tên học viên / phụ huynh <span className="text-rose-500">*</span>
-                </label>
-                <input
-                  id="reg-fullname"
-                  autoFocus
-                  required
-                  value={fullName}
-                  onChange={(e) => {
-                    setFullName(e.target.value)
-                    if (errors.fullName) setErrors(prev => ({ ...prev, fullName: '' }))
-                  }}
-                  autoComplete="name"
-                  placeholder="Ví dụ: Nguyễn Minh Anh"
-                  className={`h-12 w-full min-w-0 rounded-xl border px-4 text-sm outline-none transition placeholder:text-slate-400 focus:ring-2 sm:text-base ${
-                    errors.fullName ? 'border-rose-400 bg-rose-50/30 focus:ring-rose-200' : 'border-slate-200 focus:border-indigo-500 focus:ring-indigo-100'
-                  }`}
-                />
-                {errors.fullName && <p className="text-xs sm:text-sm font-medium text-rose-600">{errors.fullName}</p>}
-              </div>
-
-              <div className="grid min-w-0 grid-cols-1 gap-3.5 sm:grid-cols-2 sm:gap-3">
-                <div className="grid min-w-0 gap-1">
-                  <label className="text-sm font-bold text-slate-800" htmlFor="reg-phone">
-                    Số điện thoại liên hệ <span className="text-rose-500">*</span>
-                  </label>
-                  <input
-                    id="reg-phone"
-                    required
-                    type="tel"
-                    inputMode="tel"
-                    value={phone}
-                    onChange={(e) => {
-                      setPhone(e.target.value)
-                      if (errors.phone) setErrors(prev => ({ ...prev, phone: '' }))
-                    }}
-                    autoComplete="tel"
-                    placeholder="Ví dụ: 090 123 4567"
-                    className={`h-12 w-full min-w-0 rounded-xl border px-4 text-sm outline-none transition placeholder:text-slate-400 focus:ring-2 sm:text-base ${
-                      errors.phone ? 'border-rose-400 bg-rose-50/30 focus:ring-rose-200' : 'border-slate-200 focus:border-indigo-500 focus:ring-indigo-100'
-                    }`}
-                  />
-                  {errors.phone && <p className="text-xs sm:text-sm font-medium text-rose-600">{errors.phone}</p>}
-                </div>
-
-                <div className="grid min-w-0 gap-1">
-                  <label className="text-sm font-bold text-slate-800" htmlFor="reg-email">
-                    Email nhận tài liệu
-                  </label>
-                  <input
-                    id="reg-email"
-                    type="email"
-                    value={email}
-                    onChange={(e) => {
-                      setEmail(e.target.value)
-                      if (errors.email) setErrors(prev => ({ ...prev, email: '' }))
-                    }}
-                    autoComplete="email"
-                    placeholder="name@gmail.com"
-                    className={`h-12 w-full min-w-0 rounded-xl border px-4 text-sm outline-none transition placeholder:text-slate-400 focus:ring-2 sm:text-base ${
-                      errors.email ? 'border-rose-400 bg-rose-50/30 focus:ring-rose-200' : 'border-slate-200 focus:border-indigo-500 focus:ring-indigo-100'
-                    }`}
-                  />
-                  {errors.email && <p className="text-xs sm:text-sm font-medium text-rose-600">{errors.email}</p>}
-                </div>
-              </div>
-
-              <div className="grid gap-1">
-                <label className="text-sm font-bold text-slate-800" htmlFor="reg-course">
-                  Chương trình quan tâm <span className="text-rose-500">*</span>
-                </label>
-                <select
-                  id="reg-course"
-                  required
-                  value={course}
-                  onChange={(e) => {
-                    setCourse(e.target.value)
-                    if (errors.course) setErrors(prev => ({ ...prev, course: '' }))
-                  }}
-                  className={`h-12 w-full min-w-0 rounded-xl border bg-white px-4 text-sm text-slate-800 outline-none transition focus:ring-2 sm:text-base ${
-                    errors.course ? 'border-rose-400 bg-rose-50/30 focus:ring-rose-200' : 'border-slate-200 focus:border-indigo-500 focus:ring-indigo-100'
-                  }`}
-                >
-                  <option value="" disabled>Chọn chương trình hoặc khóa học</option>
-                  <option value="Mầm non · English Explorers (4–6 tuổi)">Mầm non · English Explorers (4–6 tuổi)</option>
-                  <option value="Tiểu học · Bright Stars (6–11 tuổi)">Tiểu học · Bright Stars (6–11 tuổi)</option>
-                  <option value="Tiểu học · Cambridge Champions (Starters/Movers/Flyers)">Tiểu học · Cambridge Champions (Starters/Movers/Flyers)</option>
-                  <option value="THCS · IELTS Breakthrough (12–17 tuổi)">THCS · IELTS Breakthrough (12–17 tuổi)</option>
-                  <option value="THPT & IELTS · IELTS Mastery 7.0+ (15+ tuổi)">THPT & IELTS · IELTS Mastery 7.0+ (15+ tuổi)</option>
-                  <option value="Giao tiếp người đi làm · Speak with Confidence">Giao tiếp người đi làm · Speak with Confidence</option>
-                  <option value="Chưa xác định - Cần tư vấn kiểm tra trình độ">Chưa xác định - Cần tư vấn kiểm tra trình độ</option>
-                </select>
-                {errors.course && <p className="text-xs sm:text-sm font-medium text-rose-600">{errors.course}</p>}
-              </div>
-
-              <div className="grid gap-1">
-                <label className="text-sm font-bold text-slate-800" htmlFor="reg-branch">
-                  Cơ sở gần bạn <span className="text-rose-500">*</span>
-                </label>
-                <select
-                  id="reg-branch"
-                  required
-                  value={branch}
-                  onChange={(e) => {
-                    setBranch(e.target.value)
-                    if (errors.branch) setErrors(prev => ({ ...prev, branch: '' }))
-                  }}
-                  className="h-12 w-full min-w-0 rounded-xl border border-slate-200 bg-white px-4 text-sm text-slate-800 outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 sm:text-base"
-                >
-                  <option value="12 Nguyễn Văn Bảo, Gò Vấp, TP.HCM">Cơ sở 1: 12 Nguyễn Văn Bảo, Gò Vấp, TP.HCM</option>
-                  <option value="28 Trần Thái Tông, Cầu Giấy, Hà Nội">Cơ sở 2: 28 Trần Thái Tông, Cầu Giấy, Hà Nội</option>
-                </select>
-              </div>
-
-              <div className="grid gap-1">
-                <label className="text-sm font-bold text-slate-800" htmlFor="reg-note">
-                  Mục tiêu học tập hoặc câu hỏi (nếu có)
-                </label>
-                <textarea
-                  id="reg-note"
-                  rows={2}
-                  value={note}
-                  onChange={(e) => setNote(e.target.value)}
-                  placeholder="Ví dụ: Muốn luyện phát âm chuẩn, chuẩn bị thi IELTS hoặc tìm lớp học thử..."
-                  className="w-full min-w-0 rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none transition placeholder:text-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 sm:text-base"
-                />
-              </div>
-
               <button
-                type="submit"
-                disabled={isSubmitting}
-                className="mt-2 inline-flex h-12 w-full items-center justify-center rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-sm sm:text-base font-bold text-slate-950 shadow-md shadow-amber-800/15 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 disabled:opacity-50 cursor-pointer"
+                type="button"
+                onClick={onClose}
+                className="mt-6 inline-flex min-h-12 w-full items-center justify-center rounded-full bg-indigo-600 px-6 py-3.5 text-base font-bold text-white shadow-lg shadow-indigo-500/20 transition hover:bg-indigo-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 cursor-pointer"
               >
-                {isSubmitting ? 'Đang gửi thông tin...' : (
-                  <>
-                    Gửi đăng ký tư vấn <ArrowRight className="ml-2 inline" size={16} />
-                  </>
-                )}
+                Hoàn tất
               </button>
-              <p className="text-center text-xs sm:text-sm text-slate-500">
-                Cam kết bảo mật thông tin · Tư vấn viên liên hệ trong 15 phút
+            </div>
+          ) : (
+            <>
+              <div className="flex min-w-0 items-start gap-3 pr-12">
+                <span className="grid size-11 place-items-center rounded-xl bg-indigo-100 text-indigo-700 shadow-sm shrink-0">
+                  <Sparkles size={20} />
+                </span>
+                <div>
+                  <p className="text-xs sm:text-sm font-extrabold uppercase tracking-wider text-indigo-700">Bright English</p>
+                  <h2 id="registration-title" className="text-balance text-2xl font-black tracking-tight text-[#0A192F] sm:text-3xl">
+                    Đăng ký tư vấn miễn phí
+                  </h2>
+                </div>
+              </div>
+              <p className="mt-2.5 text-sm sm:text-base leading-relaxed text-slate-600">
+                Nhận tư vấn lộ trình học cá nhân hóa, 1 buổi học thử cùng giáo viên quốc tế và ưu đãi học phí lên tới 35%.
               </p>
-            </form>
-          </>
-        )}
-      </section>
+
+              {activeErrorKeys.length > 0 && (
+                <div
+                  ref={errorSummaryRef}
+                  role="alert"
+                  tabIndex={-1}
+                  aria-labelledby="reg-error-summary-title"
+                  className="mt-3.5 rounded-xl border border-rose-300 bg-rose-50 p-3.5 text-xs sm:text-sm text-rose-900 focus:outline-none focus:ring-2 focus:ring-rose-500"
+                >
+                  <div className="flex items-center gap-2 font-bold text-rose-800">
+                    <AlertCircle size={16} className="shrink-0 text-rose-600" />
+                    <span id="reg-error-summary-title">
+                      Vui lòng kiểm tra lại {activeErrorKeys.length} thông tin bên dưới:
+                    </span>
+                  </div>
+                  <ul className="mt-2 list-disc space-y-1 pl-6">
+                    {activeErrorKeys.map((key) => {
+                      const meta = FIELD_METADATA[key]
+                      return (
+                        <li key={key}>
+                          <a
+                            href={`#${meta?.id || key}`}
+                            onClick={(e) => {
+                              e.preventDefault()
+                              const el = document.getElementById(meta?.id || key)
+                              el?.focus()
+                            }}
+                            className="font-semibold text-rose-800 underline hover:text-rose-950"
+                          >
+                            {meta?.label}: {errors[key]}
+                          </a>
+                        </li>
+                      )
+                    })}
+                  </ul>
+                </div>
+              )}
+
+              <form className="mt-4 grid min-w-0 grid-cols-1 gap-3.5" onSubmit={handleSubmit} noValidate>
+                <div className="grid gap-1">
+                  <label className="text-sm font-bold text-slate-800" htmlFor="reg-fullname">
+                    Họ và tên học viên / phụ huynh <span className="text-rose-500">*</span>
+                  </label>
+                  <input
+                    id="reg-fullname"
+                    autoFocus
+                    required
+                    aria-invalid={Boolean(errors.fullName)}
+                    aria-describedby={errors.fullName ? 'reg-fullname-error' : undefined}
+                    value={fullName}
+                    onChange={(e) => {
+                      setFullName(e.target.value)
+                      if (errors.fullName) setErrors((prev) => ({ ...prev, fullName: '' }))
+                    }}
+                    autoComplete="name"
+                    placeholder="Ví dụ: Nguyễn Minh Anh"
+                    className={`h-12 w-full min-w-0 rounded-xl border px-4 text-sm outline-none transition placeholder:text-slate-400 focus:ring-2 sm:text-base ${
+                      errors.fullName
+                        ? 'border-rose-400 bg-rose-50/30 focus:ring-rose-200'
+                        : 'border-slate-200 focus:border-indigo-500 focus:ring-indigo-100'
+                    }`}
+                  />
+                  {errors.fullName && (
+                    <p id="reg-fullname-error" className="text-xs sm:text-sm font-medium text-rose-600">
+                      {errors.fullName}
+                    </p>
+                  )}
+                </div>
+
+                <div className="grid min-w-0 grid-cols-1 gap-3.5 sm:grid-cols-2 sm:gap-3">
+                  <div className="grid min-w-0 gap-1">
+                    <label className="text-sm font-bold text-slate-800" htmlFor="reg-phone">
+                      Số điện thoại liên hệ <span className="text-rose-500">*</span>
+                    </label>
+                    <input
+                      id="reg-phone"
+                      required
+                      type="tel"
+                      inputMode="tel"
+                      aria-invalid={Boolean(errors.phone)}
+                      aria-describedby={errors.phone ? 'reg-phone-error' : undefined}
+                      value={phone}
+                      onChange={(e) => {
+                        setPhone(e.target.value)
+                        if (errors.phone) setErrors((prev) => ({ ...prev, phone: '' }))
+                      }}
+                      autoComplete="tel"
+                      placeholder="Ví dụ: 090 123 4567"
+                      className={`h-12 w-full min-w-0 rounded-xl border px-4 text-sm outline-none transition placeholder:text-slate-400 focus:ring-2 sm:text-base ${
+                        errors.phone
+                          ? 'border-rose-400 bg-rose-50/30 focus:ring-rose-200'
+                          : 'border-slate-200 focus:border-indigo-500 focus:ring-indigo-100'
+                      }`}
+                    />
+                    {errors.phone && (
+                      <p id="reg-phone-error" className="text-xs sm:text-sm font-medium text-rose-600">
+                        {errors.phone}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="grid min-w-0 gap-1">
+                    <label className="text-sm font-bold text-slate-800" htmlFor="reg-email">
+                      Email nhận tài liệu
+                    </label>
+                    <input
+                      id="reg-email"
+                      type="email"
+                      aria-invalid={Boolean(errors.email)}
+                      aria-describedby={errors.email ? 'reg-email-error' : undefined}
+                      value={email}
+                      onChange={(e) => {
+                        setEmail(e.target.value)
+                        if (errors.email) setErrors((prev) => ({ ...prev, email: '' }))
+                      }}
+                      autoComplete="email"
+                      placeholder="name@gmail.com"
+                      className={`h-12 w-full min-w-0 rounded-xl border px-4 text-sm outline-none transition placeholder:text-slate-400 focus:ring-2 sm:text-base ${
+                        errors.email
+                          ? 'border-rose-400 bg-rose-50/30 focus:ring-rose-200'
+                          : 'border-slate-200 focus:border-indigo-500 focus:ring-indigo-100'
+                      }`}
+                    />
+                    {errors.email && (
+                      <p id="reg-email-error" className="text-xs sm:text-sm font-medium text-rose-600">
+                        {errors.email}
+                      </p>
+                    )}
+                  </div>
+                </div>
+
+                <div className="grid gap-1">
+                  <label className="text-sm font-bold text-slate-800" htmlFor="reg-course">
+                    Chương trình quan tâm <span className="text-rose-500">*</span>
+                  </label>
+                  <select
+                    id="reg-course"
+                    required
+                    aria-invalid={Boolean(errors.course)}
+                    aria-describedby={errors.course ? 'reg-course-error' : undefined}
+                    value={course}
+                    onChange={(e) => {
+                      setCourse(e.target.value)
+                      if (errors.course) setErrors((prev) => ({ ...prev, course: '' }))
+                    }}
+                    className={`h-12 w-full min-w-0 rounded-xl border bg-white px-4 text-sm text-slate-800 outline-none transition focus:ring-2 sm:text-base ${
+                      errors.course
+                        ? 'border-rose-400 bg-rose-50/30 focus:ring-rose-200'
+                        : 'border-slate-200 focus:border-indigo-500 focus:ring-indigo-100'
+                    }`}
+                  >
+                    <option value="" disabled>
+                      Chọn chương trình hoặc khóa học
+                    </option>
+                    {COURSE_OPTIONS.map((opt) => (
+                      <option key={opt.value} value={opt.value}>
+                        {opt.value}
+                      </option>
+                    ))}
+                  </select>
+                  {errors.course && (
+                    <p id="reg-course-error" className="text-xs sm:text-sm font-medium text-rose-600">
+                      {errors.course}
+                    </p>
+                  )}
+                </div>
+
+                <div className="grid gap-1">
+                  <label className="text-sm font-bold text-slate-800" htmlFor="reg-branch">
+                    Cơ sở gần bạn <span className="text-rose-500">*</span>
+                  </label>
+                  <select
+                    id="reg-branch"
+                    required
+                    aria-invalid={Boolean(errors.branch)}
+                    aria-describedby={errors.branch ? 'reg-branch-error' : undefined}
+                    value={branch}
+                    onChange={(e) => {
+                      setBranch(e.target.value)
+                      if (errors.branch) setErrors((prev) => ({ ...prev, branch: '' }))
+                    }}
+                    className="h-12 w-full min-w-0 rounded-xl border border-slate-200 bg-white px-4 text-sm text-slate-800 outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 sm:text-base"
+                  >
+                    <option value="208 Trường Chinh, Phường Tân Bình, TP.HCM">
+                      Trụ sở chính: 208 Trường Chinh, Phường Tân Bình, TP.HCM
+                    </option>
+                    <option value="12 Nguyễn Văn Bảo, Gò Vấp, TP.HCM">
+                      Cơ sở 2: 12 Nguyễn Văn Bảo, Gò Vấp, TP.HCM
+                    </option>
+                  </select>
+                </div>
+
+                <div className="grid gap-1">
+                  <label className="text-sm font-bold text-slate-800" htmlFor="reg-note">
+                    Mục tiêu học tập hoặc câu hỏi (nếu có)
+                  </label>
+                  <textarea
+                    id="reg-note"
+                    rows={2}
+                    value={note}
+                    onChange={(e) => setNote(e.target.value)}
+                    placeholder="Ví dụ: Muốn luyện phát âm chuẩn, chuẩn bị thi IELTS hoặc tìm lớp học thử..."
+                    className="w-full min-w-0 rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none transition placeholder:text-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 sm:text-base"
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="mt-2 inline-flex h-12 w-full items-center justify-center rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-sm sm:text-base font-bold text-slate-950 shadow-md shadow-amber-800/15 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 disabled:opacity-50 cursor-pointer"
+                >
+                  {isSubmitting ? (
+                    'Đang gửi thông tin...'
+                  ) : (
+                    <>
+                      Gửi đăng ký tư vấn <ArrowRight className="ml-2 inline" size={16} />
+                    </>
+                  )}
+                </button>
+                <p className="text-center text-xs sm:text-sm text-slate-500">
+                  Cam kết bảo mật thông tin · Tư vấn viên liên hệ trong 15 phút
+                </p>
+              </form>
+            </>
+          )}
+        </section>
       </div>
     </div>
   )
